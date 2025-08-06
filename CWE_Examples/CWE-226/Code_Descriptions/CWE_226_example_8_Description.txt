@@ -1,0 +1,6 @@
+This code example is from the aes2_wrapper module in the HACK@DAC'21 OpenPiton SoC repository. 
+There is a weakness in the code where the p_c[i] registers are not cleared when the cipher text is 
+valid. I have also modified the code so these p_c[i] registers are not cleared on reset. The p_c[i] 
+registers store plaintext data so they should be cleared on reset and also when the encryption is 
+complete. If they are not cleared then an attacker may be able to access plaintext data.
+

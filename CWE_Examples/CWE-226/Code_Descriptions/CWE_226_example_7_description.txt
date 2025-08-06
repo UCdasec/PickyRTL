@@ -1,0 +1,4 @@
+This code example is from the DMA module in the HACK@DAC'21 OpenPiton SoC repository. I have 
+modified the code to be vulnerable. I created a weakness where the dest_addr_lsb_d and 
+dest_addr_msb_d are not cleared on reset. If the destination address is not reset, then an 
+attacker may be able to figure out this destination address.

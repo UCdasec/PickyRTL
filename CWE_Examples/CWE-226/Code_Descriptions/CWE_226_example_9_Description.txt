@@ -1,0 +1,3 @@
+This code example is from the aes1_wrapper module in the HACK@DAC'21 OpenPiton SoC repository. I have 
+modified this code to become vulnerable. I removed the for loop where each key_reg is cleared. If the 
+key data is not cleared an attacker may be able to access the key and then decrypt sensitive data.

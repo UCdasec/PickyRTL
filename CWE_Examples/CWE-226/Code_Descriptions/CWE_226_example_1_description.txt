@@ -1,0 +1,11 @@
+This code example is from the AES0 wrapper module from the HACK@DAC'21 OpenPiton SoC 
+repository. In the code there are four 32-bit registers that are used to store the 
+plaintext message intended for encryption, referred to as p_c[i]. The AXI Lite 
+interface is responsible for filling these registers and can also read the data in 
+the registers. In the vulnerable code these registers are only cleared at system 
+reset or they maintain their plaintext values. The registers are never cleared once 
+the AES engine completes the encryption process. In the fixed code, the registers 
+are cleared once the encryption is complete by monitoring the ct_valid signal. A 
+weakness is introduced when these registers are not cleared because an attacker 
+may read from these registers to read plaintext data through the AXI Lite Interface. 
+This could happen in a multi-user or multi-process environment. 

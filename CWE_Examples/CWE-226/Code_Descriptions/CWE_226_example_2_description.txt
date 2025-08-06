@@ -1,0 +1,13 @@
+This code example is from the SHA256 wrapper module in the HACK@DAC'21 OpenPiton SoC 
+repository. It was listed as CWE-1239, but since CWE-1239 is a child of CWE-226 it 
+can serve as a good example for CWE-226. It was inserted as bug #36 for the event. 
+In the code there are 16 memory-mapped registers referenced as data[0] to data[15]. 
+Each register is 32 bits and are used to store the data received from the AXI Lite 
+Interface to be hashed. Once the message to be hashed and the request to start the 
+hashing are received, the values of the registers will be forwarded to the underlying 
+SHA256 module for processing. After these values are hashed they no longer need to be 
+stored. In the vulnerable code, the registers are only cleared on reset so they will 
+retain their values until the next hash operation. Not clearing these values introduces 
+a weakness where an attacker may be able to read plaintext data in between hashing 
+operations. The fixed code corrects this weakness by clearing the data registers after 
+the hashing operation is complete.

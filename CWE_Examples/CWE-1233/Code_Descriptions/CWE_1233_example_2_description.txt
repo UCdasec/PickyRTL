@@ -1,0 +1,9 @@
+This code example is from the HMAC wrapper module from the HACK@DAC'21 OpenPiton SoC 
+repository. This bug was inserted as bug #75 for the event. This bug was fixed, but I 
+have modified the code to be vulnerable again. I have removed the register locks that 
+protect writing to startHash, newMessage, and key_hash_bypass. Not locking these would 
+allow invalid hashing operations. In the code there are key registers 
+which should be locked by the reglk_ctrl_[i] bits. When these registers are not locked 
+then an attacker may be able to write to the register and replace it with a key they 
+control. This weakness could allow an attacker to bypass authentication or create 
+situations where legitimate HMACs will be rejected

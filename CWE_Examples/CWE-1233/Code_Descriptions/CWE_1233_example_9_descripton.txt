@@ -1,0 +1,3 @@
+This code is from the aes0 wrapper module in the HACK@DAC'21 OpenPiton SoC repository. 
+I have modified the code to be vulnerable. I created a weakness by removing the lock bit 
+protection from protecting rdata in all cases

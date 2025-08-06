@@ -1,0 +1,7 @@
+This code example is from the RSA wrapper of the HACK@DAC'21 OpenPiton SoC repository. 
+This vulnerability was inserted as bug #95 for the event. In the code the output 
+message, msg_out, is not cleared after a reset. In the same reset block msg_in is 
+zeroized, but output message is not zeroized. This creates a weakness in the scenario 
+where a message is decrypted in the RSA module and a system reset happens then 
+decrypted data will be left on the register in a memory mapped area. This could be 
+available to untrusted parties and lead to unauthorized data disclosure.

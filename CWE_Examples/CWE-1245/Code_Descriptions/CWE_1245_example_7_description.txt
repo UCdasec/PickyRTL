@@ -1,0 +1,10 @@
+This code example is from the PKT wrapper of the HACK@DAC'21 OpenPiton SoC repository. 
+This bug was inserted as bug #59 for the event. In the code there is a default case 
+with an if statement inside of it. This if statement prevents the default condition 
+from covering all possible inputs. If the fuse_addr_o is greater than 110 than the 
+default case will not cover that scenario. This could leak fuse data because rdata 
+is not zeroized for all inputs. Having a default case that does not cover all 
+possible input scenarios introduces a weakness into an FSM. An FSM should cover 
+all possible input scenarios to not introduce unknown functionality.
+
+The fix I implemented may not be the correct functionality, but it removes the if statement so the default case now covers all scenarios

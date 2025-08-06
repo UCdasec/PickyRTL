@@ -1,0 +1,6 @@
+This code example is from the PKT wrapped module of the HACK@DAC'21 OpenPiton SoC repository. 
+I have modified this code to be vulnerable. I removed the code where fuse_req_o and fuse_addr_o 
+are zeroized on reset. Fuse memory usually stores configuration-related information or other 
+sensitive information. Therefore the memory location of that data should be cleared from the 
+register on reset. By not clearing the data, it creates a weakness where an attacker may be 
+able to access that data.

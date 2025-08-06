@@ -1,0 +1,7 @@
+This code is from the VUL-FSM dataset which was generated using an LLM with inserted 
+vulnerabilities. This is example 633 from the dataset. This generated code example 
+has a DEADLOCK_STATE which creates a deadlock in the FSM because it has no 
+out-transition. An FSM with a deadlock is a weakness because it can lead to a denial 
+of service attack if the FSM enters the deadlock state.
+
+The fix I implemented may not be the correct functionality, but it provides a way out of the deadlock state which fixes the vulnerability.

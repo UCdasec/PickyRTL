@@ -1,0 +1,4 @@
+This code example is from the acct_wrapper module of the HACK@DAC'21 OpenPiton SoC repository. I have 
+modified this code to be vulnerable. I created a weakness by changing the peripheral reset signal to 
+rst_5 instead of rst_6. rst_5 is the peripheral reset signal for PKT. This creates a weakness where 
+the security sensitive registers for the ACCT wrapper won't be reset when they should.

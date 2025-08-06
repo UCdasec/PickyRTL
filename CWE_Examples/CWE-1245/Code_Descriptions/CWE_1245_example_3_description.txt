@@ -1,0 +1,6 @@
+The code example is from the AES2 interface from the HACK@DAC'21 OpenPiton SoC repository. 
+In the FSM there is no case statement condition for s13. The weakness is that when 
+there is not functionality defined for an input it leaves room for an adversary to 
+drive the system into an undefined state which may lead to a denial of service. 
+
+The fix I added to implement functionality for s13 may not be the correct implementation, but fixes the vulnerability

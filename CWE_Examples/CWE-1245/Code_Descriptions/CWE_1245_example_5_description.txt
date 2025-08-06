@@ -1,0 +1,8 @@
+This code is from the VUL-FSM dataset which was generated using an LLM with inserted 
+vulnerabilities. This is example 601 from the dataset. In the code STATE_A does not 
+have an in-transition which makes it an unreachable state. Unreachable states are a 
+weakness because they can exploited for fault injection attacks and cause denial of 
+service, privilege escalation, or unintended data exposure.FSM designs with 
+unreachable states should be avoided.
+
+The fix I implemented was to remove the unreachable state, STATE_A. THis may not be the correct functionality but removes the vulnerability.

@@ -1,0 +1,7 @@
+This code example is from the sha256 module from the HACK@DAC'21 OpenPiton SoC 
+repository. This vulnerability was inserted as bug #58. In the code if init and 
+next are enabled at the same time then sha will enter the ignore state and 
+ignore_input_reg will be set to 1. Then in the ignore state, if ignore_input_new 
+is set to 1 then the module will constantly remain in the ignore state. Constantly 
+being in the ignore state could lead to a deadlock which could stall the SHA-256 
+module and block further progress.

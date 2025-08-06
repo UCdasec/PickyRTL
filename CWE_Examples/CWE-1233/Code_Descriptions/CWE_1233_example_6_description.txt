@@ -1,0 +1,3 @@
+This code is from the RNG wrapper module in the HACK@DAC'21 OpenPiton SoC repository. 
+I have modified this code to be vulnerable. I have removed the lock bit protection from 
+writing to rdata in some cases.

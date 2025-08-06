@@ -1,0 +1,8 @@
+This code is from the JTAG debug module interface from the HACK@DAC'21 OpenPiton SoC 
+repository. This bug was inserted as bug #84 for the event. In the code there is a 
+state, WaitWriteValid, which has no in-transitions which makes it an unreachable 
+state. An unreachable state introduces a weakness in a FSM that can be exploited 
+by fault injection attacks and cause a denial of service, privilege escalation, 
+or unintended data exposure. Unreachable states in FSMs should be avoided.
+
+The fix I implemented may not be the correct functionality, but I added a transition from Write to WaitWriteValid

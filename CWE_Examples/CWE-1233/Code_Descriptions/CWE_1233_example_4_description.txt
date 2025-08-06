@@ -1,0 +1,6 @@
+This code is from the PKT wrapper module in the HACK@DAC'21 OpenPiton SoC repository. 
+This was inserted as bug #78 for the event. In the code there are lock bits, 
+reglk_ctrl_i which protect rdata in some cases, but not all. rdata is protected in 
+case 2, 3, and 4, but not in case 0 and 1. This creates a scenario where an attacker 
+could modify rdata bypassing the protection. This introduces a weakness where security 
+sensitive registers are not fully protected. 

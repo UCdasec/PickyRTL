@@ -1,0 +1,5 @@
+This code example is from the AES1 wrapper module in the HACK@DAC'21 OpenPiton SoC 
+repository. THis bug was inserted as bug #80. This bug was fixed, but i have modified 
+it to be vulnerable again. The key_reg registers should be locked using lock bits. 
+If these registers are not protected then an attacker could possibly replace the key 
+with an unauthorized key. 

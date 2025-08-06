@@ -1,0 +1,4 @@
+This code is from the ACCT wrapper module in the HACK@DAC'21 OpenPiton SoC repository. 
+I have modified this code to be vulnerable. I have removed the lock bti protection from 
+the case statement on the read and write side. This creates a weakness where registers may be 
+written to without checking against lock bit protection.

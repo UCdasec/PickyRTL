@@ -1,0 +1,10 @@
+This code example is from the AES0 wrapper in the HACK@DAC'21 OpenPiton SoC repository. 
+This vulnerability was inserted as bug #60 for the event. In the code there is a 
+default case statement with an if statement inside of it. It checks against ct_valid 
+before zeroizing rdata. rdata is assigned the AES0 key and if the cipher text is not 
+valid then rdata will not be zeroized and the AES0 key may be leaked. Having a 
+default case that does not cover all possible input scenarios introduces a weakness 
+into an FSM. An FSM should cover all possible input scenarios to not introduce 
+unknown functionality. 
+
+The fix I implemented may not be the correct functionality, but it removes the if statement so the default case now covers all scenarios

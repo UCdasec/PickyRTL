@@ -1,0 +1,8 @@
+This code is from the DMA wrapper module in the HACK@DAC'21 OpenPiton SoC repository. 
+This is listed as bug #31 that was inserted for the event. In the code there are 8 
+registers that should be protected using lock bit protection. These registers are 
+start_reg, length_reg, source_addr_lsb_reg, source_addr_msb_reg, dest_addr_lsb_reg, 
+dest_addr_msb_reg, done_reg, core_lock_reg, and end_reg. reglk_ctrl_[i] should be 
+checked before these registers are written to. Not protecting the registers with 
+lock bits introduces a weakness where they can possibly be written to when it should 
+not be possible. 

@@ -1,0 +1,5 @@
+This code example is from the rng wrapper modul in the HACK@DAC'21 OpenPiton 
+SoC repository. I have modified the code to be vulnerable. I removed the 
+peripheral reset condition on line 89. Now load and load_cnt registers are 
+only cleared on system reset. These registers should also be cleared based 
+on the rst_10 signal which creates a weakness in the system.

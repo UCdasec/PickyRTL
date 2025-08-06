@@ -1,0 +1,9 @@
+This code example is from the modular exponentiation module used in the RSA 
+implementation in the HACK@DAC'21 OpenPiton SoC repository. In the case statement 
+there is no transition out of the HOLD state. The only way to transition out of the 
+HOLD state is the reset signal from the top RSA module. The weakness is that leaving 
+the system in a state with no out-transition leaves the FSM in a deadlock. This will 
+cause a denial of service.
+
+The fix I implemented may not be the correct functionality, but it fixes the deadlock by providing an 
+out-transition from the HOLD state.

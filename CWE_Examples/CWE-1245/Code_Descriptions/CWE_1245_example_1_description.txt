@@ -1,0 +1,5 @@
+In the code, the FSM assigns the output based on the value of the state which is 
+determined by the user input. The weakness in the vulnerable code is that there is no 
+default case statement. If the user were to input 3'h6 or 3'h7 the system would be 
+pushed into an undefined state which may lead to a denial of service or other 
+unanticipated outcome.
