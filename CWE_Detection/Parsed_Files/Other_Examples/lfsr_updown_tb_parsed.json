@@ -1,0 +1,752 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            3,
+            1,
+            36,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " http://www.asic-world.com/examples/verilog/lfsr.html#Random_Counter_(LFSR)\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                3,
+                1,
+                36,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "tb",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "tb",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    4,
+                    6,
+                    4,
+                    8
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "clk",
+                    "__id__": "root.0.objs.0.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.0.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.0.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.0.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.0"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    5,
+                    6,
+                    5,
+                    10
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "reset",
+                    "__id__": "root.0.objs.1.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.1.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.1.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.1.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.1"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    6,
+                    6,
+                    6,
+                    11
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "enable",
+                    "__id__": "root.0.objs.2.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.2.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.2.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.2.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.2"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    7,
+                    6,
+                    7,
+                    12
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "up_down",
+                    "__id__": "root.0.objs.3.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.3.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.3.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.3.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.3"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    9,
+                    17,
+                    9,
+                    21
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "count",
+                    "__id__": "root.0.objs.4.name"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "wire",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "8",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.4.type.ops.1.ops.0.ops.0"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.4.type.ops.1.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "SUB",
+                                    "__id__": "root.0.objs.4.type.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.4.type.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "DOWNTO",
+                            "__id__": "root.0.objs.4.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.4.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.4.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.4"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    10,
+                    7,
+                    10,
+                    14
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "overflow",
+                    "__id__": "root.0.objs.5.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.5.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.5"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "position": [
+                    12,
+                    1,
+                    23,
+                    3
+                ],
+                "labels": [],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        12,
+                        9,
+                        23,
+                        3
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "$monitor",
+                                {
+                                    "__class__": "str",
+                                    "val": "rst %b en %b updown %b cnt %b overflow %b",
+                                    "__id__": "root.0.objs.6.body.body.0.ops.1"
+                                },
+                                "reset",
+                                "enable",
+                                "up_down",
+                                "count",
+                                "overflow"
+                            ],
+                            "fn": "CALL",
+                            "__id__": "root.0.objs.6.body.body.0"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "clk",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.6.body.body.1.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.6.body.body.1"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "reset",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.6.body.body.2.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.6.body.body.2"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "enable",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.6.body.body.3.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.6.body.body.3"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "up_down",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.6.body.body.4.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.6.body.body.4"
+                        },
+                        {
+                            "__class__": "HdlStmProcess",
+                            "position": [
+                                19,
+                                3,
+                                19,
+                                16
+                            ],
+                            "labels": [],
+                            "body": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    19,
+                                    3,
+                                    19,
+                                    16
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmWait",
+                                        "position": [
+                                            19,
+                                            3,
+                                            19,
+                                            16
+                                        ],
+                                        "labels": [],
+                                        "val": {
+                                            "__class__": "list",
+                                            "items": [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "10",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.6.body.body.5.body.body.0.val.items.0"
+                                                }
+                                            ],
+                                            "__id__": "root.0.objs.6.body.body.5.body.body.0.val"
+                                        },
+                                        "__id__": "root.0.objs.6.body.body.5.body.body.0"
+                                    },
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "reset",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "0",
+                                                "base": 10,
+                                                "__id__": "root.0.objs.6.body.body.5.body.body.1.ops.1"
+                                            }
+                                        ],
+                                        "fn": "ASSIGN",
+                                        "__id__": "root.0.objs.6.body.body.5.body.body.1"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.6.body.body.5.body"
+                            },
+                            "__id__": "root.0.objs.6.body.body.5"
+                        },
+                        {
+                            "__class__": "HdlStmProcess",
+                            "position": [
+                                20,
+                                3,
+                                20,
+                                16
+                            ],
+                            "labels": [],
+                            "body": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    20,
+                                    3,
+                                    20,
+                                    16
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmWait",
+                                        "position": [
+                                            20,
+                                            3,
+                                            20,
+                                            16
+                                        ],
+                                        "labels": [],
+                                        "val": {
+                                            "__class__": "list",
+                                            "items": [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.6.body.body.6.body.body.0.val.items.0"
+                                                }
+                                            ],
+                                            "__id__": "root.0.objs.6.body.body.6.body.body.0.val"
+                                        },
+                                        "__id__": "root.0.objs.6.body.body.6.body.body.0"
+                                    },
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "enable",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10,
+                                                "__id__": "root.0.objs.6.body.body.6.body.body.1.ops.1"
+                                            }
+                                        ],
+                                        "fn": "ASSIGN",
+                                        "__id__": "root.0.objs.6.body.body.6.body.body.1"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.6.body.body.6.body"
+                            },
+                            "__id__": "root.0.objs.6.body.body.6"
+                        },
+                        {
+                            "__class__": "HdlStmProcess",
+                            "position": [
+                                21,
+                                3,
+                                21,
+                                18
+                            ],
+                            "labels": [],
+                            "body": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    21,
+                                    3,
+                                    21,
+                                    18
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmWait",
+                                        "position": [
+                                            21,
+                                            3,
+                                            21,
+                                            18
+                                        ],
+                                        "labels": [],
+                                        "val": {
+                                            "__class__": "list",
+                                            "items": [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "20",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.6.body.body.7.body.body.0.val.items.0"
+                                                }
+                                            ],
+                                            "__id__": "root.0.objs.6.body.body.7.body.body.0.val"
+                                        },
+                                        "__id__": "root.0.objs.6.body.body.7.body.body.0"
+                                    },
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "up_down",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10,
+                                                "__id__": "root.0.objs.6.body.body.7.body.body.1.ops.1"
+                                            }
+                                        ],
+                                        "fn": "ASSIGN",
+                                        "__id__": "root.0.objs.6.body.body.7.body.body.1"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.6.body.body.7.body"
+                            },
+                            "__id__": "root.0.objs.6.body.body.7"
+                        },
+                        {
+                            "__class__": "HdlStmProcess",
+                            "position": [
+                                22,
+                                3,
+                                22,
+                                14
+                            ],
+                            "labels": [],
+                            "body": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    22,
+                                    3,
+                                    22,
+                                    14
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmWait",
+                                        "position": [
+                                            22,
+                                            3,
+                                            22,
+                                            14
+                                        ],
+                                        "labels": [],
+                                        "val": {
+                                            "__class__": "list",
+                                            "items": [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "30",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.6.body.body.8.body.body.0.val.items.0"
+                                                }
+                                            ],
+                                            "__id__": "root.0.objs.6.body.body.8.body.body.0.val"
+                                        },
+                                        "__id__": "root.0.objs.6.body.body.8.body.body.0"
+                                    },
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "$finish"
+                                        ],
+                                        "fn": "CALL",
+                                        "__id__": "root.0.objs.6.body.body.8.body.body.1"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.6.body.body.8.body"
+                            },
+                            "__id__": "root.0.objs.6.body.body.8"
+                        },
+                        {
+                            "__class__": "HdlStmWait",
+                            "position": [
+                                12,
+                                1,
+                                23,
+                                3
+                            ],
+                            "labels": [],
+                            "val": {
+                                "__class__": "list",
+                                "items": [],
+                                "__id__": "root.0.objs.6.body.body.9.val"
+                            },
+                            "__id__": "root.0.objs.6.body.body.9"
+                        }
+                    ],
+                    "__id__": "root.0.objs.6.body"
+                },
+                "__id__": "root.0.objs.6"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "position": [
+                    25,
+                    8,
+                    25,
+                    21
+                ],
+                "labels": [],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        25,
+                        8,
+                        25,
+                        21
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmWait",
+                            "position": [
+                                25,
+                                8,
+                                25,
+                                21
+                            ],
+                            "labels": [],
+                            "val": {
+                                "__class__": "list",
+                                "items": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "1",
+                                        "base": 10,
+                                        "__id__": "root.0.objs.7.body.body.0.val.items.0"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.7.body.body.0.val"
+                            },
+                            "__id__": "root.0.objs.7.body.body.0"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "clk",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "clk"
+                                    ],
+                                    "fn": "NEG",
+                                    "__id__": "root.0.objs.7.body.body.1.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.7.body.body.1"
+                        }
+                    ],
+                    "__id__": "root.0.objs.7.body"
+                },
+                "__id__": "root.0.objs.7"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "U",
+                "module_name": "lfsr_updown",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "clk",
+                            "clk"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.8.port_map.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reset",
+                            "reset"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.8.port_map.1"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "enable",
+                            "enable"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.8.port_map.2"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "up_down",
+                            "up_down"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.8.port_map.3"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "count",
+                            "count"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.8.port_map.4"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "overflow",
+                            "overflow"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.8.port_map.5"
+                    }
+                ],
+                "__id__": "root.0.objs.8"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]

@@ -1,0 +1,376 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            4,
+            1,
+            8,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " Test Scenario to validate correct translation\n Refer: https://github.com/Nic30/hdlConvertor/issues/173\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                4,
+                1,
+                8,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "dummy",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        4,
+                        14,
+                        4,
+                        14
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "c",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.0.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        4,
+                        17,
+                        4,
+                        17
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "a",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.1.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        4,
+                        20,
+                        4,
+                        20
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "b",
+                        "__id__": "root.0.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.2"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "dummy",
+        "objs": [],
+        "__id__": "root.0"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            10,
+            1,
+            15,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.1.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "position": [
+                10,
+                1,
+                15,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "d2",
+                "__id__": "root.1.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        10,
+                        11,
+                        10,
+                        11
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "y",
+                        "__id__": "root.1.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.1.dec.ports.0.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.1.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        10,
+                        14,
+                        10,
+                        14
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "a",
+                        "__id__": "root.1.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.1.dec.ports.1.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.1.dec.ports.1"
+                }
+            ],
+            "__id__": "root.1.dec"
+        },
+        "module_name": "d2",
+        "objs": [
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    14,
+                    5,
+                    14,
+                    13
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "a"
+                    ],
+                    "fn": "NEG",
+                    "__id__": "root.1.objs.0.src"
+                },
+                "dst": "y",
+                "is_blocking": false,
+                "__id__": "root.1.objs.0"
+            }
+        ],
+        "__id__": "root.1"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            17,
+            1,
+            26,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.2.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "position": [
+                17,
+                1,
+                26,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "example",
+                "__id__": "root.2.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        17,
+                        17,
+                        17,
+                        17
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "a",
+                        "__id__": "root.2.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.2.dec.ports.0.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.2.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        17,
+                        20,
+                        17,
+                        20
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "b",
+                        "__id__": "root.2.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.2.dec.ports.1.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.2.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        17,
+                        23,
+                        17,
+                        23
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "c",
+                        "__id__": "root.2.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.2.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.2.dec.ports.2"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        17,
+                        26,
+                        17,
+                        26
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "d",
+                        "__id__": "root.2.dec.ports.3.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.2.dec.ports.3.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.2.dec.ports.3"
+                }
+            ],
+            "__id__": "root.2.dec"
+        },
+        "module_name": "example",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    21,
+                    6,
+                    21,
+                    8
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "tmp",
+                    "__id__": "root.2.objs.0.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.2.objs.0.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.2.objs.0"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    22,
+                    6,
+                    22,
+                    9
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "tmp2",
+                    "__id__": "root.2.objs.1.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.2.objs.1.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.2.objs.1"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "du",
+                "module_name": "dummy",
+                "param_map": [],
+                "port_map": [
+                    "tmp2",
+                    "b",
+                    "c"
+                ],
+                "__id__": "root.2.objs.2"
+            }
+        ],
+        "__id__": "root.2"
+    }
+]

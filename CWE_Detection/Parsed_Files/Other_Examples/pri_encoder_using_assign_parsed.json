@@ -1,0 +1,634 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            8,
+            1,
+            37,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": "-----------------------------------------------------\n http://www.asic-world.com/code/hdl_models/pri_encoder_using_assign.v\n Design Name : pri_encoder_using_assign\n File Name   : pri_encoder_using_assign.v\n Function    : Pri Encoder using assign\n Coder       : Deepak Kumar Tala\n-----------------------------------------------------\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                8,
+                1,
+                37,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "pri_encoder_using_assign",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        9,
+                        1,
+                        9,
+                        10
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "binary_out",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "3",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.0.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.0.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.0.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " 4 bit binary output\n",
+                        "__id__": "root.0.dec.ports.1.doc"
+                    },
+                    "position": [
+                        10,
+                        1,
+                        10,
+                        10
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "encoder_in",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "15",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.1.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.1.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.1.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.1.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.1.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " 16-bit input\n",
+                        "__id__": "root.0.dec.ports.2.doc"
+                    },
+                    "position": [
+                        11,
+                        1,
+                        11,
+                        6
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "enable",
+                        "__id__": "root.0.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.2"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "pri_encoder_using_assign",
+        "objs": [
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    20,
+                    9,
+                    35,
+                    54
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "enable"
+                            ],
+                            "fn": "NEG_LOG",
+                            "__id__": "root.0.objs.0.src.ops.0"
+                        },
+                        {
+                            "__class__": "HdlValueInt",
+                            "val": "0",
+                            "base": 10,
+                            "__id__": "root.0.objs.0.src.ops.1"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "encoder_in",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "xxxxxxxxxxxxxxx1",
+                                            "bits": 16,
+                                            "base": 2,
+                                            "__id__": "root.0.objs.0.src.ops.2.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "EQ",
+                                    "__id__": "root.0.objs.0.src.ops.2.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.0.src.ops.2.ops.1"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "encoder_in",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "xxxxxxxxxxxxxx10",
+                                                    "bits": 16,
+                                                    "base": 2,
+                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.0.ops.1"
+                                                }
+                                            ],
+                                            "fn": "EQ",
+                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.0"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.1"
+                                        },
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "xxxxxxxxxxxxx100",
+                                                            "bits": 16,
+                                                            "base": 2,
+                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "2",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.1"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "encoder_in",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "xxxxxxxxxxxx1000",
+                                                                    "bits": 16,
+                                                                    "base": 2,
+                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "EQ",
+                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                        },
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "3",
+                                                            "base": 10,
+                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                        },
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "encoder_in",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "xxxxxxxxxxx10000",
+                                                                            "bits": 16,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "EQ",
+                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "4",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                "encoder_in",
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "xxxxxxxxxx100000",
+                                                                                    "bits": 16,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "EQ",
+                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "5",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlOp",
+                                                                                    "ops": [
+                                                                                        "encoder_in",
+                                                                                        {
+                                                                                            "__class__": "HdlValueInt",
+                                                                                            "val": "xxxxxxxxx1000000",
+                                                                                            "bits": 16,
+                                                                                            "base": 2,
+                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                        }
+                                                                                    ],
+                                                                                    "fn": "EQ",
+                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "6",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlOp",
+                                                                                    "ops": [
+                                                                                        {
+                                                                                            "__class__": "HdlOp",
+                                                                                            "ops": [
+                                                                                                "encoder_in",
+                                                                                                {
+                                                                                                    "__class__": "HdlValueInt",
+                                                                                                    "val": "xxxxxxxx10000000",
+                                                                                                    "bits": 16,
+                                                                                                    "base": 2,
+                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                                }
+                                                                                            ],
+                                                                                            "fn": "EQ",
+                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                                        },
+                                                                                        {
+                                                                                            "__class__": "HdlValueInt",
+                                                                                            "val": "7",
+                                                                                            "base": 10,
+                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                                        },
+                                                                                        {
+                                                                                            "__class__": "HdlOp",
+                                                                                            "ops": [
+                                                                                                {
+                                                                                                    "__class__": "HdlOp",
+                                                                                                    "ops": [
+                                                                                                        "encoder_in",
+                                                                                                        {
+                                                                                                            "__class__": "HdlValueInt",
+                                                                                                            "val": "xxxxxxx100000000",
+                                                                                                            "bits": 16,
+                                                                                                            "base": 2,
+                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                                        }
+                                                                                                    ],
+                                                                                                    "fn": "EQ",
+                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                                                },
+                                                                                                {
+                                                                                                    "__class__": "HdlValueInt",
+                                                                                                    "val": "8",
+                                                                                                    "base": 10,
+                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                                                },
+                                                                                                {
+                                                                                                    "__class__": "HdlOp",
+                                                                                                    "ops": [
+                                                                                                        {
+                                                                                                            "__class__": "HdlOp",
+                                                                                                            "ops": [
+                                                                                                                "encoder_in",
+                                                                                                                {
+                                                                                                                    "__class__": "HdlValueInt",
+                                                                                                                    "val": "xxxxxx1000000000",
+                                                                                                                    "bits": 16,
+                                                                                                                    "base": 2,
+                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                                                }
+                                                                                                            ],
+                                                                                                            "fn": "EQ",
+                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "__class__": "HdlValueInt",
+                                                                                                            "val": "9",
+                                                                                                            "base": 10,
+                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "__class__": "HdlOp",
+                                                                                                            "ops": [
+                                                                                                                {
+                                                                                                                    "__class__": "HdlOp",
+                                                                                                                    "ops": [
+                                                                                                                        "encoder_in",
+                                                                                                                        {
+                                                                                                                            "__class__": "HdlValueInt",
+                                                                                                                            "val": "xxxxx10000000000",
+                                                                                                                            "bits": 16,
+                                                                                                                            "base": 2,
+                                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                                                        }
+                                                                                                                    ],
+                                                                                                                    "fn": "EQ",
+                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "__class__": "HdlValueInt",
+                                                                                                                    "val": "10",
+                                                                                                                    "base": 10,
+                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "__class__": "HdlOp",
+                                                                                                                    "ops": [
+                                                                                                                        {
+                                                                                                                            "__class__": "HdlOp",
+                                                                                                                            "ops": [
+                                                                                                                                "encoder_in",
+                                                                                                                                {
+                                                                                                                                    "__class__": "HdlValueInt",
+                                                                                                                                    "val": "xxxx100000000000",
+                                                                                                                                    "bits": 16,
+                                                                                                                                    "base": 2,
+                                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                                                                }
+                                                                                                                            ],
+                                                                                                                            "fn": "EQ",
+                                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "__class__": "HdlValueInt",
+                                                                                                                            "val": "11",
+                                                                                                                            "base": 10,
+                                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "__class__": "HdlOp",
+                                                                                                                            "ops": [
+                                                                                                                                {
+                                                                                                                                    "__class__": "HdlOp",
+                                                                                                                                    "ops": [
+                                                                                                                                        "encoder_in",
+                                                                                                                                        {
+                                                                                                                                            "__class__": "HdlValueInt",
+                                                                                                                                            "val": "xxx1000000000000",
+                                                                                                                                            "bits": 16,
+                                                                                                                                            "base": 2,
+                                                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                                                                        }
+                                                                                                                                    ],
+                                                                                                                                    "fn": "EQ",
+                                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                    "__class__": "HdlValueInt",
+                                                                                                                                    "val": "12",
+                                                                                                                                    "base": 10,
+                                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                    "__class__": "HdlOp",
+                                                                                                                                    "ops": [
+                                                                                                                                        {
+                                                                                                                                            "__class__": "HdlOp",
+                                                                                                                                            "ops": [
+                                                                                                                                                "encoder_in",
+                                                                                                                                                {
+                                                                                                                                                    "__class__": "HdlValueInt",
+                                                                                                                                                    "val": "xx10000000000000",
+                                                                                                                                                    "bits": 16,
+                                                                                                                                                    "base": 2,
+                                                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                                                                                }
+                                                                                                                                            ],
+                                                                                                                                            "fn": "EQ",
+                                                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                                                                                        },
+                                                                                                                                        {
+                                                                                                                                            "__class__": "HdlValueInt",
+                                                                                                                                            "val": "13",
+                                                                                                                                            "base": 10,
+                                                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                                                                                        },
+                                                                                                                                        {
+                                                                                                                                            "__class__": "HdlOp",
+                                                                                                                                            "ops": [
+                                                                                                                                                {
+                                                                                                                                                    "__class__": "HdlOp",
+                                                                                                                                                    "ops": [
+                                                                                                                                                        "encoder_in",
+                                                                                                                                                        {
+                                                                                                                                                            "__class__": "HdlValueInt",
+                                                                                                                                                            "val": "x100000000000000",
+                                                                                                                                                            "bits": 16,
+                                                                                                                                                            "base": 2,
+                                                                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0.ops.1"
+                                                                                                                                                        }
+                                                                                                                                                    ],
+                                                                                                                                                    "fn": "EQ",
+                                                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.0"
+                                                                                                                                                },
+                                                                                                                                                {
+                                                                                                                                                    "__class__": "HdlValueInt",
+                                                                                                                                                    "val": "14",
+                                                                                                                                                    "base": 10,
+                                                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.1"
+                                                                                                                                                },
+                                                                                                                                                {
+                                                                                                                                                    "__class__": "HdlValueInt",
+                                                                                                                                                    "val": "15",
+                                                                                                                                                    "base": 10,
+                                                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                                                                                                }
+                                                                                                                                            ],
+                                                                                                                                            "fn": "TERNARY",
+                                                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                                                                                        }
+                                                                                                                                    ],
+                                                                                                                                    "fn": "TERNARY",
+                                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                                                                                }
+                                                                                                                            ],
+                                                                                                                            "fn": "TERNARY",
+                                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                                                                        }
+                                                                                                                    ],
+                                                                                                                    "fn": "TERNARY",
+                                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                                                                }
+                                                                                                            ],
+                                                                                                            "fn": "TERNARY",
+                                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                                                        }
+                                                                                                    ],
+                                                                                                    "fn": "TERNARY",
+                                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                                                }
+                                                                                            ],
+                                                                                            "fn": "TERNARY",
+                                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                                        }
+                                                                                    ],
+                                                                                    "fn": "TERNARY",
+                                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "TERNARY",
+                                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "TERNARY",
+                                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY",
+                                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2.ops.2"
+                                                        }
+                                                    ],
+                                                    "fn": "TERNARY",
+                                                    "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2.ops.2"
+                                                }
+                                            ],
+                                            "fn": "TERNARY",
+                                            "__id__": "root.0.objs.0.src.ops.2.ops.2.ops.2"
+                                        }
+                                    ],
+                                    "fn": "TERNARY",
+                                    "__id__": "root.0.objs.0.src.ops.2.ops.2"
+                                }
+                            ],
+                            "fn": "TERNARY",
+                            "__id__": "root.0.objs.0.src.ops.2"
+                        }
+                    ],
+                    "fn": "TERNARY",
+                    "__id__": "root.0.objs.0.src"
+                },
+                "dst": "binary_out",
+                "is_blocking": false,
+                "__id__": "root.0.objs.0"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]

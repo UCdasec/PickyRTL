@@ -1,0 +1,644 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            8,
+            1,
+            44,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " http://www.asic-world.com/code/hdl_models/decoder_using_case.v\n-----------------------------------------------------\n Design Name : decoder_using_case\n File Name   : decoder_using_case.v\n Function    : decoder using case\n Coder       : Deepak Kumar Tala\n-----------------------------------------------------\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                8,
+                1,
+                44,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "decoder_using_case",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        9,
+                        1,
+                        9,
+                        9
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "binary_in",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "3",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.0.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.0.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.0.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " 4 bit binary input\n",
+                        "__id__": "root.0.dec.ports.1.doc"
+                    },
+                    "position": [
+                        10,
+                        1,
+                        10,
+                        11
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "decoder_out",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "is_static": true,
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "15",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.1.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.1.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.1.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.1.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.1.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " 16-bit  out\n",
+                        "__id__": "root.0.dec.ports.2.doc"
+                    },
+                    "position": [
+                        11,
+                        1,
+                        11,
+                        6
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "enable",
+                        "__id__": "root.0.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.2"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "decoder_using_case",
+        "objs": [
+            {
+                "__class__": "HdlStmProcess",
+                "position": [
+                    19,
+                    8,
+                    42,
+                    3
+                ],
+                "labels": [],
+                "sensitivity": [
+                    "enable",
+                    "binary_in"
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        20,
+                        1,
+                        42,
+                        3
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "decoder_out",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.0.body.body.0.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.0.body.body.0"
+                        },
+                        {
+                            "__class__": "HdlStmIf",
+                            "position": [
+                                22,
+                                3,
+                                41,
+                                5
+                            ],
+                            "labels": [],
+                            "cond": "enable",
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    22,
+                                    15,
+                                    41,
+                                    5
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmCase",
+                                        "position": [
+                                            23,
+                                            5,
+                                            40,
+                                            11
+                                        ],
+                                        "labels": [],
+                                        "type": "CASE",
+                                        "switch_on": "binary_in",
+                                        "cases": [
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.0.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0001",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.0.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.0.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.1.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0002",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.1.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.1.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "2",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.2.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0004",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.2.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.2.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "3",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.3.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0008",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.3.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.3.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "4",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.4.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0010",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.4.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.4.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "5",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.5.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0020",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.5.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.5.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "6",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.6.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0040",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.6.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.6.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "7",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.7.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0080",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.7.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.7.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "8",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.8.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0100",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.8.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.8.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "9",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.9.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0200",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.9.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.9.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "a",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.10.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0400",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.10.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.10.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "b",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.11.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0800",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.11.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.11.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "c",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.12.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "1000",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.12.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.12.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "d",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.13.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "2000",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.13.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.13.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "e",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.14.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "4000",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.14.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.14.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "f",
+                                                    "bits": 4,
+                                                    "base": 16,
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.15.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "decoder_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "8000",
+                                                            "bits": 16,
+                                                            "base": 16,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.15.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cases.15.1"
+                                                }
+                                            ]
+                                        ],
+                                        "__id__": "root.0.objs.0.body.body.1.if_true.body.0"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.0.body.body.1.if_true"
+                            },
+                            "elifs": [],
+                            "__id__": "root.0.objs.0.body.body.1"
+                        }
+                    ],
+                    "__id__": "root.0.objs.0.body"
+                },
+                "__id__": "root.0.objs.0"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]

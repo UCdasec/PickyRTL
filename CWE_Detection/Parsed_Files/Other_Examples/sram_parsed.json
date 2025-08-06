@@ -1,0 +1,606 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            8,
+            1,
+            41,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " comment 0\n comment 1\n comment with some indinet\n/**\n * https://timetoexplore.net/blog/block-ram-in-verilog-with-vivado\n * simple example of sram\n */",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                8,
+                1,
+                41,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "sram",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " widht of address\n",
+                        "__id__": "root.0.dec.params.0.doc"
+                    },
+                    "position": [
+                        10,
+                        12,
+                        10,
+                        25
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "ADDR_WIDTH",
+                        "__id__": "root.0.dec.params.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.params.0.type"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "8",
+                        "base": 10,
+                        "__id__": "root.0.dec.params.0.value"
+                    },
+                    "direction": "INTERNAL",
+                    "__id__": "root.0.dec.params.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " widht of memory cell in memory\n",
+                        "__id__": "root.0.dec.params.1.doc"
+                    },
+                    "position": [
+                        12,
+                        2,
+                        12,
+                        15
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "DATA_WIDTH",
+                        "__id__": "root.0.dec.params.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.params.1.type"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "8",
+                        "base": 10,
+                        "__id__": "root.0.dec.params.1.value"
+                    },
+                    "direction": "INTERNAL",
+                    "__id__": "root.0.dec.params.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " number of cells in memory\n",
+                        "__id__": "root.0.dec.params.2.doc"
+                    },
+                    "position": [
+                        14,
+                        2,
+                        14,
+                        12
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "DEPTH",
+                        "__id__": "root.0.dec.params.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.params.2.type"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "256",
+                        "base": 10,
+                        "__id__": "root.0.dec.params.2.value"
+                    },
+                    "direction": "INTERNAL",
+                    "__id__": "root.0.dec.params.2"
+                }
+            ],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " main clock signal\n",
+                        "__id__": "root.0.dec.ports.0.doc"
+                    },
+                    "position": [
+                        16,
+                        5,
+                        16,
+                        20
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "i_clk",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.0.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        17,
+                        5,
+                        17,
+                        38
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "i_addr",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "ADDR_WIDTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10,
+                                                "__id__": "root.0.dec.ports.1.type.ops.1.ops.0.ops.1"
+                                            }
+                                        ],
+                                        "fn": "SUB",
+                                        "__id__": "root.0.dec.ports.1.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.1.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.1.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.1.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.1.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " write enable signal\n",
+                        "__id__": "root.0.dec.ports.2.doc"
+                    },
+                    "position": [
+                        19,
+                        5,
+                        19,
+                        22
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "i_write",
+                        "__id__": "root.0.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.2"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " input data\n",
+                        "__id__": "root.0.dec.ports.3.doc"
+                    },
+                    "position": [
+                        21,
+                        5,
+                        21,
+                        38
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "i_data",
+                        "__id__": "root.0.dec.ports.3.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "DATA_WIDTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10,
+                                                "__id__": "root.0.dec.ports.3.type.ops.1.ops.0.ops.1"
+                                            }
+                                        ],
+                                        "fn": "SUB",
+                                        "__id__": "root.0.dec.ports.3.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.3.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.3.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.3.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.3.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.3"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " output data\n",
+                        "__id__": "root.0.dec.ports.4.doc"
+                    },
+                    "position": [
+                        23,
+                        5,
+                        23,
+                        38
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "o_data",
+                        "__id__": "root.0.dec.ports.4.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "DATA_WIDTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10,
+                                                "__id__": "root.0.dec.ports.4.type.ops.1.ops.0.ops.1"
+                                            }
+                                        ],
+                                        "fn": "SUB",
+                                        "__id__": "root.0.dec.ports.4.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.4.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.4.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.4.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.4.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.4"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "sram",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " main memory\n",
+                    "__id__": "root.0.objs.0.doc"
+                },
+                "position": [
+                    27,
+                    26,
+                    27,
+                    49
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "memory_array",
+                    "__id__": "root.0.objs.0.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "reg",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "DATA_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.0.type.ops.0.ops.1.ops.0.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.0.type.ops.0.ops.1.ops.0"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.0.type.ops.0.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "DOWNTO",
+                                    "__id__": "root.0.objs.0.type.ops.0.ops.1"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null,
+                                    "__id__": "root.0.objs.0.type.ops.0.ops.2"
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION",
+                            "__id__": "root.0.objs.0.type.ops.0"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.0.type.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "DEPTH",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.0.type.ops.1.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "SUB",
+                                    "__id__": "root.0.objs.0.type.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "DOWNTO",
+                            "__id__": "root.0.objs.0.type.ops.1"
+                        }
+                    ],
+                    "fn": "INDEX",
+                    "__id__": "root.0.objs.0.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.0"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": " the main write/read process\n",
+                    "__id__": "root.0.objs.1.doc"
+                },
+                "position": [
+                    30,
+                    12,
+                    40,
+                    7
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "i_clk"
+                        ],
+                        "fn": "RISING",
+                        "__id__": "root.0.objs.1.sensitivity.0"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        31,
+                        5,
+                        40,
+                        7
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmIf",
+                            "doc": {
+                                "__class__": "str",
+                                "val": " write or read decision\n",
+                                "__id__": "root.0.objs.1.body.body.0.doc"
+                            },
+                            "position": [
+                                33,
+                                9,
+                                39,
+                                11
+                            ],
+                            "labels": [],
+                            "cond": "i_write",
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    33,
+                                    21,
+                                    36,
+                                    11
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "doc": {
+                                            "__class__": "str",
+                                            "val": " write data\n",
+                                            "__id__": "root.0.objs.1.body.body.0.if_true.body.0.doc"
+                                        },
+                                        "position": [
+                                            35,
+                                            13,
+                                            35,
+                                            42
+                                        ],
+                                        "labels": [],
+                                        "src": "i_data",
+                                        "dst": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "memory_array",
+                                                "i_addr"
+                                            ],
+                                            "fn": "INDEX",
+                                            "__id__": "root.0.objs.1.body.body.0.if_true.body.0.dst"
+                                        },
+                                        "is_blocking": false,
+                                        "__id__": "root.0.objs.1.body.body.0.if_true.body.0"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.1.body.body.0.if_true"
+                            },
+                            "elifs": [],
+                            "if_false": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    36,
+                                    18,
+                                    39,
+                                    11
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "doc": {
+                                            "__class__": "str",
+                                            "val": " read data\n",
+                                            "__id__": "root.0.objs.1.body.body.0.if_false.body.0.doc"
+                                        },
+                                        "position": [
+                                            38,
+                                            13,
+                                            38,
+                                            42
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "memory_array",
+                                                "i_addr"
+                                            ],
+                                            "fn": "INDEX",
+                                            "__id__": "root.0.objs.1.body.body.0.if_false.body.0.src"
+                                        },
+                                        "dst": "o_data",
+                                        "is_blocking": false,
+                                        "__id__": "root.0.objs.1.body.body.0.if_false.body.0"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.1.body.body.0.if_false"
+                            },
+                            "__id__": "root.0.objs.1.body.body.0"
+                        }
+                    ],
+                    "__id__": "root.0.objs.1.body"
+                },
+                "__id__": "root.0.objs.1"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]

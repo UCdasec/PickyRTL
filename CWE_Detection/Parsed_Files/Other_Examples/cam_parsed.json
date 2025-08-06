@@ -1,0 +1,943 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            8,
+            1,
+            61,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " http://www.asic-world.com/code/hdl_models/cam.v\r\n-----------------------------------------------------\r\n Design Name : cam\r\n File Name   : cam.v\r\n Function    : CAM\r\n Coder       : Deepak Kumar Tala\r\n-----------------------------------------------------\r\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                8,
+                1,
+                61,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "cam",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        16,
+                        11,
+                        16,
+                        25
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "ADDR_WIDTH",
+                        "__id__": "root.0.dec.params.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.params.0.type"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "8",
+                        "base": 10,
+                        "__id__": "root.0.dec.params.0.value"
+                    },
+                    "direction": "INTERNAL",
+                    "__id__": "root.0.dec.params.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        17,
+                        11,
+                        17,
+                        39
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "DEPTH",
+                        "__id__": "root.0.dec.params.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.params.1.type"
+                    },
+                    "value": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "1",
+                                "base": 10,
+                                "__id__": "root.0.dec.params.1.value.ops.0"
+                            },
+                            "ADDR_WIDTH"
+                        ],
+                        "fn": "SLL",
+                        "__id__": "root.0.dec.params.1.value"
+                    },
+                    "direction": "INTERNAL",
+                    "__id__": "root.0.dec.params.1"
+                }
+            ],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": "------------Input Ports--------------\r\n",
+                        "__id__": "root.0.dec.ports.0.doc"
+                    },
+                    "position": [
+                        9,
+                        1,
+                        9,
+                        3
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "clk",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.0.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Cam clock\r\n",
+                        "__id__": "root.0.dec.ports.1.doc"
+                    },
+                    "position": [
+                        10,
+                        1,
+                        10,
+                        10
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "cam_enable",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.1.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Cam enable\r\n",
+                        "__id__": "root.0.dec.ports.2.doc"
+                    },
+                    "position": [
+                        11,
+                        1,
+                        11,
+                        11
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "cam_data_in",
+                        "__id__": "root.0.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "DEPTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10,
+                                                "__id__": "root.0.dec.ports.2.type.ops.1.ops.0.ops.1"
+                                            }
+                                        ],
+                                        "fn": "SUB",
+                                        "__id__": "root.0.dec.ports.2.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.2.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.2.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.2.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.2"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Cam data to match\r\n----------Output Ports--------------\r\n",
+                        "__id__": "root.0.dec.ports.3.doc"
+                    },
+                    "position": [
+                        12,
+                        1,
+                        12,
+                        11
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "cam_hit_out",
+                        "__id__": "root.0.dec.ports.3.name"
+                    },
+                    "is_static": true,
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.3.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.3.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.3.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.3"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Cam match has happened\r\n------------Internal Variables--------\r\n",
+                        "__id__": "root.0.dec.ports.4.doc"
+                    },
+                    "position": [
+                        13,
+                        1,
+                        13,
+                        12
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "cam_addr_out",
+                        "__id__": "root.0.dec.ports.4.name"
+                    },
+                    "is_static": true,
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "ADDR_WIDTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10,
+                                                "__id__": "root.0.dec.ports.4.type.ops.1.ops.0.ops.1"
+                                            }
+                                        ],
+                                        "fn": "SUB",
+                                        "__id__": "root.0.dec.ports.4.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.4.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.4.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.4.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.4.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.4"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "cam",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    28,
+                    23,
+                    28,
+                    36
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "cam_addr_combo",
+                    "__id__": "root.0.objs.0.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "ADDR_WIDTH",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.0.type.ops.1.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "SUB",
+                                    "__id__": "root.0.objs.0.type.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.0.type.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "DOWNTO",
+                            "__id__": "root.0.objs.0.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.0.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.0.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.0"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    29,
+                    23,
+                    29,
+                    35
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "cam_hit_combo",
+                    "__id__": "root.0.objs.1.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.1.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.1.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.1.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.1"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    30,
+                    23,
+                    30,
+                    33
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "found_match",
+                    "__id__": "root.0.objs.2.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.2.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.2.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.2.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.2"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    31,
+                    23,
+                    31,
+                    23
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "i",
+                    "__id__": "root.0.objs.3.name"
+                },
+                "is_static": true,
+                "type": "integer",
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.3"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": "-------------Code Starts Here-------\r\n",
+                    "__id__": "root.0.objs.4.doc"
+                },
+                "position": [
+                    33,
+                    8,
+                    48,
+                    3
+                ],
+                "labels": [],
+                "sensitivity": [
+                    "cam_data_in"
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        33,
+                        23,
+                        48,
+                        3
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "cam_addr_combo",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "ADDR_WIDTH",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "bits": 1,
+                                            "base": 2,
+                                            "__id__": "root.0.objs.4.body.body.0.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "REPL_CONCAT",
+                                    "__id__": "root.0.objs.4.body.body.0.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.4.body.body.0"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "found_match",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "bits": 1,
+                                    "base": 2,
+                                    "__id__": "root.0.objs.4.body.body.1.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.4.body.body.1"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "cam_hit_combo",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "bits": 1,
+                                    "base": 2,
+                                    "__id__": "root.0.objs.4.body.body.2.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.4.body.body.2"
+                        },
+                        {
+                            "__class__": "HdlStmFor",
+                            "position": [
+                                37,
+                                3,
+                                47,
+                                5
+                            ],
+                            "labels": [],
+                            "init": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    37,
+                                    3,
+                                    47,
+                                    5
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            37,
+                                            8,
+                                            37,
+                                            10
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.4.body.body.3.init.body.0.src"
+                                        },
+                                        "dst": "i",
+                                        "is_blocking": true,
+                                        "__id__": "root.0.objs.4.body.body.3.init.body.0"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.4.body.body.3.init"
+                            },
+                            "cond": {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "i",
+                                    "DEPTH"
+                                ],
+                                "fn": "LT",
+                                "__id__": "root.0.objs.4.body.body.3.cond"
+                            },
+                            "step": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    37,
+                                    3,
+                                    47,
+                                    5
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "i",
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    "i",
+                                                    {
+                                                        "__class__": "HdlValueInt",
+                                                        "val": "1",
+                                                        "base": 10,
+                                                        "__id__": "root.0.objs.4.body.body.3.step.body.0.ops.1.ops.1"
+                                                    }
+                                                ],
+                                                "fn": "ADD",
+                                                "__id__": "root.0.objs.4.body.body.3.step.body.0.ops.1"
+                                            }
+                                        ],
+                                        "fn": "ASSIGN",
+                                        "__id__": "root.0.objs.4.body.body.3.step.body.0"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.4.body.body.3.step"
+                            },
+                            "body": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    37,
+                                    29,
+                                    47,
+                                    5
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmIf",
+                                        "position": [
+                                            38,
+                                            5,
+                                            46,
+                                            7
+                                        ],
+                                        "labels": [],
+                                        "cond": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "cam_data_in",
+                                                        "i"
+                                                    ],
+                                                    "fn": "INDEX",
+                                                    "__id__": "root.0.objs.4.body.body.3.body.body.0.cond.ops.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "found_match"
+                                                    ],
+                                                    "fn": "NEG_LOG",
+                                                    "__id__": "root.0.objs.4.body.body.3.body.body.0.cond.ops.1"
+                                                }
+                                            ],
+                                            "fn": "AND_LOG",
+                                            "__id__": "root.0.objs.4.body.body.3.body.body.0.cond"
+                                        },
+                                        "if_true": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                38,
+                                                41,
+                                                42,
+                                                7
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "found_match",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "1",
+                                                            "bits": 1,
+                                                            "base": 2,
+                                                            "__id__": "root.0.objs.4.body.body.3.body.body.0.if_true.body.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.4.body.body.3.body.body.0.if_true.body.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "cam_hit_combo",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "1",
+                                                            "bits": 1,
+                                                            "base": 2,
+                                                            "__id__": "root.0.objs.4.body.body.3.body.body.0.if_true.body.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.4.body.body.3.body.body.0.if_true.body.1"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "cam_addr_combo",
+                                                        "i"
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.4.body.body.3.body.body.0.if_true.body.2"
+                                                }
+                                            ],
+                                            "__id__": "root.0.objs.4.body.body.3.body.body.0.if_true"
+                                        },
+                                        "elifs": [],
+                                        "if_false": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                42,
+                                                14,
+                                                46,
+                                                7
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "found_match",
+                                                        "found_match"
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.4.body.body.3.body.body.0.if_false.body.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "cam_hit_combo",
+                                                        "cam_hit_combo"
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.4.body.body.3.body.body.0.if_false.body.1"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "cam_addr_combo",
+                                                        "cam_addr_combo"
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.4.body.body.3.body.body.0.if_false.body.2"
+                                                }
+                                            ],
+                                            "__id__": "root.0.objs.4.body.body.3.body.body.0.if_false"
+                                        },
+                                        "__id__": "root.0.objs.4.body.body.3.body.body.0"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.4.body.body.3.body"
+                            },
+                            "__id__": "root.0.objs.4.body.body.3"
+                        }
+                    ],
+                    "__id__": "root.0.objs.4.body"
+                },
+                "__id__": "root.0.objs.4"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": " Register the outputs\r\n",
+                    "__id__": "root.0.objs.5.doc"
+                },
+                "position": [
+                    51,
+                    8,
+                    59,
+                    3
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "clk"
+                        ],
+                        "fn": "RISING",
+                        "__id__": "root.0.objs.5.sensitivity.0"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        51,
+                        23,
+                        59,
+                        3
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmIf",
+                            "position": [
+                                52,
+                                3,
+                                58,
+                                5
+                            ],
+                            "labels": [],
+                            "cond": "cam_enable",
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    52,
+                                    19,
+                                    55,
+                                    5
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            53,
+                                            5,
+                                            53,
+                                            34
+                                        ],
+                                        "labels": [],
+                                        "src": "cam_hit_combo",
+                                        "dst": "cam_hit_out",
+                                        "is_blocking": false,
+                                        "__id__": "root.0.objs.5.body.body.0.if_true.body.0"
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            54,
+                                            5,
+                                            54,
+                                            35
+                                        ],
+                                        "labels": [],
+                                        "src": "cam_addr_combo",
+                                        "dst": "cam_addr_out",
+                                        "is_blocking": false,
+                                        "__id__": "root.0.objs.5.body.body.0.if_true.body.1"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.5.body.body.0.if_true"
+                            },
+                            "elifs": [],
+                            "if_false": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    55,
+                                    12,
+                                    58,
+                                    5
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            56,
+                                            5,
+                                            56,
+                                            25
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "bits": 1,
+                                            "base": 2,
+                                            "__id__": "root.0.objs.5.body.body.0.if_false.body.0.src"
+                                        },
+                                        "dst": "cam_hit_out",
+                                        "is_blocking": false,
+                                        "__id__": "root.0.objs.5.body.body.0.if_false.body.0"
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            57,
+                                            5,
+                                            57,
+                                            39
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "ADDR_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "bits": 1,
+                                                    "base": 2,
+                                                    "__id__": "root.0.objs.5.body.body.0.if_false.body.1.src.ops.1"
+                                                }
+                                            ],
+                                            "fn": "REPL_CONCAT",
+                                            "__id__": "root.0.objs.5.body.body.0.if_false.body.1.src"
+                                        },
+                                        "dst": "cam_addr_out",
+                                        "is_blocking": false,
+                                        "__id__": "root.0.objs.5.body.body.0.if_false.body.1"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.5.body.body.0.if_false"
+                            },
+                            "__id__": "root.0.objs.5.body.body.0"
+                        }
+                    ],
+                    "__id__": "root.0.objs.5.body"
+                },
+                "__id__": "root.0.objs.5"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]

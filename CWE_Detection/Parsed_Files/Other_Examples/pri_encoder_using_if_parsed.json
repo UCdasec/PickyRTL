@@ -1,0 +1,1714 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            8,
+            1,
+            57,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": "-----------------------------------------------------\n http://www.asic-world.com/code/hdl_models/pri_encoder_using_if.v\n Design Name : pri_encoder_using_if\n File Name   : pri_encoder_using_if.v\n Function    : Pri Encoder using If\n Coder       : Deepak Kumar Tala\n-----------------------------------------------------\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                8,
+                1,
+                57,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "pri_encoder_using_if",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        9,
+                        1,
+                        9,
+                        10
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "binary_out",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "is_static": true,
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "3",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.0.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.0.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.0.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " 4 bit binary output\n",
+                        "__id__": "root.0.dec.ports.1.doc"
+                    },
+                    "position": [
+                        10,
+                        1,
+                        10,
+                        10
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "encoder_in",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "15",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.1.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.1.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.1.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.1.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.1.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " 16-bit input\n",
+                        "__id__": "root.0.dec.ports.2.doc"
+                    },
+                    "position": [
+                        11,
+                        1,
+                        11,
+                        6
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "enable",
+                        "__id__": "root.0.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.2"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "pri_encoder_using_if",
+        "objs": [
+            {
+                "__class__": "HdlStmProcess",
+                "position": [
+                    19,
+                    8,
+                    55,
+                    3
+                ],
+                "labels": [],
+                "sensitivity": [
+                    "enable",
+                    "encoder_in"
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        20,
+                        1,
+                        55,
+                        3
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "binary_out",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.0.body.body.0.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.0.body.body.0"
+                        },
+                        {
+                            "__class__": "HdlStmIf",
+                            "position": [
+                                22,
+                                3,
+                                54,
+                                5
+                            ],
+                            "labels": [],
+                            "cond": "enable",
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    22,
+                                    15,
+                                    54,
+                                    5
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmIf",
+                                        "position": [
+                                            23,
+                                            4,
+                                            53,
+                                            6
+                                        ],
+                                        "labels": [],
+                                        "cond": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "encoder_in",
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "14",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond.ops.1.ops.0.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "x",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond.ops.1.ops.0.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond.ops.1.ops.0.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "1",
+                                                                    "bits": 1,
+                                                                    "base": 2,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond.ops.1.ops.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond.ops.1.ops.0"
+                                                        },
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "1",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond.ops.1.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "bits": 1,
+                                                                    "base": 2,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond.ops.1.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "REPL_CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond.ops.1.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "CONCAT",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond.ops.1"
+                                                }
+                                            ],
+                                            "fn": "EQ",
+                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.cond"
+                                        },
+                                        "if_true": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                23,
+                                                51,
+                                                25,
+                                                6
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "binary_out",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "1",
+                                                            "base": 10,
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.if_true.body.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.if_true.body.0"
+                                                }
+                                            ],
+                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.if_true"
+                                        },
+                                        "elifs": [
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "13",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "2",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        25,
+                                                        60,
+                                                        27,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "2",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.0.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "12",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "3",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        27,
+                                                        60,
+                                                        29,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "3",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.1.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "11",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "4",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        29,
+                                                        60,
+                                                        31,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "4",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.2.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "10",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "5",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        31,
+                                                        60,
+                                                        33,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "5",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.3.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "9",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "6",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        33,
+                                                        59,
+                                                        35,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "6",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.4.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "8",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "7",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        35,
+                                                        59,
+                                                        37,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "7",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.5.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "7",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "8",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        37,
+                                                        59,
+                                                        39,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "8",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.6.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "6",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "9",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        39,
+                                                        59,
+                                                        41,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "9",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.7.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "5",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "10",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        41,
+                                                        60,
+                                                        43,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "10",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.8.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "4",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "11",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        43,
+                                                        60,
+                                                        45,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "11",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.9.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "3",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "12",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        45,
+                                                        60,
+                                                        47,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "12",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.10.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "2",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "13",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        47,
+                                                        60,
+                                                        49,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "13",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.11.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "1",
+                                                                                    "base": 10,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0.ops.1.ops.0.ops.0.ops.0"
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "x",
+                                                                                    "bits": 1,
+                                                                                    "base": 2,
+                                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0.ops.1.ops.0.ops.0.ops.1"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT",
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0.ops.1.ops.0.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0.ops.1.ops.0.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "14",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        49,
+                                                        60,
+                                                        51,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "14",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.12.1"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "encoder_in",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "1",
+                                                                    "bits": 1,
+                                                                    "base": 2,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.13.0.ops.1.ops.0"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "15",
+                                                                            "base": 10,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.13.0.ops.1.ops.1.ops.0"
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2,
+                                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.13.0.ops.1.ops.1.ops.1"
+                                                                        }
+                                                                    ],
+                                                                    "fn": "REPL_CONCAT",
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.13.0.ops.1.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "CONCAT",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.13.0.ops.1"
+                                                        }
+                                                    ],
+                                                    "fn": "EQ",
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.13.0"
+                                                },
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        51,
+                                                        50,
+                                                        53,
+                                                        6
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "binary_out",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "15",
+                                                                    "base": 10,
+                                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.13.1.body.0.ops.1"
+                                                                }
+                                                            ],
+                                                            "fn": "ASSIGN",
+                                                            "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.13.1.body.0"
+                                                        }
+                                                    ],
+                                                    "__id__": "root.0.objs.0.body.body.1.if_true.body.0.elifs.13.1"
+                                                }
+                                            ]
+                                        ],
+                                        "__id__": "root.0.objs.0.body.body.1.if_true.body.0"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.0.body.body.1.if_true"
+                            },
+                            "elifs": [],
+                            "__id__": "root.0.objs.0.body.body.1"
+                        }
+                    ],
+                    "__id__": "root.0.objs.0.body"
+                },
+                "__id__": "root.0.objs.0"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]

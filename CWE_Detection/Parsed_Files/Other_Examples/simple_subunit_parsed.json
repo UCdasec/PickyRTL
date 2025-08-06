@@ -1,0 +1,258 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            1,
+            1,
+            6,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "position": [
+                1,
+                1,
+                6,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "subunit0",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        1,
+                        17,
+                        1,
+                        23
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "a",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "type": "wire",
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        2,
+                        9,
+                        2,
+                        16
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "b",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "type": "wire",
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.1"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "subunit0",
+        "objs": [
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    5,
+                    12,
+                    5,
+                    16
+                ],
+                "labels": [],
+                "src": "a",
+                "dst": "b",
+                "is_blocking": false,
+                "__id__": "root.0.objs.0"
+            }
+        ],
+        "__id__": "root.0"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            8,
+            1,
+            21,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.1.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "position": [
+                8,
+                1,
+                21,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "SimpleSubunit",
+                "__id__": "root.1.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        8,
+                        22,
+                        8,
+                        28
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "a",
+                        "__id__": "root.1.dec.ports.0.name"
+                    },
+                    "type": "wire",
+                    "direction": "IN",
+                    "__id__": "root.1.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        9,
+                        9,
+                        9,
+                        16
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "b",
+                        "__id__": "root.1.dec.ports.1.name"
+                    },
+                    "type": "wire",
+                    "direction": "OUT",
+                    "__id__": "root.1.dec.ports.1"
+                }
+            ],
+            "__id__": "root.1.dec"
+        },
+        "module_name": "SimpleSubunit",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    12,
+                    10,
+                    12,
+                    23
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "sig_subunit0_a",
+                    "__id__": "root.1.objs.0.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.1.objs.0.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.1.objs.0"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    13,
+                    10,
+                    13,
+                    23
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "sig_subunit0_b",
+                    "__id__": "root.1.objs.1.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.1.objs.1.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.1.objs.1"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "subunit0_inst",
+                "module_name": "subunit0",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "a",
+                            "sig_subunit0_a"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.1.objs.2.port_map.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "b",
+                            "sig_subunit0_b"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.1.objs.2.port_map.1"
+                    }
+                ],
+                "__id__": "root.1.objs.2"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    19,
+                    12,
+                    19,
+                    29
+                ],
+                "labels": [],
+                "src": "sig_subunit0_b",
+                "dst": "b",
+                "is_blocking": false,
+                "__id__": "root.1.objs.3"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    20,
+                    12,
+                    20,
+                    29
+                ],
+                "labels": [],
+                "src": "a",
+                "dst": "sig_subunit0_a",
+                "is_blocking": false,
+                "__id__": "root.1.objs.4"
+            }
+        ],
+        "__id__": "root.1"
+    }
+]

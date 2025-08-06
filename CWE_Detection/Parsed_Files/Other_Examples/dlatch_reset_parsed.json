@@ -1,0 +1,270 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            8,
+            1,
+            31,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " http://www.asic-world.com/code/hdl_models/dlatch_reset.v\n-----------------------------------------------------\n Design Name : dlatch_reset\n File Name   : dlatch_reset.v\n Function    : DLATCH async reset\n Coder       : Deepak Kumar Tala\n-----------------------------------------------------\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                8,
+                1,
+                31,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "dlatch_reset",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": "-----------Input Ports---------------\n",
+                        "__id__": "root.0.dec.ports.0.doc"
+                    },
+                    "position": [
+                        9,
+                        1,
+                        9,
+                        4
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "data",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.0.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Data Input\n",
+                        "__id__": "root.0.dec.ports.1.doc"
+                    },
+                    "position": [
+                        10,
+                        1,
+                        10,
+                        2
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "en",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.1.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " LatchInput\n",
+                        "__id__": "root.0.dec.ports.2.doc"
+                    },
+                    "position": [
+                        11,
+                        1,
+                        11,
+                        5
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "reset",
+                        "__id__": "root.0.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.2"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Reset input\n-----------Output Ports---------------\n------------Internal Variables--------\n",
+                        "__id__": "root.0.dec.ports.3.doc"
+                    },
+                    "position": [
+                        12,
+                        1,
+                        12,
+                        1
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "q",
+                        "__id__": "root.0.dec.ports.3.name"
+                    },
+                    "is_static": true,
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.3.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.3.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.3.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.3"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "dlatch_reset",
+        "objs": [
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": "-------------Code Starts Here---------\n",
+                    "__id__": "root.0.objs.0.doc"
+                },
+                "position": [
+                    24,
+                    8,
+                    29,
+                    3
+                ],
+                "labels": [],
+                "sensitivity": [
+                    "en",
+                    "reset",
+                    "data"
+                ],
+                "body": {
+                    "__class__": "HdlStmIf",
+                    "position": [
+                        25,
+                        1,
+                        29,
+                        3
+                    ],
+                    "labels": [],
+                    "cond": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reset"
+                        ],
+                        "fn": "NEG",
+                        "__id__": "root.0.objs.0.body.cond"
+                    },
+                    "if_true": {
+                        "__class__": "HdlStmBlock",
+                        "position": [
+                            25,
+                            13,
+                            27,
+                            3
+                        ],
+                        "labels": [],
+                        "join_t": "SEQ",
+                        "body": [
+                            {
+                                "__class__": "HdlStmAssign",
+                                "position": [
+                                    26,
+                                    3,
+                                    26,
+                                    11
+                                ],
+                                "labels": [],
+                                "src": {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "bits": 1,
+                                    "base": 2,
+                                    "__id__": "root.0.objs.0.body.if_true.body.0.src"
+                                },
+                                "dst": "q",
+                                "is_blocking": false,
+                                "__id__": "root.0.objs.0.body.if_true.body.0"
+                            }
+                        ],
+                        "__id__": "root.0.objs.0.body.if_true"
+                    },
+                    "elifs": [
+                        [
+                            "en",
+                            {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    27,
+                                    18,
+                                    29,
+                                    3
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            28,
+                                            3,
+                                            28,
+                                            11
+                                        ],
+                                        "labels": [],
+                                        "src": "data",
+                                        "dst": "q",
+                                        "is_blocking": false,
+                                        "__id__": "root.0.objs.0.body.elifs.0.1.body.0"
+                                    }
+                                ],
+                                "__id__": "root.0.objs.0.body.elifs.0.1"
+                            }
+                        ]
+                    ],
+                    "__id__": "root.0.objs.0.body"
+                },
+                "__id__": "root.0.objs.0"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]

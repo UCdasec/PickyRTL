@@ -1,0 +1,1704 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            13,
+            1,
+            110,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " http://www.asic-world.com/code/hdl_models/aFifo.v\n==========================================\n Function : Asynchronous FIFO (w/ 2 asynchronous clocks).\n Coder    : Alex Claros F.\n Date     : 15/May/2005.\n Notes    : This implementation is based on the article\n           'Asynchronous FIFO in Virtex-II FPGAs'\n           writen by Peter Alfke. This TechXclusive\n           article can be downloaded from the\n           Xilinx website. It has some minor modifications.\n=========================================\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                13,
+                1,
+                110,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "aFifo",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        14,
+                        18,
+                        14,
+                        34
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "DATA_WIDTH",
+                        "__id__": "root.0.dec.params.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.params.0.type"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "8",
+                        "base": 10,
+                        "__id__": "root.0.dec.params.0.value"
+                    },
+                    "direction": "INTERNAL",
+                    "__id__": "root.0.dec.params.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        15,
+                        18,
+                        15,
+                        34
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "ADDRESS_WIDTH",
+                        "__id__": "root.0.dec.params.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.params.1.type"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "4",
+                        "base": 10,
+                        "__id__": "root.0.dec.params.1.value"
+                    },
+                    "direction": "INTERNAL",
+                    "__id__": "root.0.dec.params.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        16,
+                        18,
+                        16,
+                        53
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "FIFO_DEPTH",
+                        "__id__": "root.0.dec.params.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.params.2.type"
+                    },
+                    "value": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "1",
+                                "base": 10,
+                                "__id__": "root.0.dec.params.2.value.ops.0"
+                            },
+                            "ADDRESS_WIDTH"
+                        ],
+                        "fn": "SLL",
+                        "__id__": "root.0.dec.params.2.value"
+                    },
+                    "direction": "INTERNAL",
+                    "__id__": "root.0.dec.params.2"
+                }
+            ],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        18,
+                        6,
+                        18,
+                        49
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "Data_out",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "DATA_WIDTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10,
+                                                "__id__": "root.0.dec.ports.0.type.ops.1.ops.0.ops.1"
+                                            }
+                                        ],
+                                        "fn": "SUB",
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.0.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.0.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.0.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        19,
+                        6,
+                        19,
+                        50
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "Empty_out",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.1.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.1.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.1.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        20,
+                        6,
+                        20,
+                        50
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "ReadEn_in",
+                        "__id__": "root.0.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.2"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        21,
+                        6,
+                        21,
+                        45
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "RClk",
+                        "__id__": "root.0.dec.ports.3.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.3.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.3"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": "Writing port.\n",
+                        "__id__": "root.0.dec.ports.4.doc"
+                    },
+                    "position": [
+                        23,
+                        6,
+                        23,
+                        48
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "Data_in",
+                        "__id__": "root.0.dec.ports.4.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "DATA_WIDTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10,
+                                                "__id__": "root.0.dec.ports.4.type.ops.1.ops.0.ops.1"
+                                            }
+                                        ],
+                                        "fn": "SUB",
+                                        "__id__": "root.0.dec.ports.4.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.4.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.4.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.4.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.4.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.4"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        24,
+                        6,
+                        24,
+                        49
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "Full_out",
+                        "__id__": "root.0.dec.ports.5.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.5.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.5.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.5.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.5"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        25,
+                        6,
+                        25,
+                        51
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "WriteEn_in",
+                        "__id__": "root.0.dec.ports.6.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.6.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.6"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        26,
+                        6,
+                        26,
+                        45
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "WClk",
+                        "__id__": "root.0.dec.ports.7.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.7.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.7"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        28,
+                        6,
+                        28,
+                        49
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "Clear_in",
+                        "__id__": "root.0.dec.ports.8.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.8.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.8"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "aFifo",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": "///Internal connections & variables//////\n",
+                    "__id__": "root.0.objs.0.doc"
+                },
+                "position": [
+                    31,
+                    41,
+                    31,
+                    60
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "Mem",
+                    "__id__": "root.0.objs.0.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "reg",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "DATA_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.0.type.ops.0.ops.1.ops.0.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.0.type.ops.0.ops.1.ops.0"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.0.type.ops.0.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "DOWNTO",
+                                    "__id__": "root.0.objs.0.type.ops.0.ops.1"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null,
+                                    "__id__": "root.0.objs.0.type.ops.0.ops.2"
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION",
+                            "__id__": "root.0.objs.0.type.ops.0"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "FIFO_DEPTH",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.0.type.ops.1.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "SUB",
+                                    "__id__": "root.0.objs.0.type.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.0.type.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "DOWNTO",
+                            "__id__": "root.0.objs.0.type.ops.1"
+                        }
+                    ],
+                    "fn": "INDEX",
+                    "__id__": "root.0.objs.0.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.0"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    32,
+                    41,
+                    32,
+                    56
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "pNextWordToWrite",
+                    "__id__": "root.0.objs.1.name"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "wire",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "ADDRESS_WIDTH",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.1.type.ops.1.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "SUB",
+                                    "__id__": "root.0.objs.1.type.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.1.type.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "DOWNTO",
+                            "__id__": "root.0.objs.1.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.1.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.1.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.1"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    32,
+                    59,
+                    32,
+                    73
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "pNextWordToRead",
+                    "__id__": "root.0.objs.2.name"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "wire",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "ADDRESS_WIDTH",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.2.type.ops.1.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "SUB",
+                                    "__id__": "root.0.objs.2.type.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.2.type.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "DOWNTO",
+                            "__id__": "root.0.objs.2.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.2.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.2.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.2"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    33,
+                    41,
+                    33,
+                    54
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "EqualAddresses",
+                    "__id__": "root.0.objs.3.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.3.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.3"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    34,
+                    41,
+                    34,
+                    58
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "NextWriteAddressEn",
+                    "__id__": "root.0.objs.4.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.4.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.4"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    34,
+                    61,
+                    34,
+                    77
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "NextReadAddressEn",
+                    "__id__": "root.0.objs.5.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.5.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.5"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    35,
+                    41,
+                    35,
+                    50
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "Set_Status",
+                    "__id__": "root.0.objs.6.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.6.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.6"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    35,
+                    53,
+                    35,
+                    62
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "Rst_Status",
+                    "__id__": "root.0.objs.7.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.7.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.7"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    36,
+                    41,
+                    36,
+                    46
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "Status",
+                    "__id__": "root.0.objs.8.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.8.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.8.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.8.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.8"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    37,
+                    41,
+                    37,
+                    50
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "PresetFull",
+                    "__id__": "root.0.objs.9.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.9.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.9"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    37,
+                    53,
+                    37,
+                    63
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "PresetEmpty",
+                    "__id__": "root.0.objs.10.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.10.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.10"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": "////////////Code///////////////\nData ports logic:\n(Uses a dual-port RAM).\n'Data_out' logic:\n",
+                    "__id__": "root.0.objs.11.doc"
+                },
+                "position": [
+                    43,
+                    12,
+                    45,
+                    45
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "RClk"
+                        ],
+                        "fn": "RISING",
+                        "__id__": "root.0.objs.11.sensitivity.0"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmIf",
+                    "position": [
+                        44,
+                        9,
+                        45,
+                        45
+                    ],
+                    "labels": [],
+                    "cond": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "ReadEn_in",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "Empty_out"
+                                ],
+                                "fn": "NEG_LOG",
+                                "__id__": "root.0.objs.11.body.cond.ops.1"
+                            }
+                        ],
+                        "fn": "AND",
+                        "__id__": "root.0.objs.11.body.cond"
+                    },
+                    "if_true": {
+                        "__class__": "HdlStmAssign",
+                        "position": [
+                            45,
+                            13,
+                            45,
+                            44
+                        ],
+                        "labels": [],
+                        "src": {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "Mem",
+                                "pNextWordToRead"
+                            ],
+                            "fn": "INDEX",
+                            "__id__": "root.0.objs.11.body.if_true.src"
+                        },
+                        "dst": "Data_out",
+                        "is_blocking": false,
+                        "__id__": "root.0.objs.11.body.if_true"
+                    },
+                    "elifs": [],
+                    "__id__": "root.0.objs.11.body"
+                },
+                "__id__": "root.0.objs.11"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": "'Data_in' logic:\n",
+                    "__id__": "root.0.objs.12.doc"
+                },
+                "position": [
+                    48,
+                    12,
+                    50,
+                    45
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "WClk"
+                        ],
+                        "fn": "RISING",
+                        "__id__": "root.0.objs.12.sensitivity.0"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmIf",
+                    "position": [
+                        49,
+                        9,
+                        50,
+                        45
+                    ],
+                    "labels": [],
+                    "cond": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "WriteEn_in",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "Full_out"
+                                ],
+                                "fn": "NEG_LOG",
+                                "__id__": "root.0.objs.12.body.cond.ops.1"
+                            }
+                        ],
+                        "fn": "AND",
+                        "__id__": "root.0.objs.12.body.cond"
+                    },
+                    "if_true": {
+                        "__class__": "HdlStmAssign",
+                        "position": [
+                            50,
+                            13,
+                            50,
+                            44
+                        ],
+                        "labels": [],
+                        "src": "Data_in",
+                        "dst": {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "Mem",
+                                "pNextWordToWrite"
+                            ],
+                            "fn": "INDEX",
+                            "__id__": "root.0.objs.12.body.if_true.dst"
+                        },
+                        "is_blocking": false,
+                        "__id__": "root.0.objs.12.body.if_true"
+                    },
+                    "elifs": [],
+                    "__id__": "root.0.objs.12.body"
+                },
+                "__id__": "root.0.objs.12"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "doc": {
+                    "__class__": "str",
+                    "val": "Fifo addresses support logic:\n'Next Addresses' enable logic:\n",
+                    "__id__": "root.0.objs.13.doc"
+                },
+                "position": [
+                    54,
+                    12,
+                    54,
+                    54
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "WriteEn_in",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "Full_out"
+                            ],
+                            "fn": "NEG",
+                            "__id__": "root.0.objs.13.src.ops.1"
+                        }
+                    ],
+                    "fn": "AND",
+                    "__id__": "root.0.objs.13.src"
+                },
+                "dst": "NextWriteAddressEn",
+                "is_blocking": false,
+                "__id__": "root.0.objs.13"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    55,
+                    12,
+                    55,
+                    55
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "ReadEn_in",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "Empty_out"
+                            ],
+                            "fn": "NEG",
+                            "__id__": "root.0.objs.14.src.ops.1"
+                        }
+                    ],
+                    "fn": "AND",
+                    "__id__": "root.0.objs.14.src"
+                },
+                "dst": "NextReadAddressEn",
+                "is_blocking": false,
+                "__id__": "root.0.objs.14"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "GrayCounter_pWr",
+                "module_name": "GrayCounter",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "GrayCount_out",
+                            "pNextWordToWrite"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.15.port_map.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "Enable_in",
+                            "NextWriteAddressEn"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.15.port_map.1"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "Clear_in",
+                            "Clear_in"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.15.port_map.2"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "Clk",
+                            "WClk"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.15.port_map.3"
+                    }
+                ],
+                "__id__": "root.0.objs.15"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "GrayCounter_pRd",
+                "module_name": "GrayCounter",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "GrayCount_out",
+                            "pNextWordToRead"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.16.port_map.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "Enable_in",
+                            "NextReadAddressEn"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.16.port_map.1"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "Clear_in",
+                            "Clear_in"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.16.port_map.2"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "Clk",
+                            "RClk"
+                        ],
+                        "fn": "MAP_ASSOCIATION",
+                        "__id__": "root.0.objs.16.port_map.3"
+                    }
+                ],
+                "__id__": "root.0.objs.16"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "doc": {
+                    "__class__": "str",
+                    "val": "'EqualAddresses' logic:\n",
+                    "__id__": "root.0.objs.17.doc"
+                },
+                "position": [
+                    76,
+                    12,
+                    76,
+                    65
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "pNextWordToWrite",
+                        "pNextWordToRead"
+                    ],
+                    "fn": "EQ",
+                    "__id__": "root.0.objs.17.src"
+                },
+                "dst": "EqualAddresses",
+                "is_blocking": false,
+                "__id__": "root.0.objs.17"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "doc": {
+                    "__class__": "str",
+                    "val": "'Quadrant selectors' logic:\n",
+                    "__id__": "root.0.objs.18.doc"
+                },
+                "position": [
+                    79,
+                    12,
+                    80,
+                    96
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "pNextWordToWrite",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "ADDRESS_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "2",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.18.src.ops.0.ops.0.ops.1.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.18.src.ops.0.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "INDEX",
+                                    "__id__": "root.0.objs.18.src.ops.0.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "pNextWordToRead",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "ADDRESS_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.18.src.ops.0.ops.1.ops.1.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.18.src.ops.0.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "INDEX",
+                                    "__id__": "root.0.objs.18.src.ops.0.ops.1"
+                                }
+                            ],
+                            "fn": "XNOR",
+                            "__id__": "root.0.objs.18.src.ops.0"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "pNextWordToWrite",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "ADDRESS_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.18.src.ops.1.ops.0.ops.1.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.18.src.ops.1.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "INDEX",
+                                    "__id__": "root.0.objs.18.src.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "pNextWordToRead",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "ADDRESS_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "2",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.18.src.ops.1.ops.1.ops.1.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.18.src.ops.1.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "INDEX",
+                                    "__id__": "root.0.objs.18.src.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "XOR",
+                            "__id__": "root.0.objs.18.src.ops.1"
+                        }
+                    ],
+                    "fn": "AND",
+                    "__id__": "root.0.objs.18.src"
+                },
+                "dst": "Set_Status",
+                "is_blocking": false,
+                "__id__": "root.0.objs.18"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    82,
+                    12,
+                    83,
+                    96
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "pNextWordToWrite",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "ADDRESS_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "2",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.19.src.ops.0.ops.0.ops.1.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.19.src.ops.0.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "INDEX",
+                                    "__id__": "root.0.objs.19.src.ops.0.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "pNextWordToRead",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "ADDRESS_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.19.src.ops.0.ops.1.ops.1.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.19.src.ops.0.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "INDEX",
+                                    "__id__": "root.0.objs.19.src.ops.0.ops.1"
+                                }
+                            ],
+                            "fn": "XOR",
+                            "__id__": "root.0.objs.19.src.ops.0"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "pNextWordToWrite",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "ADDRESS_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.19.src.ops.1.ops.0.ops.1.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.19.src.ops.1.ops.0.ops.1"
+                                        }
+                                    ],
+                                    "fn": "INDEX",
+                                    "__id__": "root.0.objs.19.src.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "pNextWordToRead",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "ADDRESS_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "2",
+                                                    "base": 10,
+                                                    "__id__": "root.0.objs.19.src.ops.1.ops.1.ops.1.ops.1"
+                                                }
+                                            ],
+                                            "fn": "SUB",
+                                            "__id__": "root.0.objs.19.src.ops.1.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "INDEX",
+                                    "__id__": "root.0.objs.19.src.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "XNOR",
+                            "__id__": "root.0.objs.19.src.ops.1"
+                        }
+                    ],
+                    "fn": "AND",
+                    "__id__": "root.0.objs.19.src"
+                },
+                "dst": "Rst_Status",
+                "is_blocking": false,
+                "__id__": "root.0.objs.19"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": "'Status' latch logic:\n",
+                    "__id__": "root.0.objs.20.doc"
+                },
+                "position": [
+                    86,
+                    12,
+                    90,
+                    23
+                ],
+                "labels": [],
+                "sensitivity": [
+                    "Set_Status",
+                    "Rst_Status",
+                    "Clear_in"
+                ],
+                "body": {
+                    "__class__": "HdlStmIf",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Latch w/ Asynchronous Clear & Preset.\n",
+                        "__id__": "root.0.objs.20.body.doc"
+                    },
+                    "position": [
+                        87,
+                        9,
+                        90,
+                        23
+                    ],
+                    "labels": [],
+                    "cond": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "Rst_Status",
+                            "Clear_in"
+                        ],
+                        "fn": "OR",
+                        "__id__": "root.0.objs.20.body.cond"
+                    },
+                    "if_true": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "Status",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "0",
+                                "base": 10,
+                                "__id__": "root.0.objs.20.body.if_true.ops.1"
+                            }
+                        ],
+                        "fn": "ASSIGN",
+                        "__id__": "root.0.objs.20.body.if_true"
+                    },
+                    "elifs": [
+                        [
+                            "Set_Status",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "Status",
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "1",
+                                        "base": 10,
+                                        "__id__": "root.0.objs.20.body.elifs.0.1.ops.1"
+                                    }
+                                ],
+                                "fn": "ASSIGN",
+                                "__id__": "root.0.objs.20.body.elifs.0.1"
+                            }
+                        ]
+                    ],
+                    "__id__": "root.0.objs.20.body"
+                },
+                "__id__": "root.0.objs.20"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "doc": {
+                    "__class__": "str",
+                    "val": "Going 'Full'.\n'Full_out' logic for the writing port:\n",
+                    "__id__": "root.0.objs.21.doc"
+                },
+                "position": [
+                    93,
+                    12,
+                    93,
+                    47
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "Status",
+                        "EqualAddresses"
+                    ],
+                    "fn": "AND",
+                    "__id__": "root.0.objs.21.src"
+                },
+                "dst": "PresetFull",
+                "is_blocking": false,
+                "__id__": "root.0.objs.21"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": "'Full' Fifo.\n",
+                    "__id__": "root.0.objs.22.doc"
+                },
+                "position": [
+                    95,
+                    12,
+                    99,
+                    26
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "WClk"
+                        ],
+                        "fn": "RISING",
+                        "__id__": "root.0.objs.22.sensitivity.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "PresetFull"
+                        ],
+                        "fn": "RISING",
+                        "__id__": "root.0.objs.22.sensitivity.1"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmIf",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Flip-Flop w/ Asynchronous Preset.\n",
+                        "__id__": "root.0.objs.22.body.doc"
+                    },
+                    "position": [
+                        96,
+                        9,
+                        99,
+                        26
+                    ],
+                    "labels": [],
+                    "cond": "PresetFull",
+                    "if_true": {
+                        "__class__": "HdlStmAssign",
+                        "position": [
+                            97,
+                            13,
+                            97,
+                            25
+                        ],
+                        "labels": [],
+                        "src": {
+                            "__class__": "HdlValueInt",
+                            "val": "1",
+                            "base": 10,
+                            "__id__": "root.0.objs.22.body.if_true.src"
+                        },
+                        "dst": "Full_out",
+                        "is_blocking": false,
+                        "__id__": "root.0.objs.22.body.if_true"
+                    },
+                    "elifs": [],
+                    "if_false": {
+                        "__class__": "HdlStmAssign",
+                        "position": [
+                            99,
+                            13,
+                            99,
+                            25
+                        ],
+                        "labels": [],
+                        "src": {
+                            "__class__": "HdlValueInt",
+                            "val": "0",
+                            "base": 10,
+                            "__id__": "root.0.objs.22.body.if_false.src"
+                        },
+                        "dst": "Full_out",
+                        "is_blocking": false,
+                        "__id__": "root.0.objs.22.body.if_false"
+                    },
+                    "__id__": "root.0.objs.22.body"
+                },
+                "__id__": "root.0.objs.22"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "doc": {
+                    "__class__": "str",
+                    "val": "'Empty_out' logic for the reading port:\n",
+                    "__id__": "root.0.objs.23.doc"
+                },
+                "position": [
+                    102,
+                    12,
+                    102,
+                    49
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "Status"
+                            ],
+                            "fn": "NEG",
+                            "__id__": "root.0.objs.23.src.ops.0"
+                        },
+                        "EqualAddresses"
+                    ],
+                    "fn": "AND",
+                    "__id__": "root.0.objs.23.src"
+                },
+                "dst": "PresetEmpty",
+                "is_blocking": false,
+                "__id__": "root.0.objs.23"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": "'Empty' Fifo.\n",
+                    "__id__": "root.0.objs.24.doc"
+                },
+                "position": [
+                    104,
+                    12,
+                    108,
+                    27
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "RClk"
+                        ],
+                        "fn": "RISING",
+                        "__id__": "root.0.objs.24.sensitivity.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "PresetEmpty"
+                        ],
+                        "fn": "RISING",
+                        "__id__": "root.0.objs.24.sensitivity.1"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmIf",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Flip-Flop w/ Asynchronous Preset.\n",
+                        "__id__": "root.0.objs.24.body.doc"
+                    },
+                    "position": [
+                        105,
+                        9,
+                        108,
+                        27
+                    ],
+                    "labels": [],
+                    "cond": "PresetEmpty",
+                    "if_true": {
+                        "__class__": "HdlStmAssign",
+                        "position": [
+                            106,
+                            13,
+                            106,
+                            26
+                        ],
+                        "labels": [],
+                        "src": {
+                            "__class__": "HdlValueInt",
+                            "val": "1",
+                            "base": 10,
+                            "__id__": "root.0.objs.24.body.if_true.src"
+                        },
+                        "dst": "Empty_out",
+                        "is_blocking": false,
+                        "__id__": "root.0.objs.24.body.if_true"
+                    },
+                    "elifs": [],
+                    "if_false": {
+                        "__class__": "HdlStmAssign",
+                        "position": [
+                            108,
+                            13,
+                            108,
+                            26
+                        ],
+                        "labels": [],
+                        "src": {
+                            "__class__": "HdlValueInt",
+                            "val": "0",
+                            "base": 10,
+                            "__id__": "root.0.objs.24.body.if_false.src"
+                        },
+                        "dst": "Empty_out",
+                        "is_blocking": false,
+                        "__id__": "root.0.objs.24.body.if_false"
+                    },
+                    "__id__": "root.0.objs.24.body"
+                },
+                "__id__": "root.0.objs.24"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]

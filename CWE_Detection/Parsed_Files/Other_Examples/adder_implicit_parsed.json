@@ -1,0 +1,534 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            10,
+            1,
+            72,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": "-----------------------------------------------------\n http://www.asic-world.com/verilog/syntax2.html\n This is simple adder Program\n Design Name : adder_implicit\n File Name   : adder_implicit.v\n Function    : This program shows how implicit\n              port connection are done\n Coder       : Deepak Kumar Tala\n-----------------------------------------------------\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                10,
+                1,
+                72,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "adder_implicit",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Output Port Declarations\n",
+                        "__id__": "root.0.dec.ports.0.doc"
+                    },
+                    "position": [
+                        11,
+                        1,
+                        11,
+                        6
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "result",
+                        "__id__": "root.0.dec.ports.0.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "3",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.0.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.0.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.0.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.0.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.0"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Output of the adder\n",
+                        "__id__": "root.0.dec.ports.1.doc"
+                    },
+                    "position": [
+                        12,
+                        1,
+                        12,
+                        5
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "carry",
+                        "__id__": "root.0.dec.ports.1.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.1.type"
+                    },
+                    "direction": "OUT",
+                    "__id__": "root.0.dec.ports.1"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Carry output of adder\n Input Port Declarations       \n Port Wires\n",
+                        "__id__": "root.0.dec.ports.2.doc"
+                    },
+                    "position": [
+                        13,
+                        1,
+                        13,
+                        2
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "r1",
+                        "__id__": "root.0.dec.ports.2.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "3",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.2.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.2.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.2.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.2.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.2.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.2"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " first input\n",
+                        "__id__": "root.0.dec.ports.3.doc"
+                    },
+                    "position": [
+                        14,
+                        1,
+                        14,
+                        2
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "r2",
+                        "__id__": "root.0.dec.ports.3.name"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "3",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.3.type.ops.1.ops.0"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10,
+                                        "__id__": "root.0.dec.ports.3.type.ops.1.ops.1"
+                                    }
+                                ],
+                                "fn": "DOWNTO",
+                                "__id__": "root.0.dec.ports.3.type.ops.1"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null,
+                                "__id__": "root.0.dec.ports.3.type.ops.2"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION",
+                        "__id__": "root.0.dec.ports.3.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.3"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " second input\n",
+                        "__id__": "root.0.dec.ports.4.doc"
+                    },
+                    "position": [
+                        15,
+                        1,
+                        15,
+                        2
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "ci",
+                        "__id__": "root.0.dec.ports.4.name"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto",
+                        "__id__": "root.0.dec.ports.4.type"
+                    },
+                    "direction": "IN",
+                    "__id__": "root.0.dec.ports.4"
+                }
+            ],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "adder_implicit",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " Internal variables\n",
+                    "__id__": "root.0.objs.0.doc"
+                },
+                "position": [
+                    35,
+                    19,
+                    35,
+                    20
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "c1",
+                    "__id__": "root.0.objs.0.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.0.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.0"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    36,
+                    19,
+                    36,
+                    20
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "c2",
+                    "__id__": "root.0.objs.1.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.1.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.1"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    37,
+                    19,
+                    37,
+                    20
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "c3",
+                    "__id__": "root.0.objs.2.name"
+                },
+                "type": {
+                    "__class__": "HdlTypeAuto",
+                    "__id__": "root.0.objs.2.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.2"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "u0",
+                "module_name": "addbit",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "r1",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "0",
+                                "base": 10,
+                                "__id__": "root.0.objs.3.port_map.0.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.3.port_map.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "r2",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "0",
+                                "base": 10,
+                                "__id__": "root.0.objs.3.port_map.1.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.3.port_map.1"
+                    },
+                    "ci",
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "result",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "0",
+                                "base": 10,
+                                "__id__": "root.0.objs.3.port_map.3.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.3.port_map.3"
+                    },
+                    "c1"
+                ],
+                "__id__": "root.0.objs.3"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "u1",
+                "module_name": "addbit",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "r1",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "1",
+                                "base": 10,
+                                "__id__": "root.0.objs.4.port_map.0.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.4.port_map.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "r2",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "1",
+                                "base": 10,
+                                "__id__": "root.0.objs.4.port_map.1.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.4.port_map.1"
+                    },
+                    "c1",
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "result",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "1",
+                                "base": 10,
+                                "__id__": "root.0.objs.4.port_map.3.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.4.port_map.3"
+                    },
+                    "c2"
+                ],
+                "__id__": "root.0.objs.4"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "u2",
+                "module_name": "addbit",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "r1",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "2",
+                                "base": 10,
+                                "__id__": "root.0.objs.5.port_map.0.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.5.port_map.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "r2",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "2",
+                                "base": 10,
+                                "__id__": "root.0.objs.5.port_map.1.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.5.port_map.1"
+                    },
+                    "c2",
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "result",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "2",
+                                "base": 10,
+                                "__id__": "root.0.objs.5.port_map.3.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.5.port_map.3"
+                    },
+                    "c3"
+                ],
+                "__id__": "root.0.objs.5"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "u3",
+                "module_name": "addbit",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "r1",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "3",
+                                "base": 10,
+                                "__id__": "root.0.objs.6.port_map.0.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.6.port_map.0"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "r2",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "3",
+                                "base": 10,
+                                "__id__": "root.0.objs.6.port_map.1.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.6.port_map.1"
+                    },
+                    "c3",
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "result",
+                            {
+                                "__class__": "HdlValueInt",
+                                "val": "3",
+                                "base": 10,
+                                "__id__": "root.0.objs.6.port_map.3.ops.1"
+                            }
+                        ],
+                        "fn": "INDEX",
+                        "__id__": "root.0.objs.6.port_map.3"
+                    },
+                    "carry"
+                ],
+                "__id__": "root.0.objs.6"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]

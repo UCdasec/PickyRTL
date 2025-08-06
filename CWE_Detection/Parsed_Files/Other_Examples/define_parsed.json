@@ -1,0 +1,294 @@
+[
+    {
+        "__language__": "Verilog"
+    },
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            3,
+            1,
+            18,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null,
+            "__id__": "root.0.name"
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " Examples of `define text macros\n",
+                "__id__": "root.0.dec.doc"
+            },
+            "position": [
+                3,
+                1,
+                18,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "test",
+                "__id__": "root.0.dec.name"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [],
+            "__id__": "root.0.dec"
+        },
+        "module_name": "test",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    5,
+                    13,
+                    5,
+                    13
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "a",
+                    "__id__": "root.0.objs.0.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "7",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.0.type.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.0.type.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "DOWNTO",
+                            "__id__": "root.0.objs.0.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.0.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.0.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.0"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    5,
+                    16,
+                    5,
+                    16
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "b",
+                    "__id__": "root.0.objs.1.name"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "7",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.1.type.ops.1.ops.0"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.1.type.ops.1.ops.1"
+                                }
+                            ],
+                            "fn": "DOWNTO",
+                            "__id__": "root.0.objs.1.type.ops.1"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null,
+                            "__id__": "root.0.objs.1.type.ops.2"
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION",
+                    "__id__": "root.0.objs.1.type"
+                },
+                "direction": "INTERNAL",
+                "__id__": "root.0.objs.1"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "position": [
+                    7,
+                    3,
+                    16,
+                    5
+                ],
+                "labels": [],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        7,
+                        11,
+                        16,
+                        5
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "$display",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "5",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.2.body.body.0.ops.1"
+                                }
+                            ],
+                            "fn": "CALL",
+                            "__id__": "root.0.objs.2.body.body.0"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "$display",
+                                {
+                                    "__class__": "str",
+                                    "val": "Hello world!",
+                                    "__id__": "root.0.objs.2.body.body.1.ops.1"
+                                }
+                            ],
+                            "fn": "CALL",
+                            "__id__": "root.0.objs.2.body.body.1"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "$display",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "2",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.2.body.body.2.ops.1.ops.0"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "2",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.2.body.body.2.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "ADD",
+                                    "__id__": "root.0.objs.2.body.body.2.ops.1"
+                                }
+                            ],
+                            "fn": "CALL",
+                            "__id__": "root.0.objs.2.body.body.2"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "$display",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "2",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.2.body.body.3.ops.1.ops.0"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "2",
+                                            "base": 10,
+                                            "__id__": "root.0.objs.2.body.body.3.ops.1.ops.1"
+                                        }
+                                    ],
+                                    "fn": "ADD",
+                                    "__id__": "root.0.objs.2.body.body.3.ops.1"
+                                }
+                            ],
+                            "fn": "CALL",
+                            "__id__": "root.0.objs.2.body.body.3"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "a",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10,
+                                    "__id__": "root.0.objs.2.body.body.4.ops.1"
+                                }
+                            ],
+                            "fn": "ASSIGN",
+                            "__id__": "root.0.objs.2.body.body.4"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "$display",
+                                {
+                                    "__class__": "str",
+                                    "val": "No feature",
+                                    "__id__": "root.0.objs.2.body.body.5.ops.1"
+                                }
+                            ],
+                            "fn": "CALL",
+                            "__id__": "root.0.objs.2.body.body.5"
+                        },
+                        {
+                            "__class__": "HdlStmWait",
+                            "position": [
+                                7,
+                                3,
+                                16,
+                                5
+                            ],
+                            "labels": [],
+                            "val": {
+                                "__class__": "list",
+                                "items": [],
+                                "__id__": "root.0.objs.2.body.body.6.val"
+                            },
+                            "__id__": "root.0.objs.2.body.body.6"
+                        }
+                    ],
+                    "__id__": "root.0.objs.2.body"
+                },
+                "__id__": "root.0.objs.2"
+            }
+        ],
+        "__id__": "root.0"
+    }
+]
