@@ -60,6 +60,10 @@ class HdlStmAssignNode(Node):
         super().__init__('HdlStmAssign', parent_id)
         self.source = source
         self.destination = destination
+        if self.source == 0:
+            self.zeroized = True
+        else:
+            self.zeroized = False
 
 class HdlStmCaseNode(Node):
     def __init__(self, switch_variable, parent_id, switch_variable_bit_width=None):
