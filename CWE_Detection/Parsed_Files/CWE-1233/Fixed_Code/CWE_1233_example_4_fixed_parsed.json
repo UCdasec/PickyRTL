@@ -4,7 +4,7 @@
         "position": [
             5,
             1,
-            125,
+            124,
             9
         ],
         "name": {
@@ -20,7 +20,7 @@
             "position": [
                 5,
                 1,
-                125,
+                124,
                 9
             ],
             "name": {
@@ -1142,7 +1142,7 @@
                 "position": [
                     92,
                     8,
-                    113,
+                    112,
                     7
                 ],
                 "labels": [],
@@ -1156,7 +1156,7 @@
                     "position": [
                         93,
                         5,
-                        113,
+                        112,
                         7
                     ],
                     "labels": [],
@@ -1180,7 +1180,7 @@
                             "position": [
                                 95,
                                 7,
-                                112,
+                                111,
                                 9
                             ],
                             "labels": [],
@@ -1190,7 +1190,7 @@
                                 "position": [
                                     95,
                                     15,
-                                    112,
+                                    111,
                                     9
                                 ],
                                 "labels": [],
@@ -1209,7 +1209,7 @@
                                         "position": [
                                             97,
                                             9,
-                                            111,
+                                            110,
                                             15
                                         ],
                                         "labels": [],
@@ -1486,40 +1486,17 @@
                                             ]
                                         ],
                                         "default": {
-                                            "__class__": "HdlStmIf",
-                                            "position": [
-                                                109,
-                                                17,
-                                                110,
-                                                34
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "rdata",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "bits": 32,
+                                                    "base": 2
+                                                }
                                             ],
-                                            "labels": [],
-                                            "cond": {
-                                                "__class__": "HdlOp",
-                                                "ops": [
-                                                    "fuse_addr_o",
-                                                    {
-                                                        "__class__": "HdlValueInt",
-                                                        "val": "110",
-                                                        "base": 10
-                                                    }
-                                                ],
-                                                "fn": "LE"
-                                            },
-                                            "if_true": {
-                                                "__class__": "HdlOp",
-                                                "ops": [
-                                                    "rdata",
-                                                    {
-                                                        "__class__": "HdlValueInt",
-                                                        "val": "0",
-                                                        "bits": 32,
-                                                        "base": 2
-                                                    }
-                                                ],
-                                                "fn": "ASSIGN"
-                                            },
-                                            "elifs": []
+                                            "fn": "ASSIGN"
                                         }
                                     }
                                 ]

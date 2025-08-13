@@ -58,8 +58,8 @@ def parse_folder(folder_path: str):
     """
     parsed_file_paths = []
     for file in os.listdir(folder_path):
-        if "9" in file:
-            continue
+        # if "9" in file:
+        #     continue
         file_path = os.path.join(folder_path, file)
         parsed_file_paths.append(parse_file(file_path))
 
@@ -69,7 +69,7 @@ def main():
     # file_path = "/media/sf_Summer_Research/CWE_Examples/CWE-1245/Vulnerable_Code/example_9_vulnerable.sv"
     # parse_file(file_path)
 
-    folder_path = "/media/sf_Summer_Research/CWE_Examples/CWE-1245/Fixed_Code"
+    folder_path = "/media/sf_Summer_Research/DetectRTL/CWE_Examples/CWE-1233/Vulnerable_Code"
     x = parse_folder(folder_path)
 
 if __name__ == "__main__":

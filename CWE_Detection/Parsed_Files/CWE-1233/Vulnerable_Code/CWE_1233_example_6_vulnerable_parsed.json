@@ -4,7 +4,7 @@
         "position": [
             1,
             1,
-            245,
+            244,
             9
         ],
         "name": {
@@ -16,7 +16,7 @@
             "position": [
                 1,
                 1,
-                245,
+                244,
                 9
             ],
             "name": {
@@ -3155,7 +3155,7 @@
                 "position": [
                     150,
                     8,
-                    212,
+                    211,
                     7
                 ],
                 "labels": [],
@@ -3169,7 +3169,7 @@
                     "position": [
                         151,
                         5,
-                        212,
+                        211,
                         7
                     ],
                     "labels": [],
@@ -3193,7 +3193,7 @@
                             "position": [
                                 153,
                                 9,
-                                211,
+                                210,
                                 11
                             ],
                             "labels": [],
@@ -3203,7 +3203,7 @@
                                 "position": [
                                     153,
                                     16,
-                                    211,
+                                    210,
                                     11
                                 ],
                                 "labels": [],
@@ -3214,7 +3214,7 @@
                                         "position": [
                                             154,
                                             13,
-                                            210,
+                                            209,
                                             19
                                         ],
                                         "labels": [],
@@ -5109,29 +5109,17 @@
                                             ]
                                         ],
                                         "default": {
-                                            "__class__": "HdlStmIf",
-                                            "position": [
-                                                208,
-                                                21,
-                                                209,
-                                                38
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "rdata",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "bits": 32,
+                                                    "base": 2
+                                                }
                                             ],
-                                            "labels": [],
-                                            "cond": "rand_num_valid",
-                                            "if_true": {
-                                                "__class__": "HdlOp",
-                                                "ops": [
-                                                    "rdata",
-                                                    {
-                                                        "__class__": "HdlValueInt",
-                                                        "val": "0",
-                                                        "bits": 32,
-                                                        "base": 2
-                                                    }
-                                                ],
-                                                "fn": "ASSIGN"
-                                            },
-                                            "elifs": []
+                                            "fn": "ASSIGN"
                                         }
                                     }
                                 ]

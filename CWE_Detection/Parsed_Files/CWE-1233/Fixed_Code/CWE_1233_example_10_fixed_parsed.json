@@ -4,7 +4,7 @@
         "position": [
             3,
             1,
-            203,
+            202,
             9
         ],
         "name": {
@@ -16,7 +16,7 @@
             "position": [
                 3,
                 1,
-                203,
+                202,
                 9
             ],
             "name": {
@@ -3929,7 +3929,7 @@
                 "position": [
                     153,
                     8,
-                    184,
+                    183,
                     7
                 ],
                 "labels": [],
@@ -3943,7 +3943,7 @@
                     "position": [
                         154,
                         5,
-                        184,
+                        183,
                         7
                     ],
                     "labels": [],
@@ -3967,7 +3967,7 @@
                             "position": [
                                 156,
                                 7,
-                                183,
+                                182,
                                 9
                             ],
                             "labels": [],
@@ -3977,7 +3977,7 @@
                                 "position": [
                                     156,
                                     15,
-                                    183,
+                                    182,
                                     9
                                 ],
                                 "labels": [],
@@ -4025,7 +4025,7 @@
                                         "position": [
                                             158,
                                             9,
-                                            182,
+                                            181,
                                             15
                                         ],
                                         "labels": [],
@@ -4592,29 +4592,17 @@
                                             ]
                                         ],
                                         "default": {
-                                            "__class__": "HdlStmIf",
-                                            "position": [
-                                                180,
-                                                17,
-                                                181,
-                                                34
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "rdata",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "bits": 32,
+                                                    "base": 2
+                                                }
                                             ],
-                                            "labels": [],
-                                            "cond": "ct_valid",
-                                            "if_true": {
-                                                "__class__": "HdlOp",
-                                                "ops": [
-                                                    "rdata",
-                                                    {
-                                                        "__class__": "HdlValueInt",
-                                                        "val": "0",
-                                                        "bits": 32,
-                                                        "base": 2
-                                                    }
-                                                ],
-                                                "fn": "ASSIGN"
-                                            },
-                                            "elifs": []
+                                            "fn": "ASSIGN"
                                         }
                                     }
                                 ]
@@ -4631,9 +4619,9 @@
                     "val": " always @ (*)\n select the proper key\n"
                 },
                 "position": [
-                    189,
+                    188,
                     8,
-                    189,
+                    188,
                     69
                 ],
                 "labels": [],

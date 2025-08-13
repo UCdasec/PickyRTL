@@ -4,7 +4,7 @@
         "position": [
             3,
             1,
-            212,
+            211,
             9
         ],
         "name": {
@@ -16,7 +16,7 @@
             "position": [
                 3,
                 1,
-                212,
+                211,
                 9
             ],
             "name": {
@@ -4620,7 +4620,7 @@
                 "position": [
                     163,
                     8,
-                    194,
+                    193,
                     7
                 ],
                 "labels": [],
@@ -4634,7 +4634,7 @@
                     "position": [
                         164,
                         5,
-                        194,
+                        193,
                         7
                     ],
                     "labels": [],
@@ -4658,7 +4658,7 @@
                             "position": [
                                 166,
                                 7,
-                                193,
+                                192,
                                 9
                             ],
                             "labels": [],
@@ -4668,7 +4668,7 @@
                                 "position": [
                                     166,
                                     15,
-                                    193,
+                                    192,
                                     9
                                 ],
                                 "labels": [],
@@ -4716,7 +4716,7 @@
                                         "position": [
                                             168,
                                             9,
-                                            192,
+                                            191,
                                             15
                                         ],
                                         "labels": [],
@@ -4759,37 +4759,14 @@
                                                             "__class__": "HdlOp",
                                                             "ops": [
                                                                 {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "reglk_ctrl_i",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "0",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
-                                                                },
-                                                                {
                                                                     "__class__": "HdlValueInt",
                                                                     "val": "0",
+                                                                    "bits": 31,
                                                                     "base": 2
                                                                 },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "0",
-                                                                            "bits": 31,
-                                                                            "base": 2
-                                                                        },
-                                                                        "start"
-                                                                    ],
-                                                                    "fn": "CONCAT"
-                                                                }
+                                                                "start"
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "CONCAT"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -4808,37 +4785,14 @@
                                                         {
                                                             "__class__": "HdlOp",
                                                             "ops": [
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "reglk_ctrl_i",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "2",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
-                                                                },
+                                                                "p_c",
                                                                 {
                                                                     "__class__": "HdlValueInt",
-                                                                    "val": "0",
-                                                                    "base": 2
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "p_c",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "3",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
+                                                                    "val": "3",
+                                                                    "base": 10
                                                                 }
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "INDEX"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -4857,37 +4811,14 @@
                                                         {
                                                             "__class__": "HdlOp",
                                                             "ops": [
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "reglk_ctrl_i",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "2",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
-                                                                },
+                                                                "p_c",
                                                                 {
                                                                     "__class__": "HdlValueInt",
-                                                                    "val": "0",
-                                                                    "base": 2
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "p_c",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "2",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
+                                                                    "val": "2",
+                                                                    "base": 10
                                                                 }
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "INDEX"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -4906,37 +4837,14 @@
                                                         {
                                                             "__class__": "HdlOp",
                                                             "ops": [
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "reglk_ctrl_i",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "2",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
-                                                                },
+                                                                "p_c",
                                                                 {
                                                                     "__class__": "HdlValueInt",
-                                                                    "val": "0",
-                                                                    "base": 2
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "p_c",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "1",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
+                                                                    "val": "1",
+                                                                    "base": 10
                                                                 }
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "INDEX"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -4955,37 +4863,14 @@
                                                         {
                                                             "__class__": "HdlOp",
                                                             "ops": [
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "reglk_ctrl_i",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "2",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
-                                                                },
+                                                                "p_c",
                                                                 {
                                                                     "__class__": "HdlValueInt",
                                                                     "val": "0",
-                                                                    "base": 2
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "p_c",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "0",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
+                                                                    "base": 10
                                                                 }
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "INDEX"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -5005,37 +4890,14 @@
                                                             "__class__": "HdlOp",
                                                             "ops": [
                                                                 {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "reglk_ctrl_i",
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "6",
-                                                                            "base": 10
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
-                                                                },
-                                                                {
                                                                     "__class__": "HdlValueInt",
                                                                     "val": "0",
+                                                                    "bits": 31,
                                                                     "base": 2
                                                                 },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        {
-                                                                            "__class__": "HdlValueInt",
-                                                                            "val": "0",
-                                                                            "bits": 31,
-                                                                            "base": 2
-                                                                        },
-                                                                        "ct_valid"
-                                                                    ],
-                                                                    "fn": "CONCAT"
-                                                                }
+                                                                "ct_valid"
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "CONCAT"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -5054,48 +4916,25 @@
                                                         {
                                                             "__class__": "HdlOp",
                                                             "ops": [
+                                                                "ct",
                                                                 {
                                                                     "__class__": "HdlOp",
                                                                     "ops": [
-                                                                        "reglk_ctrl_i",
                                                                         {
                                                                             "__class__": "HdlValueInt",
-                                                                            "val": "4",
+                                                                            "val": "31",
+                                                                            "base": 10
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
                                                                             "base": 10
                                                                         }
                                                                     ],
-                                                                    "fn": "INDEX"
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlValueInt",
-                                                                    "val": "0",
-                                                                    "base": 2
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "ct",
-                                                                        {
-                                                                            "__class__": "HdlOp",
-                                                                            "ops": [
-                                                                                {
-                                                                                    "__class__": "HdlValueInt",
-                                                                                    "val": "31",
-                                                                                    "base": 10
-                                                                                },
-                                                                                {
-                                                                                    "__class__": "HdlValueInt",
-                                                                                    "val": "0",
-                                                                                    "base": 10
-                                                                                }
-                                                                            ],
-                                                                            "fn": "DOWNTO"
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
+                                                                    "fn": "DOWNTO"
                                                                 }
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "INDEX"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -5114,48 +4953,25 @@
                                                         {
                                                             "__class__": "HdlOp",
                                                             "ops": [
+                                                                "ct",
                                                                 {
                                                                     "__class__": "HdlOp",
                                                                     "ops": [
-                                                                        "reglk_ctrl_i",
                                                                         {
                                                                             "__class__": "HdlValueInt",
-                                                                            "val": "4",
+                                                                            "val": "63",
+                                                                            "base": 10
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "32",
                                                                             "base": 10
                                                                         }
                                                                     ],
-                                                                    "fn": "INDEX"
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlValueInt",
-                                                                    "val": "0",
-                                                                    "base": 2
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "ct",
-                                                                        {
-                                                                            "__class__": "HdlOp",
-                                                                            "ops": [
-                                                                                {
-                                                                                    "__class__": "HdlValueInt",
-                                                                                    "val": "63",
-                                                                                    "base": 10
-                                                                                },
-                                                                                {
-                                                                                    "__class__": "HdlValueInt",
-                                                                                    "val": "32",
-                                                                                    "base": 10
-                                                                                }
-                                                                            ],
-                                                                            "fn": "DOWNTO"
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
+                                                                    "fn": "DOWNTO"
                                                                 }
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "INDEX"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -5174,48 +4990,25 @@
                                                         {
                                                             "__class__": "HdlOp",
                                                             "ops": [
+                                                                "ct",
                                                                 {
                                                                     "__class__": "HdlOp",
                                                                     "ops": [
-                                                                        "reglk_ctrl_i",
                                                                         {
                                                                             "__class__": "HdlValueInt",
-                                                                            "val": "4",
+                                                                            "val": "95",
+                                                                            "base": 10
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "64",
                                                                             "base": 10
                                                                         }
                                                                     ],
-                                                                    "fn": "INDEX"
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlValueInt",
-                                                                    "val": "0",
-                                                                    "base": 2
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "ct",
-                                                                        {
-                                                                            "__class__": "HdlOp",
-                                                                            "ops": [
-                                                                                {
-                                                                                    "__class__": "HdlValueInt",
-                                                                                    "val": "95",
-                                                                                    "base": 10
-                                                                                },
-                                                                                {
-                                                                                    "__class__": "HdlValueInt",
-                                                                                    "val": "64",
-                                                                                    "base": 10
-                                                                                }
-                                                                            ],
-                                                                            "fn": "DOWNTO"
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
+                                                                    "fn": "DOWNTO"
                                                                 }
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "INDEX"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -5234,48 +5027,25 @@
                                                         {
                                                             "__class__": "HdlOp",
                                                             "ops": [
+                                                                "ct",
                                                                 {
                                                                     "__class__": "HdlOp",
                                                                     "ops": [
-                                                                        "reglk_ctrl_i",
                                                                         {
                                                                             "__class__": "HdlValueInt",
-                                                                            "val": "4",
+                                                                            "val": "127",
+                                                                            "base": 10
+                                                                        },
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "96",
                                                                             "base": 10
                                                                         }
                                                                     ],
-                                                                    "fn": "INDEX"
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlValueInt",
-                                                                    "val": "0",
-                                                                    "base": 2
-                                                                },
-                                                                {
-                                                                    "__class__": "HdlOp",
-                                                                    "ops": [
-                                                                        "ct",
-                                                                        {
-                                                                            "__class__": "HdlOp",
-                                                                            "ops": [
-                                                                                {
-                                                                                    "__class__": "HdlValueInt",
-                                                                                    "val": "127",
-                                                                                    "base": 10
-                                                                                },
-                                                                                {
-                                                                                    "__class__": "HdlValueInt",
-                                                                                    "val": "96",
-                                                                                    "base": 10
-                                                                                }
-                                                                            ],
-                                                                            "fn": "DOWNTO"
-                                                                        }
-                                                                    ],
-                                                                    "fn": "INDEX"
+                                                                    "fn": "DOWNTO"
                                                                 }
                                                             ],
-                                                            "fn": "TERNARY"
+                                                            "fn": "INDEX"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -5283,29 +5053,17 @@
                                             ]
                                         ],
                                         "default": {
-                                            "__class__": "HdlStmIf",
-                                            "position": [
-                                                190,
-                                                17,
-                                                191,
-                                                34
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "rdata",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "bits": 32,
+                                                    "base": 2
+                                                }
                                             ],
-                                            "labels": [],
-                                            "cond": "ct_valid",
-                                            "if_true": {
-                                                "__class__": "HdlOp",
-                                                "ops": [
-                                                    "rdata",
-                                                    {
-                                                        "__class__": "HdlValueInt",
-                                                        "val": "0",
-                                                        "bits": 32,
-                                                        "base": 2
-                                                    }
-                                                ],
-                                                "fn": "ASSIGN"
-                                            },
-                                            "elifs": []
+                                            "fn": "ASSIGN"
                                         }
                                     }
                                 ]
@@ -5322,9 +5080,9 @@
                     "val": " always @ (*)\n select the proper key\n"
                 },
                 "position": [
-                    199,
+                    198,
                     8,
-                    199,
+                    198,
                     77
                 ],
                 "labels": [],
