@@ -177,8 +177,7 @@ always @(*)
             13:                                                 
                 rdata = reglk_ctrl_i[4] ? 'b0 : ct[127:96];
             default:
-                if (ct_valid)
-                    rdata = 32'b0;
+                rdata = 32'b0;
         endcase
       end // if
     end // always @ (*)

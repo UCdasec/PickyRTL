@@ -205,8 +205,7 @@ always @(*)
                 25:
                     rdata = debug_mode_i ? {28'b0, cs_state_o} : (reglk_ctrl_i[7] ? 0 : {28'b0, cs_state_o});
                 default:
-                    if (rand_num_valid)
-                        rdata = 32'b0;
+                    rdata = 32'b0;
             endcase // address[8:3]
         end 
     end
