@@ -1038,20 +1038,39 @@
                                                         83,
                                                         21,
                                                         83,
-                                                        43
+                                                        74
                                                     ],
                                                     "labels": [],
                                                     "src": {
                                                         "__class__": "HdlOp",
                                                         "ops": [
-                                                            "wdata",
                                                             {
-                                                                "__class__": "HdlValueInt",
-                                                                "val": "0",
-                                                                "base": 10
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl_i",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "0",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "fuse_req_o",
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "wdata",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "0",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
                                                             }
                                                         ],
-                                                        "fn": "INDEX"
+                                                        "fn": "TERNARY"
                                                     },
                                                     "dst": "fuse_req_o",
                                                     "is_blocking": false
@@ -1069,10 +1088,29 @@
                                                         85,
                                                         21,
                                                         85,
-                                                        40
+                                                        72
                                                     ],
                                                     "labels": [],
-                                                    "src": "wdata",
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl_i",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "1",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "fuse_addr_o",
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
                                                     "dst": "fuse_addr_o",
                                                     "is_blocking": false
                                                 }
@@ -1214,14 +1252,37 @@
                                                             "__class__": "HdlOp",
                                                             "ops": [
                                                                 {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl_i",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "2",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
                                                                     "__class__": "HdlValueInt",
                                                                     "val": "0",
-                                                                    "bits": 31,
                                                                     "base": 2
                                                                 },
-                                                                "fuse_req_o"
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 31,
+                                                                            "base": 2
+                                                                        },
+                                                                        "fuse_req_o"
+                                                                    ],
+                                                                    "fn": "CONCAT"
+                                                                }
                                                             ],
-                                                            "fn": "CONCAT"
+                                                            "fn": "TERNARY"
                                                         }
                                                     ],
                                                     "fn": "ASSIGN"
@@ -1237,7 +1298,30 @@
                                                     "__class__": "HdlOp",
                                                     "ops": [
                                                         "rdata",
-                                                        "fuse_addr_o"
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl_i",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "3",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                "fuse_addr_o"
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
                                                     ],
                                                     "fn": "ASSIGN"
                                                 }
