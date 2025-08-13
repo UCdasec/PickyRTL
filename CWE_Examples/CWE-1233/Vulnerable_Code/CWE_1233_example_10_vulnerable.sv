@@ -99,13 +99,13 @@ always @(posedge clk_i)
         else if(en && we)
             case(address[8:3]) // different signals will have a different address base.
                 0:
-                    start  <= reglk_ctrl_i[1] ? start  : wdata[0];
+                    start  <= wdata[0];
                 1:
                     p_c[3] <= reglk_ctrl_i[3] ? p_c[3] : wdata[31:0];
                 2:
                     p_c[2] <= reglk_ctrl_i[3] ? p_c[2] : wdata[31:0];
                 3:
-                    p_c[1] <= reglk_ctrl_i[3] ? p_c[1] : wdata[31:0];
+                    p_c[1] <= wdata[31:0];
                 4:
                     p_c[0] <= reglk_ctrl_i[3] ? p_c[0] : wdata[31:0];
                 5:
@@ -117,7 +117,7 @@ always @(posedge clk_i)
                 8:
                     key0[0] <= reglk_ctrl_i[5] ? key0[0] : wdata[31:0];
                 14:
-                    state[3] <= reglk_ctrl_i[3] ? state[3] : wdata[31:0];
+                    state[3] <= wdata[31:0];
                 15:                                        
                     state[2] <= reglk_ctrl_i[3] ? state[2] : wdata[31:0];
                 16:                                        
@@ -141,7 +141,7 @@ always @(posedge clk_i)
                 25:                            
                     key2[0] <= reglk_ctrl_i[5] ? key2[0] : wdata[31:0];
                 26: 
-                    key_sel <= reglk_ctrl_i[1] ? key_sel : wdata[31:0];
+                    key_sel <=wdata[31:0];
                 default:
                     ;
             endcase
