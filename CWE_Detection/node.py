@@ -1,5 +1,5 @@
 import math
-
+import re
 class Node():
     _next_node_id = -1
     def __init__(self, node_type, parent_id=None):
@@ -44,6 +44,9 @@ class HdlIdDefNode(Node):
         self.variable_type = type
         self.value = value
         self.module_mapping = None
+        self.possible_lock_bit_register = self.is_lock_name()
+        self.security_sensitive = False
+
 
     def calculate_possible_values(self):
         """Calculates the bit width of the variable
@@ -54,6 +57,15 @@ class HdlIdDefNode(Node):
         if self.bit_width is None:
             return 1 #TO-DO see if there is something I can do better here
         return math.pow(2, self.bit_width)
+    
+    def is_lock_name(self) -> bool:
+        """Determines if the variable is a lock bit register
+
+        Returns:
+            bool: True if the variable si a lock bit register, False otherwise
+        """
+        LOCK_NAME_PATTERNS = [r"(?<!b)lock", r"lck", r"(?<!c)lk(?!c)"] #Detects block currently
+        return any(re.search(p, self.name.lower()) for p in LOCK_NAME_PATTERNS)
 
 class HdlStmAssignNode(Node):
     def __init__(self, source, destination, parent_id):
@@ -64,6 +76,7 @@ class HdlStmAssignNode(Node):
             self.zeroized = True
         else:
             self.zeroized = False
+        self.lock_bit_protected = False
 
 class HdlStmCaseNode(Node):
     def __init__(self, switch_variable, parent_id, switch_variable_bit_width=None):
