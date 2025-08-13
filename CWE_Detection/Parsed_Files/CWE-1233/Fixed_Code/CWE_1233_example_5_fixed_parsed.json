@@ -1,0 +1,2622 @@
+[
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            5,
+            1,
+            147,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " Description: Access Control registers\n\n"
+            },
+            "position": [
+                5,
+                1,
+                147,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "acct_wrapper"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        6,
+                        28,
+                        6,
+                        46
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "AXI_ADDR_WIDTH"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "int",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "signed",
+                                    0
+                                ],
+                                "fn": "MAP_ASSOCIATION"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "64",
+                        "base": 10
+                    },
+                    "direction": "INTERNAL"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        7,
+                        28,
+                        7,
+                        46
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "AXI_DATA_WIDTH"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "int",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "signed",
+                                    0
+                                ],
+                                "fn": "MAP_ASSOCIATION"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "64",
+                        "base": 10
+                    },
+                    "direction": "INTERNAL"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        8,
+                        28,
+                        8,
+                        46
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "AXI_ID_WIDTH"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "int",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "signed",
+                                    0
+                                ],
+                                "fn": "MAP_ASSOCIATION"
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "10",
+                        "base": 10
+                    },
+                    "direction": "INTERNAL"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        9,
+                        15,
+                        9,
+                        26
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "NB_SLAVE"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "1",
+                        "base": 10
+                    },
+                    "direction": "INTERNAL"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        10,
+                        15,
+                        10,
+                        32
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "NB_PERIPHERALS"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "9",
+                        "base": 10
+                    },
+                    "direction": "INTERNAL"
+                }
+            ],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        12,
+                        12,
+                        12,
+                        16
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "clk_i"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "logic",
+                            {
+                                "__class__": "str",
+                                "val": null
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        13,
+                        12,
+                        13,
+                        17
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "rst_ni"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "logic",
+                            {
+                                "__class__": "str",
+                                "val": null
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        14,
+                        12,
+                        14,
+                        23
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "reglk_ctrl_i"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "logic",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "7",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " register lock valuesA\n"
+                    },
+                    "position": [
+                        15,
+                        12,
+                        15,
+                        22
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "acct_ctrl_i"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "logic",
+                            {
+                                "__class__": "str",
+                                "val": null
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        16,
+                        12,
+                        16,
+                        21
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "acc_ctrl_o"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "logic",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    {
+                                                        "__class__": "HdlValueInt",
+                                                        "val": "4",
+                                                        "base": 10
+                                                    },
+                                                    "NB_PERIPHERALS"
+                                                ],
+                                                "fn": "MUL"
+                                            },
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10
+                                            }
+                                        ],
+                                        "fn": "SUB"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Access control values\n"
+                    },
+                    "position": [
+                        17,
+                        12,
+                        17,
+                        18
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "we_flag"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "logic",
+                            {
+                                "__class__": "str",
+                                "val": null
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        18,
+                        12,
+                        18,
+                        20
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "axi_req_i"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "ariane_axi",
+                            "req_t"
+                        ],
+                        "fn": "DOUBLE_COLON"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        19,
+                        12,
+                        19,
+                        21
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "axi_resp_o"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "ariane_axi",
+                            "resp_t"
+                        ],
+                        "fn": "DOUBLE_COLON"
+                    },
+                    "direction": "OUT"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " 32*3 bytes of access control for each slave interface\n"
+                    },
+                    "position": [
+                        20,
+                        12,
+                        20,
+                        16
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "rst_6"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                }
+            ]
+        },
+        "module_name": "acct_wrapper",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    33,
+                    16,
+                    33,
+                    41
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "AcCt_MEM_SIZE"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "NB_SLAVE",
+                        {
+                            "__class__": "HdlValueInt",
+                            "val": "3",
+                            "base": 10
+                        }
+                    ],
+                    "fn": "MUL"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " internal signals\n"
+                },
+                "position": [
+                    39,
+                    31,
+                    39,
+                    38
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "acct_mem"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "reg",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "AcCt_MEM_SIZE",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "SUB"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "DOWNTO"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "31",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        }
+                    ],
+                    "fn": "INDEX"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    40,
+                    14,
+                    40,
+                    23
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "reglk_ctrl"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "logic",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "15",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " signals from AXI 4 Lite\n"
+                },
+                "position": [
+                    43,
+                    28,
+                    43,
+                    34
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "address"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "logic",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "AXI_ADDR_WIDTH",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "SUB"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    44,
+                    28,
+                    44,
+                    29
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "en"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "logic",
+                        {
+                            "__class__": "str",
+                            "val": null
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    44,
+                    32,
+                    44,
+                    38
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "en_acct"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "logic",
+                        {
+                            "__class__": "str",
+                            "val": null
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    45,
+                    28,
+                    45,
+                    29
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "we"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "logic",
+                        {
+                            "__class__": "str",
+                            "val": null
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    46,
+                    14,
+                    46,
+                    18
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "wdata"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "logic",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "63",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    47,
+                    14,
+                    47,
+                    18
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "rdata"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "logic",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "63",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    49,
+                    8,
+                    49,
+                    84
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "acct_mem",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "3",
+                                                            "base": 10
+                                                        },
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0",
+                                                            "base": 10
+                                                        }
+                                                    ],
+                                                    "fn": "MUL"
+                                                },
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "2",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "ADD"
+                                        }
+                                    ],
+                                    "fn": "INDEX"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "acct_mem",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "3",
+                                                            "base": 10
+                                                        },
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0",
+                                                            "base": 10
+                                                        }
+                                                    ],
+                                                    "fn": "MUL"
+                                                },
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "ADD"
+                                        }
+                                    ],
+                                    "fn": "INDEX"
+                                }
+                            ],
+                            "fn": "CONCAT"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "acct_mem",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "3",
+                                                            "base": 10
+                                                        },
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "0",
+                                                            "base": 10
+                                                        }
+                                                    ],
+                                                    "fn": "MUL"
+                                                },
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "ADD"
+                                        }
+                                    ],
+                                    "fn": "INDEX"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "8",
+                                            "base": 10
+                                        },
+                                        "we_flag"
+                                    ],
+                                    "fn": "REPL_CONCAT"
+                                }
+                            ],
+                            "fn": "OR"
+                        }
+                    ],
+                    "fn": "CONCAT"
+                },
+                "dst": "acc_ctrl_o",
+                "is_blocking": false
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    51,
+                    8,
+                    51,
+                    32
+                ],
+                "labels": [],
+                "src": "reglk_ctrl_i",
+                "dst": "reglk_ctrl",
+                "is_blocking": false
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "axi_lite_interface_i",
+                "module_name": "axi_lite_interface",
+                "param_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "AXI_ADDR_WIDTH",
+                            "AXI_ADDR_WIDTH"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "AXI_DATA_WIDTH",
+                            "AXI_DATA_WIDTH"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "AXI_ID_WIDTH",
+                            "AXI_ID_WIDTH"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    }
+                ],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "clk_i",
+                            "clk_i"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "rst_ni",
+                            "rst_ni"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "axi_req_i",
+                            "axi_req_i"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "axi_resp_o",
+                            "axi_resp_o"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "address_o",
+                            "address"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "en_o",
+                            "en_acct"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "we_o",
+                            "we"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "data_i",
+                            "rdata"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "data_o",
+                            "wdata"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    }
+                ]
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    73,
+                    12,
+                    73,
+                    38
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "en_acct",
+                        "acct_ctrl_i"
+                    ],
+                    "fn": "AND_LOG"
+                },
+                "dst": "en",
+                "is_blocking": false
+            },
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": "/////////////////////////////////////////////////////////////////////////\n Implement APB I/O map to PKT interface\n Write side\n"
+                },
+                "position": [
+                    78,
+                    9,
+                    78,
+                    9
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "j"
+                },
+                "is_static": true,
+                "type": "integer",
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "position": [
+                    79,
+                    8,
+                    112,
+                    7
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "clk_i"
+                        ],
+                        "fn": "RISING"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        80,
+                        5,
+                        112,
+                        7
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmIf",
+                            "position": [
+                                81,
+                                9,
+                                111,
+                                19
+                            ],
+                            "labels": [],
+                            "cond": {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "rst_ni",
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    "rst_6"
+                                                ],
+                                                "fn": "NEG"
+                                            }
+                                        ],
+                                        "fn": "AND_LOG"
+                                    }
+                                ],
+                                "fn": "NEG"
+                            },
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    82,
+                                    13,
+                                    86,
+                                    15
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmFor",
+                                        "position": [
+                                            83,
+                                            15,
+                                            85,
+                                            17
+                                        ],
+                                        "labels": [],
+                                        "init": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                83,
+                                                15,
+                                                85,
+                                                17
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        83,
+                                                        20,
+                                                        83,
+                                                        22
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlValueInt",
+                                                        "val": "0",
+                                                        "base": 10
+                                                    },
+                                                    "dst": "j",
+                                                    "is_blocking": true
+                                                }
+                                            ]
+                                        },
+                                        "cond": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "j",
+                                                "AcCt_MEM_SIZE"
+                                            ],
+                                            "fn": "LT"
+                                        },
+                                        "step": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                83,
+                                                15,
+                                                85,
+                                                17
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "j",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "j",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "1",
+                                                                    "base": 10
+                                                                }
+                                                            ],
+                                                            "fn": "ADD"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ]
+                                        },
+                                        "body": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                83,
+                                                51,
+                                                85,
+                                                17
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        84,
+                                                        17,
+                                                        84,
+                                                        43
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlValueInt",
+                                                        "val": "ffffffff",
+                                                        "bits": 32,
+                                                        "base": 16
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            "j"
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "elifs": [
+                                [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "en",
+                                            "we"
+                                        ],
+                                        "fn": "AND_LOG"
+                                    },
+                                    {
+                                        "__class__": "HdlStmCase",
+                                        "position": [
+                                            88,
+                                            13,
+                                            111,
+                                            19
+                                        ],
+                                        "labels": [],
+                                        "type": "CASE",
+                                        "switch_on": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "address",
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "10",
+                                                            "base": 10
+                                                        },
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "3",
+                                                            "base": 10
+                                                        }
+                                                    ],
+                                                    "fn": "DOWNTO"
+                                                }
+                                            ],
+                                            "fn": "INDEX"
+                                        },
+                                        "cases": [
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        90,
+                                                        21,
+                                                        90,
+                                                        73
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "5",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "00",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "00",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        92,
+                                                        21,
+                                                        92,
+                                                        73
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "5",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "01",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "01",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "2",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        94,
+                                                        21,
+                                                        94,
+                                                        73
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "5",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "02",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "02",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "3",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        96,
+                                                        21,
+                                                        96,
+                                                        74
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "13",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "03",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "03",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "4",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        98,
+                                                        21,
+                                                        98,
+                                                        74
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "13",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "04",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "04",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "5",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        100,
+                                                        21,
+                                                        100,
+                                                        74
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "13",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "05",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "05",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "6",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        102,
+                                                        21,
+                                                        102,
+                                                        73
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "1",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "06",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "06",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "7",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        104,
+                                                        21,
+                                                        104,
+                                                        73
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "1",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "07",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "07",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "8",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        106,
+                                                        21,
+                                                        106,
+                                                        73
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "1",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "08",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "08",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "9",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        108,
+                                                        21,
+                                                        108,
+                                                        73
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "reglk_ctrl",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "7",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "acct_mem",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "09",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "wdata"
+                                                        ],
+                                                        "fn": "TERNARY"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "acct_mem",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "09",
+                                                                "base": 10
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ]
+                                        ],
+                                        "default": {
+                                            "__class__": "HdlStmNop",
+                                            "position": [
+                                                110,
+                                                21,
+                                                110,
+                                                21
+                                            ],
+                                            "labels": []
+                                        }
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": " always @ (posedge wb_clk_i)\n// Read side\n"
+                },
+                "position": [
+                    115,
+                    8,
+                    144,
+                    7
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlAll"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        116,
+                        5,
+                        144,
+                        7
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "rdata",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "bits": 64,
+                                    "base": 2
+                                }
+                            ],
+                            "fn": "ASSIGN"
+                        },
+                        {
+                            "__class__": "HdlStmIf",
+                            "position": [
+                                118,
+                                7,
+                                143,
+                                9
+                            ],
+                            "labels": [],
+                            "cond": "en",
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    118,
+                                    15,
+                                    143,
+                                    9
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmCase",
+                                        "position": [
+                                            119,
+                                            9,
+                                            142,
+                                            15
+                                        ],
+                                        "labels": [],
+                                        "type": "CASE",
+                                        "switch_on": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "address",
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "10",
+                                                            "base": 10
+                                                        },
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "3",
+                                                            "base": 10
+                                                        }
+                                                    ],
+                                                    "fn": "DOWNTO"
+                                                }
+                                            ],
+                                            "fn": "INDEX"
+                                        },
+                                        "cases": [
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "4",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "4",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "2",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "4",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "2",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "3",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "2",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "3",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "4",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "2",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "4",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "5",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "2",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "5",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "6",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "6",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "7",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "7",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "8",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "8",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ],
+                                            [
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "9",
+                                                    "base": 10
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "rdata",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "reglk_ctrl",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "6",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "0",
+                                                                    "base": 2
+                                                                },
+                                                                {
+                                                                    "__class__": "HdlOp",
+                                                                    "ops": [
+                                                                        "acct_mem",
+                                                                        {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "9",
+                                                                            "base": 10
+                                                                        }
+                                                                    ],
+                                                                    "fn": "INDEX"
+                                                                }
+                                                            ],
+                                                            "fn": "TERNARY"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ]
+                                        ],
+                                        "default": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "rdata",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "bits": 32,
+                                                    "base": 2
+                                                }
+                                            ],
+                                            "fn": "ASSIGN"
+                                        }
+                                    }
+                                ]
+                            },
+                            "elifs": []
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+]
