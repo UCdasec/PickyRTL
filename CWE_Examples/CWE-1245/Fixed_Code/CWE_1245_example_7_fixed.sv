@@ -80,9 +80,9 @@ always @(posedge clk_i)
         else if(en && we)
             case(address[7:3])
                 0:
-                    fuse_req_o  <= wdata[0];
+                    fuse_req_o  <= reglk_ctrl_i[0] ? fuse_req_o : wdata[0];
                 1:
-                    fuse_addr_o <= wdata;
+                    fuse_addr_o <= reglk_ctrl_i[1] ? fuse_addr_o : wdata;
                 default:
                     ;
             endcase
@@ -96,9 +96,9 @@ always @(*)
         rdata = fuse_rdata_i; 
         case(address[7:3])
             0:
-                rdata = {31'b0, fuse_req_o};
+                rdata = reglk_ctrl_i[2] ? 'b0 : {31'b0, fuse_req_o};
             1:
-                rdata = fuse_addr_o;
+                rdata = reglk_ctrl_i[3] ? 'b0 : fuse_addr_o;
             2:
                 rdata = reglk_ctrl_i[4] ? 'b0 : pkey_loc[63:32];
             3:

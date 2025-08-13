@@ -167,28 +167,27 @@ always @(*)
         rdata = key0[address[8:3]]; 
         case(address[8:3])
             0:
-                rdata = reglk_ctrl_i[0] ? 'b0 : {31'b0, start};
+                rdata = {31'b0, start};
             1:
-                rdata = reglk_ctrl_i[2] ? 'b0 : p_c[3];
+                rdata = p_c[3];
             2:
-                rdata = reglk_ctrl_i[2] ? 'b0 : p_c[2];
+                rdata = p_c[2];
             3:
-                rdata = reglk_ctrl_i[2] ? 'b0 : p_c[1];
+                rdata = p_c[1];
             4:
-                rdata = reglk_ctrl_i[2] ? 'b0 : p_c[0];
+                rdata = p_c[0];
             11:
-                rdata = reglk_ctrl_i[6] ? 'b0 : {31'b0, ct_valid};
+                rdata = {31'b0, ct_valid};
             12:
-                rdata = reglk_ctrl_i[4] ? 'b0 : ct[31:0];
+                rdata = ct[31:0];
             13:                                                 
-                rdata = reglk_ctrl_i[4] ? 'b0 : ct[63:32];
+                rdata = ct[63:32];
             14:                                                 
-                rdata = reglk_ctrl_i[4] ? 'b0 : ct[95:64];
+                rdata = ct[95:64];
             15:                                                 
-                rdata = reglk_ctrl_i[4] ? 'b0 : ct[127:96];
+                rdata = ct[127:96];
             default:
-                if (ct_valid)
-                    rdata = 32'b0;
+                rdata = 32'b0;
         endcase
       end // if
     end // always @ (*)

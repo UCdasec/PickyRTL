@@ -106,8 +106,7 @@ always @(*)
             4:
                 rdata = reglk_ctrl_i[6] ? 'b0 : fuse_rdata_i;
             default:
-                if (fuse_addr_o <= 110)
-                    rdata = 32'b0;
+                rdata = 32'b0;
         endcase
       end // if
     end // always @ (*)
