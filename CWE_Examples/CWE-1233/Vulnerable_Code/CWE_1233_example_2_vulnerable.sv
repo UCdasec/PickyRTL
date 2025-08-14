@@ -125,12 +125,12 @@ always @(posedge clk_i)
                 case(address[9:3])
                     0:
                         begin
-                            startHash <= wdata[0];
-                            newMessage <= wdata[1];
-                            key_hash_bypass <= wdata[2];
+                            sstartHash <= reglk_ctrl_i[1] ? startHash : wdata[0];
+                            newMessage <= reglk_ctrl_i[1] ? newMessage : wdata[1];
+                            key_hash_bypass <= reglk_ctrl_i[1] ? key_hash_bypass : wdata[2];
                         end
                     1:
-                        data[0] <= reglk_ctrl_i[3] ? data[0] : wdata;
+                        data[0] <= reglk_ctrl_i[3] ? wdata : data[0];
                     2:                                        
                         data[1] <= reglk_ctrl_i[3] ? data[1] : wdata;
                     3:                                        

@@ -123,7 +123,7 @@ always @(posedge clk_i)
                             newMessage <= wdata[1];
                         end
                     1:
-                        data[0] <= reglk_ctrl_i[3] ? data[0] : wdata;
+                        data[0] <= reglk_ctrl_i[3] ? wdata : data[0];
                     2:                                        
                         data[1] <= reglk_ctrl_i[3] ? data[1] : wdata;
                     3:                                        
@@ -135,7 +135,7 @@ always @(posedge clk_i)
                     6:                                         
                         data[5] <= reglk_ctrl_i[3] ? data[5] : wdata;
                     7:
-                        data[6] <= reglk_ctrl_i[3] ? data[6] : wdata;
+                        data[6] <= reglk_ctrl_i[3] ? wdata : data[6];
                     8:                                        
                         data[7] <= reglk_ctrl_i[3] ? data[7] : wdata;
                     9:                                        

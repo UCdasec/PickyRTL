@@ -1,3 +1,5 @@
 This code is from the sha256 wrapper module in the HACK@DAC'21 OpenPiton SoC repository. 
 I have modified the code to be vulnerable. I created a weakness by removing the lock bit 
-protection from protecting startHash and newMessage registers from being written too
+protection from protecting startHash and newMessage registers from being written too. I 
+have also modified it so some of the register locks allow unauthorized writes when it 
+should be locked
