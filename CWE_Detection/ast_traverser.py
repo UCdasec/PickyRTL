@@ -89,17 +89,14 @@ class AST_Traverser():
             conidtion_variables = self.extract_conditional_variables(condition)
             for var in conidtion_variables:
                 if self.variables[var.name].possible_lock_bit_register: #If condition has a lock bit variable
-                    print(assignment_node.source, assignment_node.destination, 1)
                     destination_node: HdlIdDefNode = self.variables[assignment_node.destination]
                     if not destination_node.security_sensitive:
                         destination_node.security_sensitive = True
                         self.security_sensitive_registers.append(destination_node)
                     return True
                 else:
-                    print(assignment_node.source, assignment_node.destination, 2)
                     return False
         else:
-            print(assignment_node.source, assignment_node.destination, 3)
             return False
 
     def extract_conditional_variables(self, node: dict) -> list[HdlIdDefNode]:
