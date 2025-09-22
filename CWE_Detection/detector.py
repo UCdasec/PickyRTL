@@ -498,32 +498,6 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
 
     return CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df
 
-def run_detection_on_folder_old(folder_path: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Runs vulnerability detection on each file in the folder at the specified path
-
-    Args:
-        folder_path (str): Folder to run detection on
-
-    Returns:
-        tuple (pd.Dataframe, pd.Dataframe, pd.Dataframe): First dataframe contains CWE 1245 detection results,
-                                                          second dataframe contains CWE 1233 detection results,
-                                                          third dataframe contains detection statistics
-    """
-    CWE_1245_results_df = pd.DataFrame(columns=[col.value for col in CWE_1245_RESULTS_DF_COLS])
-    CWE_1233_results_df = pd.DataFrame(columns=[col.value for col in CWE_1233_RESULTS_DF_COLS])
-    detection_statistics_df = pd.DataFrame(columns=[col.value for col in DETECTION_STATISTICS_DF_COLS])
-
-    #Loop through each file in the folder
-    for file in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, file)
-        new_CWE_1245_results, new_CWE_1233_results, new_detection_stats = run_detection_on_file(file_path)
-        CWE_1245_results_df = pd.concat([CWE_1245_results_df, new_CWE_1245_results], ignore_index=True)
-        CWE_1233_results_df = pd.concat([CWE_1233_results_df, new_CWE_1233_results], ignore_index=True)
-        detection_statistics_df = pd.concat([detection_statistics_df, new_detection_stats], ignore_index=True)
-        print(f"\nProcessed file: {file}\n")
-
-    return CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df
-
 def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Runs vulnerability detection on each file in the folder at the specified path. Runs detection after traversal of all files so security sensitive registers and lock bti registers can be checked against one another
 
@@ -555,7 +529,7 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
                 ).execute()
                 return "fuzzy", float(threshold)
 
-    def fuzzy_matching(query: str, words: list[str], threshold: float, output_file) -> bool:
+    def fuzzy_matching(query: str, words: list[str], threshold: float) -> bool:
         """Check if the query string is a fuzzy match to any word in a list
 
         Args:
@@ -575,13 +549,9 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             # score = jellyfish.jaro_similarity(query, word) * 100 #Returns a score between 0 and 1
             score = jellyfish.jaro_winkler_similarity(query, word) * 100 #Returns a score between 0 and 1
             if score >= threshold:
-                output_file.append(f"{query} matched to {word} with a score of {score}\n")
-                # print(query, word, score)
                 return True
         return False
             
-    output_file = []
-
     CWE_1245_results_df = pd.DataFrame(columns=[col.value for col in CWE_1245_RESULTS_DF_COLS])
     CWE_1233_results_df = pd.DataFrame(columns=[col.value for col in CWE_1233_RESULTS_DF_COLS])
     detection_statistics_df = pd.DataFrame(columns=[col.value for col in DETECTION_STATISTICS_DF_COLS])
@@ -640,7 +610,6 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             if matching_choice == "fuzzy":
                 #FUZZY MATCHING
                 if fuzzy_matching(var.name, list(security_registers['lock-bit-registers']), threshold, output_file):
-                    output_file.append(f"{var.name} added as a lock bit register for {file_name}\n")
                     # print(f"{var.name} added as a lock bit register for {file_name}")
                     security_registers['lock-bit-registers'].add(var.name)
                     var.possible_lock_bit_register = True
@@ -672,7 +641,6 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
                 if fuzzy_matching(var.name, list(security_registers['security-sensitive-registers']), threshold, output_file):
                     #I think I should check fi the variable has any assignments
                     if len(ast_data.variable_assignments[var.name]) > 0:
-                        output_file.append(f"{var.name} added as a security sensitive register for {file_name}\n")
                         security_registers['security-sensitive-registers'].add(var.name)
                         var.security_sensitive = True
                         ast_data.security_sensitive_registers.append(var)
@@ -680,16 +648,12 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
                 #DIRECT MATCHING
                 if var.name in security_registers['security-sensitive-registers']:
                     if len(ast_data.variable_assignments[var.name]) > 0:
-                        output_file.append(f"{var.name} added as a security sensitive register for {file_name}\n")
                         var.security_sensitive = True
                         ast_data.security_sensitive_registers.append(var)
         
         end_time_security_sensitive_register_matching = time.perf_counter()
         security_sensitive_register_matching_duration = end_time_security_sensitive_register_matching - start_time_security_sensitive_register_matching
         detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += security_sensitive_register_matching_duration
-
-    with open("C:\\Users\\parks\\OneDrive\\Documents\\UC\\Research\\DetectRTL\\CWE_Detection\\Results\\9-18-register-matching-trials\\scores.txt", "w") as f:
-        f.write("".join(output_file))
 
     #CWE 1245 Detection
     for file_name, ast_data in parsed_AST_data_dict.items():
