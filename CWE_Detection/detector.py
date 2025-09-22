@@ -5,10 +5,13 @@ import os
 import copy
 import pandas as pd
 import tkinter as tk
-from tkinter import filedialog
 import time
 from collections import defaultdict
 from enums import *
+from rapidfuzz import fuzz
+import jellyfish
+from InquirerPy import inquirer
+from pathlib import Path
 
 
 def load_json_file(file_path: str) -> dict:
@@ -38,100 +41,118 @@ def load_json_file(file_path: str) -> dict:
     
     return parsed_json
 
-def select_files_for_detection() -> str | None:
-    """Opens dialog to select file or folder of files to run for detection
+def file_explorer(start_path: str=".", save_file: bool=False):
+    """Creates a file explorer allowing the user to select where to save the results
+
+    Args:
+        start_path (str): Specifies the starting folder of the file explorer, Defaults to "."
+        save_file (bool): If True shows only folders where the file can be saved, if False shows all files, Defaults to False
+    
+    Returns:
+        str: Selected folder or file path
+    """
+    current_path =start_path
+
+    while True:
+        folder_items = os.listdir(current_path)
+
+        #Add choices for navigation
+        choices = []
+
+        if not save_file:
+            #If the user can select files, add all items at current path (Used when selecting folder or file for detection)
+            if all(file.endswith('.json') for file in folder_items):
+                #Only allow the user to select a folder for detection if all files are in json format
+                choices.append("Select this folder")
+            choices.extend(folder_items)
+        else:
+            #Else only show folders (Used when selecting a folder for saving results)
+            choices.append("Select this folder")
+            choices.append("(New Folder)")
+            sub_folders = []
+            for f in folder_items:
+                if os.path.isdir(os.path.join(current_path, f)):
+                    sub_folders.append(f)
+            choices.extend(sub_folders)
+
+
+        if not os.path.normpath(current_path) ==  os.path.normpath(start_path):
+            choices.append("..")
+
+        print()
+        user_choice = inquirer.select(
+            message=f"Browsing {current_path}",
+            choices=choices,
+            height=len(choices)
+        ).execute()
+
+        match user_choice:
+            case "Select this folder":
+                return current_path
+            case "(New Folder)":
+                new_folder_name: str = inquirer.text(
+                    message="Enter a name for the new folder"
+                ).execute()
+                new_folder_path = os.path.join(current_path, new_folder_name)
+
+                try:
+                    os.makedirs(new_folder_path, exist_ok=True)
+                    print(f"\nNew folder created: {new_folder_name}\n")
+                    current_path = new_folder_path
+                except:
+                    print(f"\nCould not create folder: {new_folder_name}\n")
+            case "..":
+                current_path = os.path.dirname(current_path)
+            case _:
+                selected_path = os.path.join(current_path, user_choice)
+                if os.path.isdir(selected_path):
+                    current_path = selected_path
+                else:
+                    print("xxxxx", selected_path)
+                    return selected_path
+
+def select_files_for_detection() -> str:
+    """
+    Creates a file explorer allowing the user to select a folder or file for detection
 
     Returns:
-        str | None: File or folder path for detection or None if no path was detected
+        str: Folder or file path of files to detect
     """
-
-    root = tk.Tk()
-    root.title("Choose a file or folder") # Set the title of the window
-    root.geometry("300x100")  # Set the size of the window
-
-    def select_file(selected: dict) -> dict:
-        """Opens dialog to select file for detection
-
-        Args:
-            selected (dict): Dictionary to store selected file path in
-
-        Returns:
-            dict: Contains selected file path under path
-        """
-        selected_path = filedialog.askopenfilename(
-            title="Select a file",
-            initialdir="/media/sf_Summer_Research/DetectRTL/CWE_Detection/Parsed_Files",
-            filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
-        )
-        if selected_path:
-            selected['path'] = selected_path
-            root.quit()  # Close the dialog after selection
-
-    def select_folder(selected: dict) -> dict:
-        """Opens dialog to select folder for detection
-
-        Args:
-            selected (dict): Dictionary to store selected folder path in
-
-        Returns:
-            dict: Contains selected folder path under path
-        """
-        selected_path = filedialog.askdirectory(
-            title="Select a folder",
-            initialdir="/media/sf_Summer_Research/DetectRTL/CWE_Detection/Parsed_Files"
-        )
-        if selected_path:
-            selected['path'] = selected_path
-            root.quit() #Close the dialog after selection
-
-    selected = {}
-
-    tk.Button(root, text="Select a file", command=lambda: select_file(selected)).pack(pady=10)
-    tk.Button(root, text="Select a folder", command=lambda: select_folder(selected)).pack(pady=10)
-
-    root.mainloop()
-
-    # If a selection was made return the selected path
-    try:
-        root.destroy()
-        return selected['path']
-    except:
-        print("No selection made. Exiting.")
-        return None        
+    start_path = Path(__file__).parent.resolve() / "Parsed_Files" #Always start here
+    print("\n---Select a folder or file for detection---")
+    selected_path = file_explorer(start_path)
+    return selected_path
 
 def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.DataFrame, detection_statistics_df: pd.DataFrame):
-    """Opens dialog to save results
+    """Creates a file explorer allowing the user to select where to save the results
 
     Args:
         CWE_1245_results_df (pd.DataFrame): CWE 1245 detection results
         CWE_1233_results_df (pd.DataFrame): CWE 1233 detection results
     """
-    root = tk.Tk()
-    root.withdraw()  # Hide the root window
+    start_path = Path(__file__).parent.resolve() / "Results"
+    print("\n---Select a folder to save the results---")
 
-    # Open dialog box to save results file as csv
-    save_file_path = filedialog.asksaveasfilename(
-        defaultextension=".xlsx",  # Default file extension
-        filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")],  # File type filters
-        title=f"All files processes. Where would you like to save the results?",  # Dialog box title
-        initialdir="/media/sf_Summer_Research/CWE_Detection/Results",  # Initial directory
-    )
+    selected_folder_path = file_explorer(start_path, save_file=True)
+
+    file_name: str = inquirer.text(
+        message="Enter a name for the results"
+    ).execute()
+    
+    save_path = os.path.join(selected_folder_path, file_name + ".xlsx")
 
     #Try to save file
-    if save_file_path:
+    if save_path:
         try:
-            # results_df.to_csv(save_file_path, index=False)
-            with pd.ExcelWriter(save_file_path) as writer:
+            with pd.ExcelWriter(save_path) as writer:
                 CWE_1245_results_df.to_excel(writer, sheet_name="CWE 1245 Results", index=False)
                 CWE_1233_results_df.to_excel(writer, sheet_name="CWE 1233 Results", index=False)
                 detection_statistics_df.to_excel(writer, sheet_name="Detection Statistics", index=False)
-            print(f"Results saved successfully to {save_file_path}")
+            print(f"Results saved successfully to {save_path}")
         except Exception as e:
             print(f"Error saving file: {e}")
     else:
         print("File save operation cancelled.")
-
-    root.destroy()  # Close the root window
 
 def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, results: pd.DataFrame) -> pd.DataFrame:
     """Checks the case statement for CWE_1245 vulnerabilities
@@ -357,15 +378,40 @@ def detect_CWE_1233(ast_data: AST_Traverser, results: pd.DataFrame) -> tuple[pd.
         else:
             return "Secure: All security sensitive register assignments are protected"
 
-
-
     #Scenario 2: All locked assignments reject unauthorized writes
     def verify_lock_enforcement_completeness():
-        pass
+        incorrectly_enforced_assignments = defaultdict(list) #{register name: assignment}
 
-    verify_lock_enforcement_completeness()
+        for security_sensitive_register in ast_data.security_sensitive_registers:
+            assignments = ast_data.variable_assignments[security_sensitive_register.name]
+            for assignment in assignments:
+                if assignment.lock_bit_protected:
+                    #Only need to check assignments that are lock bit protected
+                    if assignment.zeroized or assignment.source == assignment.destination:
+                        #If the register is zeroized or set to itself (write is rejected) it should be when the lock is set to 1 (when then ternary conditional is set to True)
+                        parent_node = ast_data.nodes[assignment.parent_id]
+                        if isinstance(parent_node, HdlStmIfNode):
+                            #Lock assignment is enforced correctly
+                            pass
+                        elif isinstance(parent_node, Else_Clause):
+                            incorrectly_enforced_assignments[security_sensitive_register.name].append(assignment)
+                    else:
+                        #Check to make sure that the write is only allowed when the lock bit is set to 0 (when the ternary conditional is set to False)
+                        parent_node = ast_data.nodes[assignment.parent_id]
+                        if isinstance(parent_node, Else_Clause):
+                            #Lock assignment is enforced correctly
+                            pass
+                        elif isinstance(parent_node, HdlStmIfNode):
+                            incorrectly_enforced_assignments[security_sensitive_register.name].append(assignment)
+        if len(incorrectly_enforced_assignments) > 0:
+            #TO-DO: Add in something to show which assignments are not protected, maybe line #
+            return f"Vulnerable: {[reg_name for reg_name in incorrectly_enforced_assignments.keys()]} assignment(s) are not correctly enforced and allow unauthorized writes"
+        else:
+            return "Secure: All security sensitive register assignments are protected"
+                
     results[CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTERS.value] = [node.name for node in ast_data.security_sensitive_registers]
     results[CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value] = verify_security_sensitive_register_coverage()
+    results[CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value] = verify_lock_enforcement_completeness()
 
     return results
 
@@ -452,7 +498,7 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
 
     return CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df
 
-def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def run_detection_on_folder_old(folder_path: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Runs vulnerability detection on each file in the folder at the specified path
 
     Args:
@@ -478,8 +524,230 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
 
     return CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df
 
+def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Runs vulnerability detection on each file in the folder at the specified path. Runs detection after traversal of all files so security sensitive registers and lock bti registers can be checked against one another
+
+    Args:
+        folder_path (str): Folder to run detection on
+
+    Returns:
+        tuple (pd.Dataframe, pd.Dataframe, pd.Dataframe): First dataframe contains CWE 1245 detection results,
+            second dataframe contains CWE 1233 detection results,
+            third dataframe contains detection statistics
+    """
+    def ask_matching_mode():
+        """Allows user to select which matching mode"""
+
+        matching_choice = inquirer.select(
+            message="Choose a matching method for matching security sensitive registers",
+            choices=['Fuzzy', 'Direct']    
+        ).execute()
+
+        match matching_choice:
+            case "Direct":
+                return "direct", None
+            case "Fuzzy":
+                threshold = inquirer.number(
+                    message="Enter a threshold for matching (0-100)",
+                    min_allowed=0,
+                    max_allowed=100,
+                    default=80
+                ).execute()
+                return "fuzzy", float(threshold)
+
+    def fuzzy_matching(query: str, words: list[str], threshold: float, output_file) -> bool:
+        """Check if the query string is a fuzzy match to any word in a list
+
+        Args:
+            query (str): String to try and match
+            words (list[str]): Words to compare against
+            threshold (int): Minimum similarity score required (0-100) required to consider a match.
+
+        Returns:
+            bool: Returns true if query is a fuzzy match to any of the words, False if not
+        """
+        for word in words:
+            # score = fuzz.ratio(query, word)
+            # score = fuzz.partial_ratio(query, word)
+            # score = fuzz.token_sort_ratio(query, word)
+            # score = fuzz.token_set_ratio(query, word)
+            # score = fuzz.WRatio(query, word)
+            # score = jellyfish.jaro_similarity(query, word) * 100 #Returns a score between 0 and 1
+            score = jellyfish.jaro_winkler_similarity(query, word) * 100 #Returns a score between 0 and 1
+            if score >= threshold:
+                output_file.append(f"{query} matched to {word} with a score of {score}\n")
+                # print(query, word, score)
+                return True
+        return False
+            
+    output_file = []
+
+    CWE_1245_results_df = pd.DataFrame(columns=[col.value for col in CWE_1245_RESULTS_DF_COLS])
+    CWE_1233_results_df = pd.DataFrame(columns=[col.value for col in CWE_1233_RESULTS_DF_COLS])
+    detection_statistics_df = pd.DataFrame(columns=[col.value for col in DETECTION_STATISTICS_DF_COLS])
+
+    start_time_parsing = time.perf_counter()
+
+    #Parse the AST for each file
+    parsed_AST_data_dict = {} #Store the parsed AST data with file name as the key and parsed AST data as value
+    security_registers = defaultdict(set)
+    for file_name in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, file_name)
+
+        #Load JSON and traverse the file
+        json_data = load_json_file(file_path=file_path)
+        traverser = AST_Traverser()
+        for module in json_data:
+            traverser.traverse(module, None)
+
+        #Loop through unsatisfiable conditionals to see if they are now satisfiable
+        unsatisfiable_conditionals = copy.deepcopy(traverser.unsatisfiable_conditionals)
+        for cond in unsatisfiable_conditionals.values():
+            if traverser.determine_conditional_satisfiability(conditional_node=cond):
+                traverser.satisfiable_conditionals[cond.node_id] = cond
+                traverser.unsatisfiable_conditionals.pop(cond.node_id)
+        del unsatisfiable_conditionals
+
+        #Add identified security sensitive register names and lock bit register names for matching later
+        for reg in traverser.security_sensitive_registers:
+            security_registers["security-sensitive-registers"].add(reg.name)
+        
+        for reg in traverser.lock_bit_registers:
+            security_registers["lock-bit-registers"].add(reg.name)
+
+        parsed_AST_data_dict[file_name] = traverser
+
+        end_time_parsing = time.perf_counter()
+        parsing_duration = end_time_parsing - start_time_parsing
+        detection_statistics_df = pd.concat([
+            detection_statistics_df,
+            pd.DataFrame([{
+                DETECTION_STATISTICS_DF_COLS.FILE_NAME.value: file_name,
+                DETECTION_STATISTICS_DF_COLS.LINES_OF_CODE.value: traverser.loc,
+                DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value: parsing_duration
+        }])], ignore_index=True)
+
+    matching_choice, threshold = ask_matching_mode()
+
+    #Match identified register lock bits to any variables to find unidentified lock bits
+    for file_name, ast_data in parsed_AST_data_dict.items():
+        start_time_lock_bit_matching = time.perf_counter()
+        for var in ast_data.variables.values():
+            #If the variable has already been identified or it is not an input we don't need to check it
+            if var.possible_lock_bit_register or var.direction != "IN":
+                continue
+
+            if matching_choice == "fuzzy":
+                #FUZZY MATCHING
+                if fuzzy_matching(var.name, list(security_registers['lock-bit-registers']), threshold, output_file):
+                    output_file.append(f"{var.name} added as a lock bit register for {file_name}\n")
+                    # print(f"{var.name} added as a lock bit register for {file_name}")
+                    security_registers['lock-bit-registers'].add(var.name)
+                    var.possible_lock_bit_register = True
+                    ast_data.lock_bit_registers.append(var)
+            elif matching_choice == "direct":
+                #DIRECT NAME MATCHING
+                if var.name in security_registers['lock-bit-registers']:
+                    output_file.append(f"{var.name} added as a lock bit register for {file_name}\n")
+                    var.possible_lock_bit_register = True
+                    ast_data.lock_bit_registers.append(var)
+                
+            #TO-DO check conditionals involving the lock bit to find security sensitive registers if it is a match
+        
+        end_time_lock_bit_matching = time.perf_counter()
+        lock_bit_matching_duration = end_time_lock_bit_matching - start_time_lock_bit_matching
+        detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += lock_bit_matching_duration
+
+
+    #Match variables in each file to the list of known security sensitive and lock bit registers
+    for file_name, ast_data in parsed_AST_data_dict.items():
+        start_time_security_sensitive_register_matching = time.perf_counter()
+        for var in ast_data.variables.values():
+            #If variable has been identified as security sensitive or a lock bit we don't need to double check
+            if var.security_sensitive or var.direction == "IN":
+                continue
+
+            if matching_choice == "fuzzy":
+                #FUZZY MATCHING
+                if fuzzy_matching(var.name, list(security_registers['security-sensitive-registers']), threshold, output_file):
+                    #I think I should check fi the variable has any assignments
+                    if len(ast_data.variable_assignments[var.name]) > 0:
+                        output_file.append(f"{var.name} added as a security sensitive register for {file_name}\n")
+                        security_registers['security-sensitive-registers'].add(var.name)
+                        var.security_sensitive = True
+                        ast_data.security_sensitive_registers.append(var)
+            elif matching_choice == "direct":
+                #DIRECT MATCHING
+                if var.name in security_registers['security-sensitive-registers']:
+                    if len(ast_data.variable_assignments[var.name]) > 0:
+                        output_file.append(f"{var.name} added as a security sensitive register for {file_name}\n")
+                        var.security_sensitive = True
+                        ast_data.security_sensitive_registers.append(var)
+        
+        end_time_security_sensitive_register_matching = time.perf_counter()
+        security_sensitive_register_matching_duration = end_time_security_sensitive_register_matching - start_time_security_sensitive_register_matching
+        detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += security_sensitive_register_matching_duration
+
+    with open("C:\\Users\\parks\\OneDrive\\Documents\\UC\\Research\\DetectRTL\\CWE_Detection\\Results\\9-18-register-matching-trials\\scores.txt", "w") as f:
+        f.write("".join(output_file))
+
+    #CWE 1245 Detection
+    for file_name, ast_data in parsed_AST_data_dict.items():
+        start_time_1245_detection = time.perf_counter()
+        if len(ast_data.case_statements) == 0:
+            #If there are no case statements return the one row 
+            CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([{
+                CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: 'No case statements found',
+                CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
+                CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
+                CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
+            }])], ignore_index=True)
+        else:
+            case_num = 1
+            #Loop through each case statement and run detection
+            for case in ast_data.case_statements.values():
+                results_row = {
+                    CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                    CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: case_num,
+                    CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
+                    CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
+                    CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
+                }
+                detect_CWE_1245(ast_data, case, results=results_row)
+
+                #Concat current results and new results row
+                CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([results_row])], ignore_index=True)
+                case_num += 1
+
+        end_time_1245_detection = time.perf_counter()
+        cwe_1245_detection_duration = end_time_1245_detection - start_time_1245_detection
+        detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += cwe_1245_detection_duration
+
+        
+    #CWE 1233 Detection
+    for file_name, ast_data in parsed_AST_data_dict.items():
+        start_time_1233_detection = time.perf_counter()
+        CWE_1233_results_row = {
+            CWE_1233_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+            CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTERS.value: None,
+            CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value: None,
+            CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value: None,
+        }
+        detect_CWE_1233(ast_data=ast_data, results=CWE_1233_results_row)
+        CWE_1233_results_df = pd.concat([CWE_1233_results_df, pd.DataFrame([CWE_1233_results_row])], ignore_index=True)
+
+        end_time_1233_detection = time.perf_counter()
+        cwe_1233_detection_duration = end_time_1233_detection - start_time_1233_detection
+        detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += cwe_1233_detection_duration
+
+    return CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df
+
+
 def main():
     selected_path = select_files_for_detection()
+
+    print(selected_path)
 
     #Run folder or file detection based on selected path
     if os.path.isdir(selected_path):
