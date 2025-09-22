@@ -16,9 +16,11 @@ class AST_Traverser():
         self.unsatisfiable_conditionals = {}
         self.loc = None
         self.security_sensitive_registers = []
+        self.lock_bit_registers = []
 
         Node._next_node_id = 0  # Reset the node ID counter
 
+    #region HELPER METHODS
     def check_variables(self, lhs: str, rhs: str):
         """Checks if lhs or rhs have a set value
 
@@ -304,7 +306,9 @@ class AST_Traverser():
         #If we can not prove that it is satisfiable then it is unsatisfiable
         conditional_node.satisfiable = False
         return False
+    #endregion HELPER METHODS
 
+    #region TRAVERSAL METHODS
     def traverse(self, node: dict, parent_node_id: int | None):
         """Traverses the supplied node
 
@@ -347,7 +351,10 @@ class AST_Traverser():
         self.loc = node['position'][2] - node['position'][0] + 2  # Calculate lines of code from start to end of the module definition
 
         #Create node
-        module_def_node = HdlModuleDefNode()
+        module_def_node = HdlModuleDefNode(
+            start_line=node['position'][0], 
+            end_line=node['position'][2]
+        )
         self.nodes[module_def_node.node_id] = module_def_node
         
         #Traverse module declaration
@@ -365,7 +372,11 @@ class AST_Traverser():
             parent_node_id (int | None): Id of the parent node
         """
         #Create node
-        module_dec_node = HdlModuleDecNode(parent_id=parent_node_id)
+        module_dec_node = HdlModuleDecNode(
+            parent_id=parent_node_id, 
+            start_line=node['position'][0], 
+            end_line=node['position'][2]
+        )
         self.nodes[module_dec_node.node_id] = module_dec_node
         self.nodes[parent_node_id].add_child(module_dec_node)
 
@@ -383,7 +394,11 @@ class AST_Traverser():
             parent_node_id (int | None): Id of the parent node
         """
         #Create node
-        process_node = HdlStmProcessNode(parent_id=parent_node_id)
+        process_node = HdlStmProcessNode(
+            parent_id=parent_node_id, 
+            start_line=node['position'][0], 
+            end_line=node['position'][2]
+        )
         self.nodes[process_node.node_id] = process_node
         self.nodes[parent_node_id].add_child(process_node)
 
@@ -412,9 +427,19 @@ class AST_Traverser():
             destination = self.traverse(node['dst'], None)
             self.traverse_TernaryOp(node=node['src'], parent_node_id=parent_node_id, destination=destination)
             return
+        
+        #If the source is a lock bit register, set the destination as a possible lock bit register
+        if isinstance(node['src'], str) and self.variables[node['src']].possible_lock_bit_register:
+            self.variables[node['dst']].possible_lock_bit_register = True
 
         #Create node
-        assignment_node = HdlStmAssignNode(source=self.traverse(node['src'], None), destination=self.traverse(node['dst'], None), parent_id=parent_node_id)
+        assignment_node = HdlStmAssignNode(
+            source=self.traverse(node['src'], None), 
+            destination=self.traverse(node['dst'], None), 
+            parent_id=parent_node_id, 
+            start_line=node['position'][0], 
+            end_line=node['position'][2]
+        )
         
         if assignment_node.source is None or assignment_node.destination is None:
             print(f"Warning: Assignment source or destination is None in node {assignment_node.node_id}. Discarding the assignment node")
@@ -443,14 +468,16 @@ class AST_Traverser():
                 case_statement_node = HdlStmCaseNode(
                     switch_variable=self.variables[node['switch_on']['ops'][0]],
                     parent_id=parent_node_id,
-                    switch_variable_bit_width=self.traverse(node['switch_on']['ops'][1], None)
+                    switch_variable_bit_width=self.traverse(node['switch_on']['ops'][1], None), 
+                    start_line=node['position'][0], 
+                    end_line=node['position'][2]
                 )
             else:
                 print('Unhandled switch variable for case statement')
                 return
         else:
             #One variable switch statements
-            case_statement_node = HdlStmCaseNode(switch_variable=self.variables[node['switch_on']], parent_id=parent_node_id)
+            case_statement_node = HdlStmCaseNode(switch_variable=self.variables[node['switch_on']], parent_id=parent_node_id, start_line=node['position'][0], end_line=node['position'][2])
             
         self.nodes[case_statement_node.node_id] = case_statement_node
         self.nodes[parent_node_id].add_child(case_statement_node)
@@ -468,7 +495,12 @@ class AST_Traverser():
                 case_values = [case_value]
 
             #Create node
-            case_node = Case(values=case_values, parent_id=case_statement_node.node_id)
+            case_node = Case(
+                values=case_values, 
+                parent_id=case_statement_node.node_id, 
+                start_line=node['position'][0], 
+                end_line=node['position'][2]
+            )
             self.nodes[case_node.node_id] = case_node
             self.nodes[case_statement_node.node_id].add_case(case_node)
 
@@ -477,7 +509,13 @@ class AST_Traverser():
         #Traverse default if ti exists
         if 'default' in node:
             #Create node
-            default_case_node = Case(values=['default'], parent_id=case_statement_node.node_id, satisfiable=True)
+            default_case_node = Case(
+                values=['default'], 
+                parent_id=case_statement_node.node_id, 
+                satisfiable=True, 
+                start_line=node['position'][0], 
+                end_line=node['position'][2]
+            )
             self.nodes[default_case_node.node_id] = default_case_node
             self.nodes[case_statement_node.node_id].add_default(default_case_node)
 
@@ -491,7 +529,12 @@ class AST_Traverser():
             parent_node_id (int | None): Id of the parent node
         """
         #Create if node
-        if_node = HdlStmIfNode(node['cond'], parent_node_id)
+        if_node = HdlStmIfNode(
+            node['cond'], 
+            parent_node_id, 
+            start_line=node['position'][0], 
+            end_line=node['position'][2]
+        )
         self.nodes[if_node.node_id] = if_node
         self.nodes[parent_node_id].add_child(if_node)
 
@@ -504,7 +547,12 @@ class AST_Traverser():
 
         #Traverse the elifs and create nodes
         for elif_case in node['elifs']:
-            elif_node = Elif_Clause(elif_case[0], if_node.node_id)
+            elif_node = Elif_Clause(
+                elif_case[0], 
+                if_node.node_id, 
+                start_line=node['position'][0], 
+                end_line=node['position'][2]
+            )
             self.nodes[elif_node.node_id] = elif_node
             if_node.add_elif(elif_node)
             if_node.add_child(elif_node)
@@ -523,7 +571,12 @@ class AST_Traverser():
                 'ops': [node['cond']],
                 'fn': 'NEG_LOG'
             }
-            else_node = Else_Clause(cond, if_node.node_id)
+            else_node = Else_Clause(
+                cond, 
+                if_node.node_id, 
+                start_line=node['position'][0], 
+                end_line=node['position'][2]
+            )
             self.nodes[else_node.node_id] = else_node
             if_node.else_clause = else_node
             if_node.add_child(else_node)
@@ -573,7 +626,15 @@ class AST_Traverser():
                     variable_bit_width = None
 
         #Create node
-        id_def_node = HdlIdDefNode(name=node['name']['val'], direction=node['direction'], bit_width=variable_bit_width, type=variable_type, value=value, parent_id=parent_node_id)
+        id_def_node = HdlIdDefNode(
+            name=node['name']['val'], 
+            direction=node['direction'], 
+            bit_width=variable_bit_width, 
+            type=variable_type, value=value, 
+            parent_id=parent_node_id, 
+            start_line=node['position'][0], 
+            end_line=node['position'][2]
+        )
         self.nodes[id_def_node.node_id] = id_def_node
         self.nodes[parent_node_id].add_child(id_def_node)
 
@@ -582,6 +643,9 @@ class AST_Traverser():
                 self.inputs[id_def_node.name] = id_def_node
             case 'OUT':
                 self.outputs[id_def_node.name] = id_def_node
+
+        if id_def_node.possible_lock_bit_register:
+            self.lock_bit_registers.append(id_def_node)
     
         self.variables[id_def_node.name] = id_def_node
 
@@ -589,7 +653,7 @@ class AST_Traverser():
         self.variable_assignments[id_def_node.name] = []
         
     def traverse_HdlValueInt(self, node: dict, parent_node_id: int | None):
-        """Returns the value fo the HdlValueInt AST node
+        """Returns the value of the HdlValueInt AST node
 
         Args:
             node (dict): HdlValueInt node to traverse
@@ -625,14 +689,20 @@ class AST_Traverser():
 
                 return lhs - rhs + 1
             case 'ASSIGN':
-                #If the source of the assignment is a ternary operator, treat it like if statements
+                #If the source of the assignment is a ternary operator, traverse it in a separate function
                 if isinstance(node['ops'][1], dict) and node['ops'][1]['__class__'] == 'HdlOp' and node['ops'][1]['fn'] == 'TERNARY':
                     self.traverse_TernaryOp(node=node['ops'][1], parent_node_id=parent_node_id, destination=node['ops'][0])
                     return
 
                 source = self.traverse(node['ops'][1], None)
                 destination = self.traverse(node['ops'][0], None)
-                assignment_node = HdlStmAssignNode(source=source, destination=destination, parent_id=parent_node_id)
+                assignment_node = HdlStmAssignNode(
+                    source=source, 
+                    destination=destination, 
+                    parent_id=parent_node_id, 
+                    start_line=node['position'][0], 
+                    end_line=node['position'][2]
+                )
 
                 self.nodes[assignment_node.node_id] = assignment_node
                 self.nodes[parent_node_id].add_child(assignment_node)
@@ -695,7 +765,12 @@ class AST_Traverser():
             HdlStmIfNode: Ternary operator formatted as HdlStmIIfNode
         """
         #Create if statement node for ternary operator
-        if_node = HdlStmIfNode(condition=node['ops'][0], parent_id=parent_node_id)
+        if_node = HdlStmIfNode(
+            condition=node['ops'][0], 
+            parent_id=parent_node_id, 
+            start_line=node['position'][0], 
+            end_line=node['position'][2]
+        )
         self.nodes[if_node.node_id] = if_node
         self.nodes[parent_node_id].add_child(if_node)
 
@@ -712,7 +787,13 @@ class AST_Traverser():
         else:
             #Create an assignment node to the original destination
             source = self.traverse(node['ops'][1], if_node.node_id)
-            assignment_node = HdlStmAssignNode(source=source, destination=destination, parent_id=if_node.node_id)
+            assignment_node = HdlStmAssignNode(
+                source=source, 
+                destination=destination, 
+                parent_id=if_node.node_id, 
+                start_line=node['position'][0], 
+                end_line=node['position'][2]
+            )
             self.nodes[assignment_node.node_id] = assignment_node
             self.nodes[if_node.node_id].add_child(assignment_node)
 
@@ -727,7 +808,12 @@ class AST_Traverser():
                 'fn': 'NEG_LOG'
         }
 
-        else_clause = Else_Clause(else_cond, parent_id=if_node.node_id)
+        else_clause = Else_Clause(
+            else_cond, 
+            parent_id=if_node.node_id, 
+            start_line=node['position'][0], 
+            end_line=node['position'][2]
+        )
         self.nodes[else_clause.node_id] = else_clause
         if_node.else_clause = else_clause
         if_node.add_child(else_clause)
@@ -745,7 +831,13 @@ class AST_Traverser():
         else:
             #Create an assignment node to the original destination
             source = self.traverse(node['ops'][2], else_clause.node_id)
-            assignment_node = HdlStmAssignNode(source=source, destination=destination, parent_id=else_clause.node_id)
+            assignment_node = HdlStmAssignNode(
+                source=source, 
+                destination=destination, 
+                parent_id=else_clause.node_id, 
+                start_line=node['position'][0], 
+                end_line=node['position'][2]
+            )
             self.nodes[assignment_node.node_id] = assignment_node
             self.nodes[else_clause.node_id].add_child(assignment_node)
 
@@ -787,3 +879,4 @@ class AST_Traverser():
                 continue
             port: HdlIdDefNode = self.variables[port_name]
             port.module_mapping = node['module_name']
+    #endregion TRAVERSAL METHODS
