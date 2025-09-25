@@ -27,15 +27,15 @@ class HdlModuleDefNode(Node):
 
 class HdlModuleDecNode(Node):
     def __init__(self, parent_id, start_line, end_line):
-        super().__init__('HdlModuleDec', parent_id, start_line, end_line)
+        super().__init__('HdlModuleDec', start_line, end_line, parent_id)
 
 class HdlStmProcessNode(Node):
     def __init__(self, parent_id, start_line, end_line):
-        super().__init__("HdlStmProcess", parent_id, start_line, end_line)
+        super().__init__("HdlStmProcess", start_line, end_line, parent_id)
 
 class HdlIdDefNode(Node):
     def __init__(self, name, direction, bit_width, type, value, parent_id, start_line, end_line):
-        super().__init__('HdlIdDef', parent_id, start_line, end_line)
+        super().__init__('HdlIdDef', start_line, end_line, parent_id)
         self.name = name
         self.direction = direction
         self.bit_width = bit_width
@@ -67,7 +67,7 @@ class HdlIdDefNode(Node):
 
 class HdlStmAssignNode(Node):
     def __init__(self, source, destination, parent_id, start_line, end_line):
-        super().__init__('HdlStmAssign', parent_id, start_line, end_line)
+        super().__init__('HdlStmAssign', start_line, end_line, parent_id)
         self.source = source
         self.destination = destination
         if self.source == 0:
@@ -78,7 +78,7 @@ class HdlStmAssignNode(Node):
 
 class HdlStmCaseNode(Node):
     def __init__(self, switch_variable, parent_id, start_line, end_line, switch_variable_bit_width=None):
-        super().__init__('HdlStmCase', parent_id, start_line, end_line)
+        super().__init__('HdlStmCase', start_line, end_line, parent_id)
         del self.children #The children of the case statement are the cases
         self.switch_variable = switch_variable
         self.switch_variable_bit_width = switch_variable_bit_width
@@ -118,14 +118,14 @@ class HdlStmCaseNode(Node):
 
 class Case(Node):
     def __init__(self, values, parent_id, start_line, end_line, satisfiable=False):
-        super().__init__('Case', parent_id, start_line, end_line)
+        super().__init__('Case', start_line, end_line, parent_id)
         self.case_values = values
         self.satisfiable = satisfiable
         self.primary_value = values[0]
 
 class HdlStmIfNode(Node):
     def __init__(self, condition, parent_id, start_line, end_line):
-        super().__init__('HdlStmIf', parent_id, start_line, end_line)
+        super().__init__('HdlStmIf', start_line, end_line, parent_id)
         self.condition = condition
         self.satisfiable = False
         self.elifs = []
@@ -141,12 +141,12 @@ class HdlStmIfNode(Node):
 
 class Elif_Clause(Node):
     def __init__(self, condition, parent_id, start_line, end_line):
-        super().__init__('Elif_Clause', parent_id, start_line, end_line)
+        super().__init__('Elif_Clause', start_line, end_line, parent_id)
         self.condition = condition
         self.satisfiable = False
 
 class Else_Clause(Node):
     def __init__(self, condition, parent_id, start_line, end_line):
-        super().__init__('Else_Clause', parent_id, start_line, end_line)
+        super().__init__('Else_Clause', start_line, end_line, parent_id)
         self.condition = condition
         self.satisfiable = False

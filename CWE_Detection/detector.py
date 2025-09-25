@@ -123,12 +123,14 @@ def select_files_for_detection() -> str:
     selected_path = file_explorer(start_path)
     return selected_path
 
-def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.DataFrame, detection_statistics_df: pd.DataFrame):
+def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.DataFrame, detailed_results: pd.DataFrame, detection_statistics_df: pd.DataFrame):
     """Creates a file explorer allowing the user to select where to save the results
 
     Args:
         CWE_1245_results_df (pd.DataFrame): CWE 1245 detection results
         CWE_1233_results_df (pd.DataFrame): CWE 1233 detection results
+        detailed_results (pd.DataFrame): Detailed results
+        detection_statistics_df (pd.DataFrame): Detection statistics
     """
     start_path = Path(__file__).parent.resolve() / "Results"
     print("\n---Select a folder to save the results---")
@@ -147,6 +149,7 @@ def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.Data
             with pd.ExcelWriter(save_path) as writer:
                 CWE_1245_results_df.to_excel(writer, sheet_name="CWE 1245 Results", index=False)
                 CWE_1233_results_df.to_excel(writer, sheet_name="CWE 1233 Results", index=False)
+                detailed_results.to_excel(writer, sheet_name="Detailed Results", index=False)
                 detection_statistics_df.to_excel(writer, sheet_name="Detection Statistics", index=False)
             print(f"Results saved successfully to {save_path}")
         except Exception as e:
@@ -154,13 +157,15 @@ def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.Data
     else:
         print("File save operation cancelled.")
 
-def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, results: pd.DataFrame) -> pd.DataFrame:
+def detect_CWE_1245(file_name: str, ast_data: AST_Traverser, case_statement: HdlStmCaseNode, results: pd.DataFrame, detailed_results: pd.DataFrame) -> pd.DataFrame:
     """Checks the case statement for CWE_1245 vulnerabilities
 
     Args:
+        file_name(str): Name of the file being analyzed
         ast_data (AST_Traverser): AST data from the file
         case_statement (HdlStmCaseNode): Case statement to check for vulnerabilities
         results (pd.Dataframe): Dataframe to store the results in
+        detailed_results (pd.Dataframe): Dataframe to store detailed results in
 
     Returns:
         pd.DataFrame: Results of CWE 1245 detection
@@ -202,9 +207,25 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
                             if child_node.else_clause is not None:
                                 return 'Secure: DEFAULT state covers rest of possible values'
                             else:
+                                new_detailed_results_row = {
+                                    DETAILED_RESULTS.FILE_NAME.value: file_name,
+                                    DETAILED_RESULTS.RELATED_CWE.value: "CWE-1245",
+                                    DETAILED_RESULTS.VULNERABILITY_TYPE.value: "Incomplete state coverage",
+                                    DETAILED_RESULTS.LINE_NUMBER.value: case_statement.start_line,
+                                    DETAILED_RESULTS.DESCRIPTION.value: 'If statement withing DEFAULT state restricts the coverage of possible values'
+                                }
+                                detailed_results.loc[len(detailed_results)] = new_detailed_results_row
                                 return 'Vulnerable: If statement within DEFAULT state restricts coverage of possible values'                            
             else:
                 #If no default case, there is a vulnerability
+                new_detailed_results_row = {
+                    DETAILED_RESULTS.FILE_NAME.value: file_name,
+                    DETAILED_RESULTS.RELATED_CWE.value: "CWE-1245",
+                    DETAILED_RESULTS.VULNERABILITY_TYPE.value: "Incomplete state coverage",
+                    DETAILED_RESULTS.LINE_NUMBER.value: case_statement.start_line,
+                    DETAILED_RESULTS.DESCRIPTION.value: f'Defined states do not cover all possible values of switch variable: {switch_variable.name}'
+                }
+                detailed_results.loc[len(detailed_results)] = new_detailed_results_row
                 return 'Vulnerable: Not all possible values covered'
             
     def check_unreachable_states(case_statement: HdlStmCaseNode) -> str:
@@ -263,6 +284,16 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
             #TO_DO: Check if the state variable is mapped to another module, if so it is inconclusive as it could be updated from that module
             if case_statement.switch_variable.module_mapping:
                 return f'Inconclusive: {unreachable_states} state(s) may not be reachable, but state variable is mapped to {case_statement.switch_variable.module_mapping}; transitions may be externally controlled and not visible in this scope'
+            for state in unreachable_states:
+                case_node = next((c for c in case_statement.cases.values() if state in c.case_values), None)
+                new_detailed_results_row = {
+                    DETAILED_RESULTS.FILE_NAME.value: file_name,
+                    DETAILED_RESULTS.RELATED_CWE.value: "CWE-1245",
+                    DETAILED_RESULTS.VULNERABILITY_TYPE.value: "Unreachable state",
+                    DETAILED_RESULTS.LINE_NUMBER.value: case_node.start_line if case_node else case_statement.start_line,
+                    DETAILED_RESULTS.DESCRIPTION.value: f'State {state} is unreachable'
+                }
+                detailed_results.loc[len(detailed_results)] = new_detailed_results_row
             return f'Vulnerable: {unreachable_states} state(s) not reachable'
         else:
             return 'Secure: All states reachable'
@@ -346,6 +377,16 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
             #If the variable is module mapped it is inconclusive since we can't see the assignments.
             if case_statement.switch_variable.module_mapping:
                 return f'Inconclusive: Possible deadlock(s) in {states} state(s), but state variable is mapped to {case_statement.switch_variable.module_mapping}; transitions may be externally controlled and not visible in this scope'
+            for state in states:
+                case_node = next((c for c in case_statement.cases.values() if state in c.case_values), None)
+                new_detailed_results_row = {
+                    DETAILED_RESULTS.FILE_NAME.value: file_name,
+                    DETAILED_RESULTS.RELATED_CWE.value: "CWE-1245",
+                    DETAILED_RESULTS.VULNERABILITY_TYPE.value: "Deadlock state",
+                    DETAILED_RESULTS.LINE_NUMBER.value: case_node.start_line if case_node else case_statement.start_line,
+                    DETAILED_RESULTS.DESCRIPTION.value: f'There is a possible deadlock in state {state}'
+                }
+                detailed_results.loc[len(detailed_results)] = new_detailed_results_row
             return f"Vulnerable: Possible deadlock(s) in {states} state(s)"
         else:
             return f"Secure: No deadlocks detected"
@@ -356,7 +397,7 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
 
     return results
 
-def detect_CWE_1233(ast_data: AST_Traverser, results: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def detect_CWE_1233(file_name: str, ast_data: AST_Traverser, results: pd.DataFrame, detailed_results: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     #Scenario 1: All security sensitive register assignments are locked
     def verify_security_sensitive_register_coverage():
         unprotected_register_assignments = defaultdict(list) #{register name: assignment}
@@ -373,7 +414,17 @@ def detect_CWE_1233(ast_data: AST_Traverser, results: pd.DataFrame) -> tuple[pd.
                     unprotected_register_assignments[security_sensitive_register.name].append(assignment)
         
         if len(unprotected_register_assignments) > 0:
-            #TO-DO: Add in something to show which assignments are not protected, maybe line #
+            for assignment_list in unprotected_register_assignments.values():
+                for assignment in assignment_list:
+                    new_detailed_results_row = {
+                        DETAILED_RESULTS.FILE_NAME.value: file_name,
+                        DETAILED_RESULTS.RELATED_CWE.value: "CWE-1233",
+                        DETAILED_RESULTS.VULNERABILITY_TYPE.value: "Assignment Missing Lock Bit Protection",
+                        DETAILED_RESULTS.LINE_NUMBER.value: assignment.start_line,
+                        DETAILED_RESULTS.DESCRIPTION.value: f'{assignment.destination} is assigned without lock bit protection'
+                    }
+                    detailed_results.loc[len(detailed_results)] = new_detailed_results_row
+                    # detailed_results = pd.concat([detailed_results, pd.DataFrame([new_detailed_results_row])], ignore_index=True)
             return f"Vulnerable: {[reg_name for reg_name in unprotected_register_assignments.keys()]} assignment(s) not protected"
         else:
             return "Secure: All security sensitive register assignments are protected"
@@ -404,7 +455,17 @@ def detect_CWE_1233(ast_data: AST_Traverser, results: pd.DataFrame) -> tuple[pd.
                         elif isinstance(parent_node, HdlStmIfNode):
                             incorrectly_enforced_assignments[security_sensitive_register.name].append(assignment)
         if len(incorrectly_enforced_assignments) > 0:
-            #TO-DO: Add in something to show which assignments are not protected, maybe line #
+            for assignment_list in incorrectly_enforced_assignments.values():
+                for assignment in assignment_list:
+                    get_line_from_file(file_name=file_name, start_line_number=assignment.start_line, end_line_number=assignment.end_line)
+                    new_detailed_results_row = {
+                        DETAILED_RESULTS.FILE_NAME.value: file_name,
+                        DETAILED_RESULTS.RELATED_CWE.value: "CWE-1233",
+                        DETAILED_RESULTS.VULNERABILITY_TYPE.value: "Incorrect Lock Enforcement",
+                        DETAILED_RESULTS.LINE_NUMBER.value: assignment.start_line,
+                        DETAILED_RESULTS.DESCRIPTION.value: f'{assignment.destination} is assigned without correct lock bit enforcement'
+                    }
+                    detailed_results.loc[len(detailed_results)] = new_detailed_results_row
             return f"Vulnerable: {[reg_name for reg_name in incorrectly_enforced_assignments.keys()]} assignment(s) are not correctly enforced and allow unauthorized writes"
         else:
             return "Secure: All security sensitive register assignments are protected"
@@ -424,13 +485,15 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
     Returns:
         tuple (pd.Dataframe, pd.Dataframe, pd.Dataframe): First dataframe contains CWE 1245 detection results,
                                                           second dataframe contains CWE 1233 detection results,
-                                                          third dataframe contains detection statistics
+                                                          third dataframe contains detailed results,
+                                                          fourth dataframe contains detection statistics
     """
     start_time = time.perf_counter()
     file_name = os.path.basename(file_path)
 
     CWE_1245_results_df = pd.DataFrame(columns=[col.value for col in CWE_1245_RESULTS_DF_COLS])
     CWE_1233_results_df = pd.DataFrame(columns=[col.value for col in CWE_1233_RESULTS_DF_COLS])
+    detailed_results_df = pd.DataFrame(columns=[col.value for col in DETAILED_RESULTS])
     detection_statistics_df = pd.DataFrame(columns=[col.value for col in DETECTION_STATISTICS_DF_COLS])
 
     #Load JSON and traverse
@@ -468,7 +531,7 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
                 CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
                 CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
             }
-            detect_CWE_1245(traverser, case, results=results_row)
+            detect_CWE_1245(file_name=file_name, ast_data=traverser, case_statement=case, results=results_row, detailed_results=detailed_results_df)
 
             #Concat current results and new results row
             CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([results_row])], ignore_index=True)
@@ -481,7 +544,7 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
         CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value: None,
         CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value: None,
     }
-    detect_CWE_1233(ast_data=traverser, results=CWE_1233_results_row)
+    detect_CWE_1233(file_name=file_name, ast_data=traverser, results=CWE_1233_results_row, detailed_results=detailed_results_df)
     CWE_1233_results_df = pd.concat([CWE_1233_results_df, pd.DataFrame([CWE_1233_results_row])], ignore_index=True)
 
     #Calculate end of detection time here and assign to rows in each dataframe
@@ -496,9 +559,9 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
         }])
     ], ignore_index=True)
 
-    return CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df
+    return CWE_1245_results_df, CWE_1233_results_df, detailed_results_df, detection_statistics_df
 
-def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Runs vulnerability detection on each file in the folder at the specified path. Runs detection after traversal of all files so security sensitive registers and lock bti registers can be checked against one another
 
     Args:
@@ -507,7 +570,8 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
     Returns:
         tuple (pd.Dataframe, pd.Dataframe, pd.Dataframe): First dataframe contains CWE 1245 detection results,
             second dataframe contains CWE 1233 detection results,
-            third dataframe contains detection statistics
+            third dataframe contains detailed results,
+            fourth dataframe contains detection statistics
     """
     def ask_matching_mode():
         """Allows user to select which matching mode"""
@@ -541,19 +605,20 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             bool: Returns true if query is a fuzzy match to any of the words, False if not
         """
         for word in words:
-            # score = fuzz.ratio(query, word)
+            score = fuzz.ratio(query, word)
             # score = fuzz.partial_ratio(query, word)
             # score = fuzz.token_sort_ratio(query, word)
             # score = fuzz.token_set_ratio(query, word)
             # score = fuzz.WRatio(query, word)
             # score = jellyfish.jaro_similarity(query, word) * 100 #Returns a score between 0 and 1
-            score = jellyfish.jaro_winkler_similarity(query, word) * 100 #Returns a score between 0 and 1
+            # score = jellyfish.jaro_winkler_similarity(query, word) * 100 #Returns a score between 0 and 1
             if score >= threshold:
                 return True
         return False
             
     CWE_1245_results_df = pd.DataFrame(columns=[col.value for col in CWE_1245_RESULTS_DF_COLS])
     CWE_1233_results_df = pd.DataFrame(columns=[col.value for col in CWE_1233_RESULTS_DF_COLS])
+    detailed_results_df = pd.DataFrame(columns=[col.value for col in DETAILED_RESULTS])
     detection_statistics_df = pd.DataFrame(columns=[col.value for col in DETECTION_STATISTICS_DF_COLS])
 
     start_time_parsing = time.perf_counter()
@@ -609,7 +674,7 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
 
             if matching_choice == "fuzzy":
                 #FUZZY MATCHING
-                if fuzzy_matching(var.name, list(security_registers['lock-bit-registers']), threshold, output_file):
+                if fuzzy_matching(var.name, list(security_registers['lock-bit-registers']), threshold):
                     # print(f"{var.name} added as a lock bit register for {file_name}")
                     security_registers['lock-bit-registers'].add(var.name)
                     var.possible_lock_bit_register = True
@@ -617,7 +682,6 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             elif matching_choice == "direct":
                 #DIRECT NAME MATCHING
                 if var.name in security_registers['lock-bit-registers']:
-                    output_file.append(f"{var.name} added as a lock bit register for {file_name}\n")
                     var.possible_lock_bit_register = True
                     ast_data.lock_bit_registers.append(var)
                 
@@ -638,7 +702,7 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
 
             if matching_choice == "fuzzy":
                 #FUZZY MATCHING
-                if fuzzy_matching(var.name, list(security_registers['security-sensitive-registers']), threshold, output_file):
+                if fuzzy_matching(var.name, list(security_registers['security-sensitive-registers']), threshold):
                     #I think I should check fi the variable has any assignments
                     if len(ast_data.variable_assignments[var.name]) > 0:
                         security_registers['security-sensitive-registers'].add(var.name)
@@ -678,7 +742,7 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
                     CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
                     CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
                 }
-                detect_CWE_1245(ast_data, case, results=results_row)
+                detect_CWE_1245(file_name, ast_data, case, results=results_row, detailed_results=detailed_results_df)
 
                 #Concat current results and new results row
                 CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([results_row])], ignore_index=True)
@@ -698,14 +762,14 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value: None,
             CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value: None,
         }
-        detect_CWE_1233(ast_data=ast_data, results=CWE_1233_results_row)
+        detect_CWE_1233(file_name=file_name, ast_data=ast_data, results=CWE_1233_results_row, detailed_results=detailed_results_df)
         CWE_1233_results_df = pd.concat([CWE_1233_results_df, pd.DataFrame([CWE_1233_results_row])], ignore_index=True)
 
         end_time_1233_detection = time.perf_counter()
         cwe_1233_detection_duration = end_time_1233_detection - start_time_1233_detection
         detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += cwe_1233_detection_duration
 
-    return CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df
+    return CWE_1245_results_df, CWE_1233_results_df, detailed_results_df, detection_statistics_df
 
 
 def main():
@@ -715,9 +779,9 @@ def main():
 
     #Run folder or file detection based on selected path
     if os.path.isdir(selected_path):
-        CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df = run_detection_on_folder(selected_path)
+        CWE_1245_results_df, CWE_1233_results_df, detailed_results_df, detection_statistics_df = run_detection_on_folder(selected_path)
     elif os.path.isfile(selected_path):
-        CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df = run_detection_on_file(selected_path)
+        CWE_1245_results_df, CWE_1233_results_df, detailed_results_df, detection_statistics_df = run_detection_on_file(selected_path)
     else:
         print("Invalid selection. Please select a valid file or folder.")
         return
@@ -744,7 +808,7 @@ def main():
     }])
     CWE_1245_results_df = pd.concat([CWE_1245_results_df, CWE_1245_total_row], ignore_index=True)
 
-    save_results(CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df)
+    save_results(CWE_1245_results_df, CWE_1233_results_df, detailed_results_df, detection_statistics_df)
 
 if __name__ == "__main__":
     main()
