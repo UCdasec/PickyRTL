@@ -412,7 +412,15 @@ class AST_Traverser():
             node (dict): HdlStmBlock node to traverse
             parent_node_id (int | None): Id of the parent node
         """
+        line_pos = node['position'][0] + 1
         for obj in node['body']:
+            if not 'position' in obj:
+                #If the object does not have a position tag, assign it the current line position and increment the line position
+                obj['position'] = [line_pos, None, line_pos, None]
+                line_pos += 1
+            else:
+                #If object has a position tag, update the line position to the next line
+                line_pos = obj['position'][2] + 1
             self.traverse(obj, parent_node_id)
 
     def traverse_HdlStmAssign(self, node: dict, parent_node_id: int | None):
@@ -425,7 +433,7 @@ class AST_Traverser():
         #If the source of the assignment is a ternary operation, traverse the ternary operator
         if isinstance(node['src'], dict) and node['src']['__class__'] == 'HdlOp' and node['src']['fn'] == 'TERNARY':
             destination = self.traverse(node['dst'], None)
-            self.traverse_TernaryOp(node=node['src'], parent_node_id=parent_node_id, destination=destination)
+            self.traverse_TernaryOp(node=node['src'], parent_node_id=parent_node_id, destination=destination, start_line=node['position'][0])
             return
         
         #If the source is a lock bit register, set the destination as a possible lock bit register
@@ -485,7 +493,9 @@ class AST_Traverser():
         self.case_statements[case_statement_node.node_id] = case_statement_node
 
         #Traverse cases and create nodes for them
+        case_start_line = node['position'][0] + 1
         for case in node['cases']:
+
             case_value = self.traverse(case[0], None)
             
             #Check if case value is a variable with a value, if so add both values to the case values
@@ -498,13 +508,23 @@ class AST_Traverser():
             case_node = Case(
                 values=case_values, 
                 parent_id=case_statement_node.node_id, 
-                start_line=node['position'][0], 
-                end_line=node['position'][2]
+                start_line=case_start_line, 
+                end_line=None
             )
             self.nodes[case_node.node_id] = case_node
             self.nodes[case_statement_node.node_id].add_case(case_node)
 
-            self.traverse(case[1], case_node.node_id)
+            line_num = case_start_line + 1
+            for i in range(1, len(case)):
+                if 'position' not in case[i]:
+                    case[i]['position'] = [line_num, None, line_num, None]
+                    line_num += 1
+                else:
+                    line_num = case[i]['position'][2] + 1
+                self.traverse(case[i], case_node.node_id)
+
+            case_node.end_line = line_num - 1
+            case_start_line = line_num
 
         #Traverse default if ti exists
         if 'default' in node:
@@ -691,7 +711,7 @@ class AST_Traverser():
             case 'ASSIGN':
                 #If the source of the assignment is a ternary operator, traverse it in a separate function
                 if isinstance(node['ops'][1], dict) and node['ops'][1]['__class__'] == 'HdlOp' and node['ops'][1]['fn'] == 'TERNARY':
-                    self.traverse_TernaryOp(node=node['ops'][1], parent_node_id=parent_node_id, destination=node['ops'][0])
+                    self.traverse_TernaryOp(node=node['ops'][1], parent_node_id=parent_node_id, destination=node['ops'][0], start_line=node['position'][0] if 'position' in node else None) #HdlOP does not include position
                     return
 
                 source = self.traverse(node['ops'][1], None)
@@ -700,8 +720,8 @@ class AST_Traverser():
                     source=source, 
                     destination=destination, 
                     parent_id=parent_node_id, 
-                    start_line=node['position'][0], 
-                    end_line=node['position'][2]
+                    start_line=node['position'][0] if 'position' in node else None, #HdlOP does not include position
+                    end_line=node['position'][2] if 'position' in node else None
                 )
 
                 self.nodes[assignment_node.node_id] = assignment_node
@@ -753,13 +773,14 @@ class AST_Traverser():
             case _:
                 print(f"HdlOP not implemented for {node['fn']}")
     
-    def traverse_TernaryOp(self, node: dict, parent_node_id: int | None, destination: str):
+    def traverse_TernaryOp(self, node: dict, parent_node_id: int | None, destination: str, start_line: int | None):
         """Traverses the ternary operator and converts the ternary condition to an HdlStmIfNode for storage. 
 
         Args:
             node (dict): _description_
             parent_node_id (int | None): _description_
             destination (str): Name of the destination variable
+            start_line (int | None): Line number where the ternary operator starts
 
         Returns:
             HdlStmIfNode: Ternary operator formatted as HdlStmIIfNode
@@ -768,8 +789,8 @@ class AST_Traverser():
         if_node = HdlStmIfNode(
             condition=node['ops'][0], 
             parent_id=parent_node_id, 
-            start_line=node['position'][0], 
-            end_line=node['position'][2]
+            start_line=start_line, 
+            end_line=start_line
         )
         self.nodes[if_node.node_id] = if_node
         self.nodes[parent_node_id].add_child(if_node)
@@ -782,7 +803,7 @@ class AST_Traverser():
 
         #If there is another ternary operation, traverse it
         if isinstance(node['ops'][1], dict) and node['ops'][1]['__class__'] == 'HdlOp' and node['ops'][1]['fn'] == 'TERNARY':
-            if_true_node = self.traverse_TernaryOp(node['ops'][1], parent_node_id=if_node.node_id, destination=destination)
+            if_true_node = self.traverse_TernaryOp(node['ops'][1], parent_node_id=if_node.node_id, destination=destination, start_line=start_line)
             self.nodes[if_node.node_id].add_child(if_true_node)
         else:
             #Create an assignment node to the original destination
@@ -791,8 +812,8 @@ class AST_Traverser():
                 source=source, 
                 destination=destination, 
                 parent_id=if_node.node_id, 
-                start_line=node['position'][0], 
-                end_line=node['position'][2]
+                start_line=start_line, 
+                end_line=start_line
             )
             self.nodes[assignment_node.node_id] = assignment_node
             self.nodes[if_node.node_id].add_child(assignment_node)
@@ -811,8 +832,8 @@ class AST_Traverser():
         else_clause = Else_Clause(
             else_cond, 
             parent_id=if_node.node_id, 
-            start_line=node['position'][0], 
-            end_line=node['position'][2]
+            start_line=start_line, 
+            end_line=start_line
         )
         self.nodes[else_clause.node_id] = else_clause
         if_node.else_clause = else_clause
@@ -826,7 +847,7 @@ class AST_Traverser():
 
         #If there is another ternary operation, traverse it
         if isinstance(node['ops'][2], dict) and node['ops'][2]['__class__'] == 'HdlOp' and node['ops'][2]['fn'] == 'TERNARY':
-            if_false_node = self.traverse_TernaryOp(node['ops'][2], parent_node_id=else_clause.node_id, destination=destination)
+            if_false_node = self.traverse_TernaryOp(node['ops'][2], parent_node_id=else_clause.node_id, destination=destination, start_line=start_line)
             self.nodes[else_clause.node_id].add_child(if_false_node)
         else:
             #Create an assignment node to the original destination
@@ -835,8 +856,8 @@ class AST_Traverser():
                 source=source, 
                 destination=destination, 
                 parent_id=else_clause.node_id, 
-                start_line=node['position'][0], 
-                end_line=node['position'][2]
+                start_line=start_line, 
+                end_line=start_line
             )
             self.nodes[assignment_node.node_id] = assignment_node
             self.nodes[else_clause.node_id].add_child(assignment_node)
