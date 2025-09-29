@@ -88,8 +88,8 @@ class AST_Traverser():
         parent_node = self.nodes[assignment_node.parent_id]
         if isinstance(parent_node, HdlStmIfNode) or isinstance(parent_node, Else_Clause):
             condition = parent_node.condition
-            conidtion_variables = self.extract_conditional_variables(condition)
-            for var in conidtion_variables:
+            condition_variables = self.extract_conditional_variables(condition)
+            for var in condition_variables:
                 if self.variables[var.name].possible_lock_bit_register: #If condition has a lock bit variable
                     destination_node: HdlIdDefNode = self.variables[assignment_node.destination]
                     if not destination_node.security_sensitive:
@@ -98,6 +98,24 @@ class AST_Traverser():
                     return True
                 else:
                     return False
+        else:
+            return False
+
+    def determine_debug_register_assignment(self, assignment_node: HdlStmAssignNode) -> bool:
+        """Determines whether or not the assignment is meant for debugging
+
+        Args:
+            assignment_node (HdlStmAssignNode): Assignment node to check if it is a debugging assignment
+
+        Returns:
+            bool: True if the assignment is a debug assignment, False otherwise
+        """
+        parent_node = self.nodes[assignment_node.parent_id]
+        if isinstance(parent_node, HdlStmIfNode):
+            condition = parent_node.condition
+            condition_variables = self.extract_conditional_variables(condition)
+            if any(self.variables[var.name].debug_register for var in condition_variables): #If condition has a debug register variable
+                return True
         else:
             return False
 
@@ -461,6 +479,7 @@ class AST_Traverser():
 
         #Determine if assignment is protected by lock bit
         assignment_node.lock_bit_protected = self.determine_lock_bit_assignment(assignment_node=assignment_node)
+        assignment_node.isDebugAssignment = self.determine_debug_register_assignment(assignment_node=assignment_node)
 
     def traverse_HdlStmCase(self, node: dict, parent_node_id: int | None):
         """Traverses the HdlStmCase AST node. Stores the case statement switch variable, cases, and default case
@@ -730,6 +749,7 @@ class AST_Traverser():
                 self.variable_assignments[assignment_node.destination].append(assignment_node)
 
                 assignment_node.lock_bit_protected = self.determine_lock_bit_assignment(assignment_node=assignment_node)
+                assignment_node.isDebugAssignment = self.determine_debug_register_assignment(assignment_node=assignment_node)
             case 'INDEX':
                 #TO-DO: FIgure out something with the index. This is a stop gap
                 #Returns the variable name, but does not handle the actual indexing
@@ -821,6 +841,7 @@ class AST_Traverser():
             self.variable_assignments[assignment_node.destination].append(assignment_node)
 
             assignment_node.lock_bit_protected = self.determine_lock_bit_assignment(assignment_node=assignment_node)
+            assignment_node.isDebugAssignment = self.determine_debug_register_assignment(assignment_node=assignment_node)
 
         #Convert second half of ternary operation to else clause with negative of original condition
         else_cond = {
@@ -865,6 +886,7 @@ class AST_Traverser():
             self.variable_assignments[assignment_node.destination].append(assignment_node)
 
             assignment_node.lock_bit_protected = self.determine_lock_bit_assignment(assignment_node=assignment_node)
+            assignment_node.isDebugAssignment = self.determine_debug_register_assignment(assignment_node=assignment_node)
         return if_node
 
     def traverse_HdlCompInst(self, node: dict, parent_node_id: int | None):

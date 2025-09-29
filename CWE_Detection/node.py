@@ -44,6 +44,7 @@ class HdlIdDefNode(Node):
         self.module_mapping = None
         self.possible_lock_bit_register = self.is_lock_name() if direction == "IN" else False
         self.security_sensitive = False
+        self.debug_register = self.is_debug_register() if direction == "IN" else False
 
 
     def calculate_possible_values(self):
@@ -65,6 +66,14 @@ class HdlIdDefNode(Node):
         LOCK_NAME_PATTERNS = [r"(?<!b)lock", r"lck", r"(?<!c)lk(?!c)"] #Detects block currently
         return any(re.search(p, self.name.lower()) for p in LOCK_NAME_PATTERNS)
 
+    def is_debug_register(self) -> bool:
+        """Determines if the variable is a debug register
+
+        Returns:
+            bool: True if the variable is a debug register, False otherwise
+        """
+        DEBUG_NAME_PATTERNS = [r"debug"]
+        return any(re.search(p, self.name.lower()) for p in DEBUG_NAME_PATTERNS)
 class HdlStmAssignNode(Node):
     def __init__(self, source, destination, parent_id, start_line, end_line):
         super().__init__('HdlStmAssign', start_line, end_line, parent_id)
@@ -75,6 +84,8 @@ class HdlStmAssignNode(Node):
         else:
             self.zeroized = False
         self.lock_bit_protected = False
+        self.isDebugAssignment = False
+
 
 class HdlStmCaseNode(Node):
     def __init__(self, switch_variable, parent_id, start_line, end_line, switch_variable_bit_width=None):
