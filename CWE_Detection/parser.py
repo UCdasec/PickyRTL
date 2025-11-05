@@ -1,20 +1,22 @@
-from hdlConvertor import HdlConvertor
-from hdlConvertorAst.hdlAst import HdlModuleDef, HdlModuleDec, HdlDirection
-from hdlConvertorAst.language import Language
-from hdlConvertorAst.hdlAst._structural import HdlContext
-from hdlConvertorAst.to.json import ToJson
-import os
-from pathlib import Path
 import json
+import os
+import re
+from pathlib import Path
+
+from file_selector import file_selector
+# from hdlConvertor import HdlConvertor
+# from hdlConvertorAst.hdlAst import HdlDirection, HdlModuleDec, HdlModuleDef
+# from hdlConvertorAst.hdlAst._structural import HdlContext
+# from hdlConvertorAst.language import Language
+# from hdlConvertorAst.to.json import ToJson
+from InquirerPy import inquirer
 
 
-def parse_file(file_path: str) -> str:
+def parse_file(file_path:str):
     """Parse an HDL file and convert it to JSON format.
 
     Args:
         file_path (str): Path to the HDL file to be parsed.
-    Returns:
-        str: Path to the JSON file containing the parsed HDL data.
     """
     convertor = HdlConvertor()
     to_json = ToJson()
@@ -24,56 +26,82 @@ def parse_file(file_path: str) -> str:
         lang = Language.VERILOG
     elif file_path.endswith('.sv'):
         lang = Language.SYSTEM_VERILOG
-    elif file_path.endswith('.vhd'):
-        lang = Language.VHDL
     else:
         raise ValueError("Unsupported file type")
     
+    #Determine if file has any includes
+    pattern = re.compile(r'^\s*`include\s+["<](.+)[">]', re.MULTILINE)
+    with open(file_path, 'r', encoding='utf-8') as f:
+        includes = pattern.findall(f.read())
+
+    if len(includes) > 0:
+        include_dirs_directory = os.path.join(Path(Path(file_path).parent).parent, 'Include_Dirs')
+        include_dirs = ['.', include_dirs_directory]
+    else:
+        include_dirs = ['.']
+
     #Parse file and turn into JSON
-    parsed_file: HdlContext = convertor.parse([file_path, ], lang, ['.'])
-    parsed_json = to_json.visit_HdlContext(parsed_file)
+    try:
+        parsed_file: HdlContext = convertor.parse(
+            filenames=[file_path], 
+            language=lang, 
+            incdirs=include_dirs
+        )
+        parsed_json = to_json.visit_HdlContext(parsed_file)
 
-    folders = file_path.split(os.sep)[:-1]
+        folders = file_path.split(os.sep)[:-1]
 
-    #Create JSON file path
-    parsed_json_filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Parsed_Files', folders[-2], folders[-1], f"{Path(file_path).stem}_parsed.json")
-    os.makedirs(os.path.dirname(parsed_json_filepath), exist_ok=True)
+        #Create JSON file path
+        parsed_json_filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Parsed_Files', folders[-2], folders[-1], f"{Path(file_path).stem}_parsed.json")
+        os.makedirs(os.path.dirname(parsed_json_filepath), exist_ok=True)
 
-    #Save the JSON file
-    with open(parsed_json_filepath, 'w') as f:
-        json.dump(parsed_json, f, indent=4)
+        #Save the JSON file
+        with open(parsed_json_filepath, 'w') as f:
+            json.dump(parsed_json, f, indent=4)
 
-    print(f"{Path(file_path).name} parsed and saved to: {parsed_json_filepath}")
+        print(f"{Path(file_path).name} parsed and saved to: {parsed_json_filepath}")
 
-    return parsed_json_filepath
+        return parsed_json_filepath
+    except Exception as e:
+        print(f"Error parsing {file_path}: {e}")
+        return None
 
-
-def parse_folder(folder_path: str):
+def parse_folder(folder_path:str):
     """Parse all files in a folder and convert them to JSON format.
 
     Args:
         folder_path (str): Path to the folder containing HDL files to be parsed.
-    Returns:
-        list(str): List of paths to the JSON files containing the parsed HDL data.
     """
-    parsed_file_paths = []
     for file in os.listdir(folder_path):
-        # if "9" in file:
-        #     continue
         file_path = os.path.join(folder_path, file)
-        parsed_file_paths.append(parse_file(file_path))
+        parse_file(file_path)
 
-    return parsed_file_paths
+def parse():
+    from hdlConvertor import HdlConvertor
+    from hdlConvertorAst.hdlAst import HdlDirection, HdlModuleDec, HdlModuleDef
+    from hdlConvertorAst.hdlAst._structural import HdlContext
+    from hdlConvertorAst.language import Language
+    from hdlConvertorAst.to.json import ToJson
+
+    #Main function that can be called from detector
+    while True:
+        selected_path = file_selector(
+            message="---Select a folder or file to parse---",
+            start_path=Path(__file__).parent.resolve() / "../CWE_Examples",
+            file_extensions_allowed=['.v', '.sv']
+        )
+        
+        if os.path.isdir(selected_path):
+            parse_folder(selected_path)
+        elif os.path.isfile(selected_path):
+            parse_file(selected_path)
+        else:
+            print("Invalid Selection. Please Select a Valid File or Folder")
+            return
     
-def main():
-    # file_path = "/media/sf_Summer_Research/CWE_Examples/CWE-1245/Vulnerable_Code/example_9_vulnerable.sv"
-    # parse_file(file_path)
-
-    folder_path = "/media/sf_Summer_Research/DetectRTL/CWE_Examples/CWE-1233/Vulnerable_Code"
-    x = parse_folder(folder_path)
 
 if __name__ == "__main__":
-    main()
+    parse()
 
 
 
