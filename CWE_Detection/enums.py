@@ -14,6 +14,11 @@ class CWE_1233_RESULTS_DF_COLS(Enum):
     LOCK_ENFORCEMENT = "Lock Enforcement"
     SECURITY_SENSITIVE_REGISTER_COVERAGE = "Security Sensitive Register Coverage"
 
+class CWE_226_RESULTS_DF_COLS(Enum):
+    FILE_NAME = "File Name"
+    REGISTER = "Register"
+    RESET_COVERAGE = "Reset Coverage"
+
 class DETECTION_STATISTICS_DF_COLS(Enum):
     FILE_NAME = "File Name"
     LINES_OF_CODE = "LoC"
