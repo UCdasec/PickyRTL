@@ -45,6 +45,7 @@ class HdlIdDefNode(Node):
         self.possible_lock_bit_register = self.is_lock_name() if direction == "IN" else False
         self.security_sensitive = False
         self.debug_register = self.is_debug_register() if direction == "IN" else False
+        self.reset_register = self.is_reset_register()
 
 
     def calculate_possible_values(self):
@@ -74,6 +75,15 @@ class HdlIdDefNode(Node):
         """
         DEBUG_NAME_PATTERNS = [r"debug"]
         return any(re.search(p, self.name.lower()) for p in DEBUG_NAME_PATTERNS)
+    
+    def is_reset_register(self) -> bool:
+        """Determines if the variable is a reset register
+
+        Returns:
+            bool: True if the variable is a reset register, False otherwise
+        """
+        RESET_NAME_PATTERNS = [r"reset", r"rst"]
+        return any(re.search(p, self.name.lower()) for p in RESET_NAME_PATTERNS)
 class HdlStmAssignNode(Node):
     def __init__(self, source, destination, parent_id, start_line, end_line):
         super().__init__('HdlStmAssign', start_line, end_line, parent_id)
@@ -161,3 +171,11 @@ class Else_Clause(Node):
         super().__init__('Else_Clause', start_line, end_line, parent_id)
         self.condition = condition
         self.satisfiable = False
+
+class HdlStmForNode(Node):
+    def __init__(self, var, init_value, stop_condition, step, parent_id, start_line, end_line):
+        super().__init__('HdlStmForLoop', start_line, end_line, parent_id)
+        self.var = var
+        self.init_value = init_value
+        self.stop_condition = stop_condition
+        self.step = step
