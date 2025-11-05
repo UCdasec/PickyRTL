@@ -78,7 +78,7 @@ assign reglk_ctrl = reglk_ctrl_i;
 integer j;
 always @(posedge clk_i)
     begin
-        if(~(rst_ni && ~rst_5))
+        if(~(rst_ni))
             begin
               for (j=0; j < AcCt_MEM_SIZE; j=j+1) begin
                 acct_mem[j] <= 32'hffffffff; 

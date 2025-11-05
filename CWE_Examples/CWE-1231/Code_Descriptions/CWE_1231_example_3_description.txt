@@ -1,0 +1,6 @@
+This module is locked register example. The 'lock_status' register blocks any writes
+after it is set to 1. However, it allows override of the lock protection when scan_mode
+or debug_unlocked modes are active. If either of these modes can be triggered by software,
+then the lock protection may be bypassed. To mitigate this vulnerability the debug and scan mode overrides
+should be removed or the enabling of those modes should be protected so only trusted and
+authorized users may enable these modes.

@@ -1,0 +1,1935 @@
+[
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            5,
+            1,
+            85,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " synopsys template\r\n"
+            },
+            "position": [
+                5,
+                1,
+                85,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "aes_1cc"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        7,
+                        3,
+                        7,
+                        5
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "clk"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        8,
+                        3,
+                        8,
+                        5
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "rst"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        9,
+                        3,
+                        9,
+                        9
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "g_input"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    "NK",
+                                                    {
+                                                        "__class__": "HdlValueInt",
+                                                        "val": "32",
+                                                        "base": 10
+                                                    }
+                                                ],
+                                                "fn": "MUL"
+                                            },
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10
+                                            }
+                                        ],
+                                        "fn": "SUB"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " key\r\n"
+                    },
+                    "position": [
+                        10,
+                        3,
+                        10,
+                        9
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "e_input"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "127",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " message is ALWAYS 128-bit, fixed length block cipher\r\n"
+                    },
+                    "position": [
+                        11,
+                        3,
+                        11,
+                        3
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "o"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "127",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                }
+            ]
+        },
+        "module_name": "aes_1cc",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    13,
+                    14,
+                    13,
+                    19
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "NB"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlValueInt",
+                    "val": "4",
+                    "base": 10
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    14,
+                    14,
+                    14,
+                    19
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "NK"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlValueInt",
+                    "val": "4",
+                    "base": 10
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    15,
+                    17,
+                    15,
+                    23
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "NR"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlValueInt",
+                    "val": "10",
+                    "base": 10
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    22,
+                    34,
+                    22,
+                    36
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "key"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "wire",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "NK",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "32",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "MUL"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "SUB"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    23,
+                    28,
+                    23,
+                    30
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "msg"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "wire",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "127",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": "fixed block size, irrespective of key length\r\n"
+                },
+                "position": [
+                    24,
+                    28,
+                    24,
+                    30
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "out"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "wire",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "127",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    25,
+                    34,
+                    25,
+                    44
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "expandedKey"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "wire",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "NB",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "32",
+                                                            "base": 10
+                                                        }
+                                                    ],
+                                                    "fn": "MUL"
+                                                },
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "NR",
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "1",
+                                                            "base": 10
+                                                        }
+                                                    ],
+                                                    "fn": "ADD"
+                                                }
+                                            ],
+                                            "fn": "MUL"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "SUB"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " NR+1 128bit subkeys\r\n"
+                },
+                "position": [
+                    27,
+                    32,
+                    27,
+                    49
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "expandedKeyi"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "wire",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "32",
+                                                            "base": 10
+                                                        },
+                                                        "NB"
+                                                    ],
+                                                    "fn": "MUL"
+                                                },
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "SUB"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "DOWNTO"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "NR",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        }
+                    ],
+                    "fn": "INDEX"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    28,
+                    32,
+                    28,
+                    41
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "x1"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "wire",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "32",
+                                                            "base": 10
+                                                        },
+                                                        "NB"
+                                                    ],
+                                                    "fn": "MUL"
+                                                },
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "SUB"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "DOWNTO"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "NR",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "SUB"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        }
+                    ],
+                    "fn": "INDEX"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    29,
+                    32,
+                    29,
+                    41
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "x2"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "wire",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "32",
+                                                            "base": 10
+                                                        },
+                                                        "NB"
+                                                    ],
+                                                    "fn": "MUL"
+                                                },
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "SUB"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "DOWNTO"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "NR",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "SUB"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        }
+                    ],
+                    "fn": "INDEX"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    30,
+                    32,
+                    30,
+                    41
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "x3"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "wire",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "32",
+                                                            "base": 10
+                                                        },
+                                                        "NB"
+                                                    ],
+                                                    "fn": "MUL"
+                                                },
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "SUB"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "DOWNTO"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "NR",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "SUB"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        }
+                    ],
+                    "fn": "INDEX"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    31,
+                    32,
+                    31,
+                    41
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "x4"
+                },
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "wire",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        {
+                                                            "__class__": "HdlValueInt",
+                                                            "val": "32",
+                                                            "base": 10
+                                                        },
+                                                        "NB"
+                                                    ],
+                                                    "fn": "MUL"
+                                                },
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "SUB"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "DOWNTO"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "NR",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "2",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "SUB"
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        }
+                    ],
+                    "fn": "INDEX"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    34,
+                    11,
+                    34,
+                    23
+                ],
+                "labels": [],
+                "src": "g_input",
+                "dst": "key",
+                "is_blocking": false
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    35,
+                    11,
+                    35,
+                    23
+                ],
+                "labels": [],
+                "src": "e_input",
+                "dst": "msg",
+                "is_blocking": false
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "position": [
+                    36,
+                    11,
+                    36,
+                    17
+                ],
+                "labels": [],
+                "src": "out",
+                "dst": "o",
+                "is_blocking": false
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    38,
+                    10,
+                    38,
+                    10
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "i"
+                },
+                "type": "genvar",
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "e",
+                "module_name": "KeyExpansion",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "key",
+                            "key"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "expandedKey",
+                            "expandedKey"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    }
+                ]
+            },
+            {
+                "__class__": "HdlStmFor",
+                "position": [
+                    44,
+                    3,
+                    47,
+                    5
+                ],
+                "labels": [],
+                "in_preproc": true,
+                "init": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        44,
+                        7,
+                        44,
+                        9
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmAssign",
+                            "position": [
+                                44,
+                                7,
+                                44,
+                                9
+                            ],
+                            "labels": [],
+                            "src": {
+                                "__class__": "HdlValueInt",
+                                "val": "0",
+                                "base": 10
+                            },
+                            "dst": "i",
+                            "is_blocking": true
+                        }
+                    ]
+                },
+                "cond": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "NR",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "ADD"
+                        }
+                    ],
+                    "fn": "LT"
+                },
+                "step": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "i",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "ADD"
+                        }
+                    ],
+                    "fn": "ASSIGN"
+                },
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        45,
+                        3,
+                        47,
+                        5
+                    ],
+                    "labels": [
+                        {
+                            "__class__": "str",
+                            "val": "EXPANDKEY"
+                        }
+                    ],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmAssign",
+                            "position": [
+                                46,
+                                12,
+                                46,
+                                63
+                            ],
+                            "labels": [],
+                            "src": {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "expandedKey",
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "32",
+                                                                        "base": 10
+                                                                    },
+                                                                    "NB"
+                                                                ],
+                                                                "fn": "MUL"
+                                                            },
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "i",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "1",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "ADD"
+                                                            }
+                                                        ],
+                                                        "fn": "MUL"
+                                                    },
+                                                    {
+                                                        "__class__": "HdlValueInt",
+                                                        "val": "1",
+                                                        "base": 10
+                                                    }
+                                                ],
+                                                "fn": "SUB"
+                                            },
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "32",
+                                                                "base": 10
+                                                            },
+                                                            "NB"
+                                                        ],
+                                                        "fn": "MUL"
+                                                    },
+                                                    "i"
+                                                ],
+                                                "fn": "MUL"
+                                            }
+                                        ],
+                                        "fn": "DOWNTO"
+                                    }
+                                ],
+                                "fn": "INDEX"
+                            },
+                            "dst": {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "expandedKeyi",
+                                    "i"
+                                ],
+                                "fn": "INDEX"
+                            },
+                            "is_blocking": false
+                        }
+                    ]
+                }
+            },
+            {
+                "__class__": "HdlCompInst",
+                "name": "a",
+                "module_name": "AddRoundKey",
+                "param_map": [],
+                "port_map": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "x",
+                            "msg"
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "y",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "expandedKeyi",
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "INDEX"
+                            }
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "z",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "x1",
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "INDEX"
+                            }
+                        ],
+                        "fn": "MAP_ASSOCIATION"
+                    }
+                ]
+            },
+            {
+                "__class__": "HdlStmFor",
+                "position": [
+                    53,
+                    3,
+                    56,
+                    5
+                ],
+                "labels": [],
+                "in_preproc": true,
+                "init": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        53,
+                        7,
+                        53,
+                        9
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmAssign",
+                            "position": [
+                                53,
+                                7,
+                                53,
+                                9
+                            ],
+                            "labels": [],
+                            "src": {
+                                "__class__": "HdlValueInt",
+                                "val": "0",
+                                "base": 10
+                            },
+                            "dst": "i",
+                            "is_blocking": true
+                        }
+                    ]
+                },
+                "cond": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        "NR"
+                    ],
+                    "fn": "LT"
+                },
+                "step": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "i",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "ADD"
+                        }
+                    ],
+                    "fn": "ASSIGN"
+                },
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        54,
+                        3,
+                        56,
+                        5
+                    ],
+                    "labels": [
+                        {
+                            "__class__": "str",
+                            "val": "SUBBYTES"
+                        }
+                    ],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlCompInst",
+                            "name": "a",
+                            "module_name": "SubBytes",
+                            "param_map": [],
+                            "port_map": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "x",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "x1",
+                                                "i"
+                                            ],
+                                            "fn": "INDEX"
+                                        }
+                                    ],
+                                    "fn": "MAP_ASSOCIATION"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "z",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "x2",
+                                                "i"
+                                            ],
+                                            "fn": "INDEX"
+                                        }
+                                    ],
+                                    "fn": "MAP_ASSOCIATION"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "__class__": "HdlStmFor",
+                "position": [
+                    60,
+                    3,
+                    63,
+                    5
+                ],
+                "labels": [],
+                "in_preproc": true,
+                "init": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        60,
+                        7,
+                        60,
+                        9
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmAssign",
+                            "position": [
+                                60,
+                                7,
+                                60,
+                                9
+                            ],
+                            "labels": [],
+                            "src": {
+                                "__class__": "HdlValueInt",
+                                "val": "0",
+                                "base": 10
+                            },
+                            "dst": "i",
+                            "is_blocking": true
+                        }
+                    ]
+                },
+                "cond": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        "NR"
+                    ],
+                    "fn": "LT"
+                },
+                "step": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "i",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "ADD"
+                        }
+                    ],
+                    "fn": "ASSIGN"
+                },
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        61,
+                        3,
+                        63,
+                        5
+                    ],
+                    "labels": [
+                        {
+                            "__class__": "str",
+                            "val": "SHIFTROWS"
+                        }
+                    ],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlCompInst",
+                            "name": "c",
+                            "module_name": "ShiftRows",
+                            "param_map": [],
+                            "port_map": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "x",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "x2",
+                                                "i"
+                                            ],
+                                            "fn": "INDEX"
+                                        }
+                                    ],
+                                    "fn": "MAP_ASSOCIATION"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "z",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "x3",
+                                                "i"
+                                            ],
+                                            "fn": "INDEX"
+                                        }
+                                    ],
+                                    "fn": "MAP_ASSOCIATION"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "__class__": "HdlStmFor",
+                "position": [
+                    67,
+                    3,
+                    70,
+                    5
+                ],
+                "labels": [],
+                "in_preproc": true,
+                "init": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        67,
+                        7,
+                        67,
+                        9
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmAssign",
+                            "position": [
+                                67,
+                                7,
+                                67,
+                                9
+                            ],
+                            "labels": [],
+                            "src": {
+                                "__class__": "HdlValueInt",
+                                "val": "0",
+                                "base": 10
+                            },
+                            "dst": "i",
+                            "is_blocking": true
+                        }
+                    ]
+                },
+                "cond": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "NR",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "SUB"
+                        }
+                    ],
+                    "fn": "LT"
+                },
+                "step": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "i",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "ADD"
+                        }
+                    ],
+                    "fn": "ASSIGN"
+                },
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        68,
+                        3,
+                        70,
+                        5
+                    ],
+                    "labels": [
+                        {
+                            "__class__": "str",
+                            "val": "MIXCOLUMNS"
+                        }
+                    ],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlCompInst",
+                            "name": "d",
+                            "module_name": "MixColumns",
+                            "param_map": [],
+                            "port_map": [
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "x",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "x3",
+                                                "i"
+                                            ],
+                                            "fn": "INDEX"
+                                        }
+                                    ],
+                                    "fn": "MAP_ASSOCIATION"
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "z",
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "x4",
+                                                "i"
+                                            ],
+                                            "fn": "INDEX"
+                                        }
+                                    ],
+                                    "fn": "MAP_ASSOCIATION"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "__class__": "HdlStmFor",
+                "position": [
+                    74,
+                    3,
+                    81,
+                    5
+                ],
+                "labels": [],
+                "in_preproc": true,
+                "init": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        74,
+                        7,
+                        74,
+                        9
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmAssign",
+                            "position": [
+                                74,
+                                7,
+                                74,
+                                9
+                            ],
+                            "labels": [],
+                            "src": {
+                                "__class__": "HdlValueInt",
+                                "val": "0",
+                                "base": 10
+                            },
+                            "dst": "i",
+                            "is_blocking": true
+                        }
+                    ]
+                },
+                "cond": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        "NR"
+                    ],
+                    "fn": "LT"
+                },
+                "step": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "i",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "i",
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "ADD"
+                        }
+                    ],
+                    "fn": "ASSIGN"
+                },
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        75,
+                        3,
+                        81,
+                        5
+                    ],
+                    "labels": [
+                        {
+                            "__class__": "str",
+                            "val": "ADDROUNDKEY"
+                        }
+                    ],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmIf",
+                            "position": [
+                                76,
+                                5,
+                                80,
+                                7
+                            ],
+                            "labels": [],
+                            "cond": {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "i",
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "NR",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10
+                                            }
+                                        ],
+                                        "fn": "SUB"
+                                    }
+                                ],
+                                "fn": "EQ"
+                            },
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    76,
+                                    17,
+                                    78,
+                                    7
+                                ],
+                                "labels": [
+                                    {
+                                        "__class__": "str",
+                                        "val": "LAST"
+                                    }
+                                ],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlCompInst",
+                                        "name": "a",
+                                        "module_name": "AddRoundKey",
+                                        "param_map": [],
+                                        "port_map": [
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    "x",
+                                                    {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "x3",
+                                                            "i"
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    }
+                                                ],
+                                                "fn": "MAP_ASSOCIATION"
+                                            },
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    "y",
+                                                    {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "expandedKeyi",
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "i",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "1",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "ADD"
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    }
+                                                ],
+                                                "fn": "MAP_ASSOCIATION"
+                                            },
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    "z",
+                                                    "out"
+                                                ],
+                                                "fn": "MAP_ASSOCIATION"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "elifs": [],
+                            "if_false": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    78,
+                                    14,
+                                    80,
+                                    7
+                                ],
+                                "labels": [
+                                    {
+                                        "__class__": "str",
+                                        "val": "ELSE"
+                                    }
+                                ],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlCompInst",
+                                        "name": "a",
+                                        "module_name": "AddRoundKey",
+                                        "param_map": [],
+                                        "port_map": [
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    "x",
+                                                    {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "x4",
+                                                            "i"
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    }
+                                                ],
+                                                "fn": "MAP_ASSOCIATION"
+                                            },
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    "y",
+                                                    {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "expandedKeyi",
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "i",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "1",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "ADD"
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    }
+                                                ],
+                                                "fn": "MAP_ASSOCIATION"
+                                            },
+                                            {
+                                                "__class__": "HdlOp",
+                                                "ops": [
+                                                    "z",
+                                                    {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "x1",
+                                                            {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "i",
+                                                                    {
+                                                                        "__class__": "HdlValueInt",
+                                                                        "val": "1",
+                                                                        "base": 10
+                                                                    }
+                                                                ],
+                                                                "fn": "ADD"
+                                                            }
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    }
+                                                ],
+                                                "fn": "MAP_ASSOCIATION"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+]

@@ -1,0 +1,4 @@
+This example is from a verilog implementation fo the ChaCha cipher from the secworks repository.
+In this example 'data_out' is continuously driven data_out_reg which may contain
+intermediate state results. 'data_out' should only be drive to when the data is valid
+and complete. To fix this I checked the data_out_valid_reg before driving data_out_reg to data_out.

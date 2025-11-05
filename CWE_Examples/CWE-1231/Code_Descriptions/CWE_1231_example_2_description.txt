@@ -1,0 +1,6 @@
+The reglk_mem register manages the locking of sensitive registers. The security fo the system
+can be compromised if the register lock configurations are disable or corrupted.
+In this example the reglk_mem registers are reset when the system enters debug mode.
+This can allow users to put the system in debug mode and access sensitive content that shoud
+be locked. THis cna be mitigated by removing the debug mode signal from the reset logic of
+register locks. This is an example of a CWE-1234 vulnerability.

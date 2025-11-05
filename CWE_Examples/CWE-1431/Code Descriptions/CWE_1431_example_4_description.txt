@@ -1,0 +1,8 @@
+This code is from the HACK@DAC'21 OpenPiton SoC repository. It is from the sha256 module.
+In this module the 'digest' wire is continuously assigned the internal hash registers
+These registers are updated throughout the SHA round processing. These values should
+not be drive onto an output wire until the digest is valid. Even if the output is
+ignored until the digest is ready in another module, the intermediate results are still
+on the wire and can possibly be retrieved. To mitigate this, the 'digest' wire should
+only be driven to after checking that the digest is valid/ready. The fix I have implemented
+may not be correct but fixes the vulnerability.

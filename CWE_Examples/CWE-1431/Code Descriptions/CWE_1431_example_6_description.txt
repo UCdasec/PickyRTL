@@ -1,0 +1,5 @@
+This code example is from the Hack@DAC 2018 Phase 2 Buggy SoC. It is from the aes_1cc module.
+The 'o' output signal is the result output for this module. The internal 'out' wire
+drives its value onto 'o' continuously without checking if the output is valid or not.
+To fix this vulnerability I added an 'o_valid' signal that is raised when the output is valid. 
+My fix may not be functionally  but provides a secure pattern.

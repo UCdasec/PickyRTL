@@ -1,0 +1,4 @@
+This example comes from the aes_core module in the HACK@DAC'21 OpenPiton SoC repository. In the module 
+'muxed_new_block' holds the encryption/decryption datapath's output. THis is directly assigned to the output 
+'result' without first checking if the result is valid. The ensure that this module is secure the assignment 
+to result should be gated by a check to ensure the result is valid. The fix I implemented may not be correct but is a possible fix.

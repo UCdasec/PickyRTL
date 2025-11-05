@@ -1,0 +1,6 @@
+This code example is from the OpenPiton SoC of HACK@DAC'21. reglk_mem is used for locking information. 
+The 'rst_ni' signal is the global reset signal which resets all peripherals back to their
+initial states. The 'rst_9' is a peripheral specific reset signal which only resets individual peripherals.
+The reset controller can transmit a peripheral reset signal to the reigster lock within
+the user privilege domain. The 'rst_9' signal should be removed from the register lock
+if condition to mitigate this issue. This is an example of CWE-1231

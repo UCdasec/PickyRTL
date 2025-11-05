@@ -1,0 +1,6 @@
+This example si from the HACK@DAC'21 OpenPiton SoC repository. It is from the hmac repository.
+'hash_o' is the output logic for this module. In the hmac module it was correctly assigned 
+the sha_digest after checking the sha_digest_valid signal. I have modified the code
+to be vulnerable by assigning sha_digest to hash_o when the sha_digest_valid signal is not true.
+This creates a vulnerable code pattern where intermediate results will be driven to
+the output.

@@ -1,0 +1,6 @@
+This example is from the OpenTitan GitHub repository. The 'data_state_q'
+register holds data state in between rounds. The 'data_o' register stores
+the output data of the module. On line 239 in the vulnerable example 'data_state_q'
+is assigned to 'data_o' which would allow an attacker to infer intermediate state data
+from 'data_o'. To mitigate this issue 'data_state_q' should only be assigned to 'data_o'
+when the encryption is valid. This is done by checking the register 'valid_q' in the fixed example.

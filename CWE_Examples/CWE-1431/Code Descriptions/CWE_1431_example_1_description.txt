@@ -1,0 +1,7 @@
+Example 1 is an example from the CWE website. It shows a crypto module that takes input data
+and encrypts it by processing through multiple encryption rounds. 'data_state_q' contains
+intermediate state/results and is assigned to the module output register 'data_o'.
+This would allow an attacker to obtain these intermediate results through data_o.
+To mitigate this vulnerability data_state_q should only be assigned to when it contains
+the final result. TO do this the fixed example checks if the encryption is valid before
+assigning data_state_q to data_o. If it is not valid then it assigns a safe value to data_o
