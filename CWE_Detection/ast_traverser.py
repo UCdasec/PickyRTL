@@ -1,22 +1,31 @@
-from node import *
 import copy
-import re
 import itertools
+import re
+
+from node import *
+
 
 class AST_Traverser():
     def __init__(self):
-        self.nodes = {}
-        self.variables = {}
-        self.outputs = {}
-        self.inputs = {}
-        self.params = {}
-        self.variable_assignments = {} # {variable_name: [assignment1, assignment2, ...]}
-        self.case_statements = {}
-        self.satisfiable_conditionals = {}
-        self.unsatisfiable_conditionals = {}
-        self.loc = None
-        self.security_sensitive_registers = []
-        self.lock_bit_registers = []
+        self.nodes = {} # {node_id: Node}, Stores all nodes in the module
+        self.procedural_blocks = {} # {HdlStmProcessNode: assignments within procedural block}, Stores all procedural blocks in the module
+        self.current_procedural_block = None # Current procedural block being traversed
+        self.variables = {} # {variable_name: HdlIdDefNode}, Stores all variables in the module
+        self.outputs = {} # {output_name: HdlIdDefNode}, Stores all outputs in the module
+        self.inputs = {} # {input_name: HdlIdDefNode}, Stores all inputs in the module
+        self.params = {} # {param_name: HdlIdDefNode}, Stores all parameters in the module
+        self.variable_assignments = {} # {variable_name: [assignment1, assignment2, ...]}, Stores all assignments to each variable
+        self.case_statements = {} # {case_statement_node_id: HdlStmCaseNode}, Stores all case statements in the module
+        self.satisfiable_conditionals = {} # {conditional_node_id: HdlStmIfNode | Else_Clause | Elif_Clause}, Stores all satisfiable conditionals in the module
+        self.unsatisfiable_conditionals = {} # {conditional_node_id: HdlStmIfNode | Else_Clause | Elif_Clause}, Stores all unsatisfiable conditionals in the module
+        self.loc = None # Lines of code in the module
+        self.security_sensitive_registers = [] # List of HdlIdDefNodes that have been identified as security sensitive 
+        self.lock_bit_registers = [] # List of HdlIdDefNodes that are possible lock bit registers
+
+        #For CWE-1431 detection
+        self.crypto_module = False # Signifies if the module is a cryptographic module, used for CWE-1431 detection
+        self.crypto_output = None # HdlIdDefNode that is the cryptographic output of the module, if self.crypto_module is False this will be None
+        self.crypto_output_valid = None # HdlIdDefNode that is the valid signal that indicates when the crypto output is valid, if self.crypto_module is False this will be None
 
         Node._next_node_id = 0  # Reset the node ID counter
 
@@ -324,6 +333,31 @@ class AST_Traverser():
         #If we can not prove that it is satisfiable then it is unsatisfiable
         conditional_node.satisfiable = False
         return False
+    
+    def create_assignment_node(self, source, destination, parent_node_id, start_line, end_line):
+        #Create node
+        assignment_node = HdlStmAssignNode(
+            source=source, 
+            destination=destination, 
+            parent_id=parent_node_id, 
+            start_line=start_line, 
+            end_line=end_line
+        )
+
+        if assignment_node.source is None or assignment_node.destination is None:
+            print(f"Warning: Assignment source or destination is None in node {assignment_node.node_id}. Discarding the assignment node")
+            return
+        
+        #Add assignment to dictionaries
+        self.nodes[assignment_node.node_id] = assignment_node
+        self.nodes[parent_node_id].add_child(assignment_node)
+        if self.current_procedural_block is not None:
+            self.procedural_blocks[self.current_procedural_block.node_id].append(assignment_node)
+        self.variable_assignments[assignment_node.destination].append(assignment_node)
+
+        #Determine if assignment is protected by lock bit or if it a debug assignment
+        assignment_node.lock_bit_protected = self.determine_lock_bit_assignment(assignment_node=assignment_node)
+        assignment_node.isDebugAssignment = self.determine_debug_register_assignment(assignment_node=assignment_node)
     #endregion HELPER METHODS
 
     #region TRAVERSAL METHODS
@@ -367,6 +401,15 @@ class AST_Traverser():
             raise ValueError(f"HdlModuleDef should be the first node, parent_node_id is {parent_node_id}")
         
         self.loc = node['position'][2] - node['position'][0] + 2  # Calculate lines of code from start to end of the module definition
+
+        #Check if module is a cryptographic module
+        module_name = node['module_name']
+        crypto_module_pattern = re.compile(
+            r'(?i)(?<![A-Za-z0-9])(?:aes\d*|sha\d*|crypto|hmac|md5|otp(?:_ctrl|_scrmbl)?|chacha|scrambl|cipher|hash|mac)(?![A-Za-z0-9])'
+        )
+        if crypto_module_pattern.search(module_name):
+            print(f"\n\n\nCrypto module found {module_name}\n\n\n")
+            self.crypto_module = True
 
         #Create node
         module_def_node = HdlModuleDefNode(
@@ -419,6 +462,8 @@ class AST_Traverser():
         )
         self.nodes[process_node.node_id] = process_node
         self.nodes[parent_node_id].add_child(process_node)
+        self.procedural_blocks[process_node.node_id] = []
+        self.current_procedural_block = process_node
 
         #Traverse the body
         self.traverse(node['body'], process_node.node_id)
@@ -458,28 +503,13 @@ class AST_Traverser():
         if isinstance(node['src'], str) and self.variables[node['src']].possible_lock_bit_register:
             self.variables[node['dst']].possible_lock_bit_register = True
 
-        #Create node
-        assignment_node = HdlStmAssignNode(
-            source=self.traverse(node['src'], None), 
+        self.create_assignment_node(
+            source = self.traverse(node['src'], None),
             destination=self.traverse(node['dst'], None), 
-            parent_id=parent_node_id, 
+            parent_node_id=parent_node_id, 
             start_line=node['position'][0], 
             end_line=node['position'][2]
         )
-        
-        if assignment_node.source is None or assignment_node.destination is None:
-            print(f"Warning: Assignment source or destination is None in node {assignment_node.node_id}. Discarding the assignment node")
-            return
-
-        self.nodes[assignment_node.node_id] = assignment_node
-        self.nodes[parent_node_id].add_child(assignment_node)
-
-        #Add assignment to the variable
-        self.variable_assignments[assignment_node.destination].append(assignment_node)
-
-        #Determine if assignment is protected by lock bit
-        assignment_node.lock_bit_protected = self.determine_lock_bit_assignment(assignment_node=assignment_node)
-        assignment_node.isDebugAssignment = self.determine_debug_register_assignment(assignment_node=assignment_node)
 
     def traverse_HdlStmCase(self, node: dict, parent_node_id: int | None):
         """Traverses the HdlStmCase AST node. Stores the case statement switch variable, cases, and default case
@@ -733,23 +763,14 @@ class AST_Traverser():
                     self.traverse_TernaryOp(node=node['ops'][1], parent_node_id=parent_node_id, destination=node['ops'][0], start_line=node['position'][0] if 'position' in node else None) #HdlOP does not include position
                     return
 
-                source = self.traverse(node['ops'][1], None)
-                destination = self.traverse(node['ops'][0], None)
-                assignment_node = HdlStmAssignNode(
-                    source=source, 
-                    destination=destination, 
-                    parent_id=parent_node_id, 
+                #Create assignment node
+                self.create_assignment_node(
+                    source = self.traverse(node['ops'][1], None),
+                    destination=self.traverse(node['ops'][0], None), 
+                    parent_node_id=parent_node_id, 
                     start_line=node['position'][0] if 'position' in node else None, #HdlOP does not include position
                     end_line=node['position'][2] if 'position' in node else None
                 )
-
-                self.nodes[assignment_node.node_id] = assignment_node
-                self.nodes[parent_node_id].add_child(assignment_node)
-
-                self.variable_assignments[assignment_node.destination].append(assignment_node)
-
-                assignment_node.lock_bit_protected = self.determine_lock_bit_assignment(assignment_node=assignment_node)
-                assignment_node.isDebugAssignment = self.determine_debug_register_assignment(assignment_node=assignment_node)
             case 'INDEX':
                 #TO-DO: FIgure out something with the index. This is a stop gap
                 #Returns the variable name, but does not handle the actual indexing
@@ -760,11 +781,11 @@ class AST_Traverser():
 
                 lhs, rhs = self.check_variables(lhs, rhs)
 
-                if lhs is None or rhs is None:
-                    print(f"Warning: One of the operands in SUB operation is None. lhs: {lhs}, rhs: {rhs}. Returning None")
+                try:
+                    return lhs - rhs
+                except TypeError as e:
+                    print(f"Error performing SUB operation with lhs: {lhs} and rhs: {rhs}. Error: {e}. Returning None")
                     return None
-
-                return lhs - rhs
             case 'MUL':
                 lhs = self.traverse(node['ops'][0], None)
                 rhs = self.traverse(node['ops'][1], None)
@@ -827,21 +848,13 @@ class AST_Traverser():
             self.nodes[if_node.node_id].add_child(if_true_node)
         else:
             #Create an assignment node to the original destination
-            source = self.traverse(node['ops'][1], if_node.node_id)
-            assignment_node = HdlStmAssignNode(
-                source=source, 
+            self.create_assignment_node(
+                source = self.traverse(node['ops'][1], if_node.node_id),
                 destination=destination, 
-                parent_id=if_node.node_id, 
+                parent_node_id=if_node.node_id, 
                 start_line=start_line, 
                 end_line=start_line
             )
-            self.nodes[assignment_node.node_id] = assignment_node
-            self.nodes[if_node.node_id].add_child(assignment_node)
-
-            self.variable_assignments[assignment_node.destination].append(assignment_node)
-
-            assignment_node.lock_bit_protected = self.determine_lock_bit_assignment(assignment_node=assignment_node)
-            assignment_node.isDebugAssignment = self.determine_debug_register_assignment(assignment_node=assignment_node)
 
         #Convert second half of ternary operation to else clause with negative of original condition
         else_cond = {
@@ -872,21 +885,14 @@ class AST_Traverser():
             self.nodes[else_clause.node_id].add_child(if_false_node)
         else:
             #Create an assignment node to the original destination
-            source = self.traverse(node['ops'][2], else_clause.node_id)
-            assignment_node = HdlStmAssignNode(
-                source=source, 
+            self.create_assignment_node(
+                source = self.traverse(node['ops'][2], else_clause.node_id),
                 destination=destination, 
-                parent_id=else_clause.node_id, 
+                parent_node_id=else_clause.node_id, 
                 start_line=start_line, 
                 end_line=start_line
             )
-            self.nodes[assignment_node.node_id] = assignment_node
-            self.nodes[else_clause.node_id].add_child(assignment_node)
 
-            self.variable_assignments[assignment_node.destination].append(assignment_node)
-
-            assignment_node.lock_bit_protected = self.determine_lock_bit_assignment(assignment_node=assignment_node)
-            assignment_node.isDebugAssignment = self.determine_debug_register_assignment(assignment_node=assignment_node)
         return if_node
 
     def traverse_HdlCompInst(self, node: dict, parent_node_id: int | None):
@@ -922,4 +928,29 @@ class AST_Traverser():
                 continue
             port: HdlIdDefNode = self.variables[port_name]
             port.module_mapping = node['module_name']
+
+    def traverse_HdlStmFor(self, node: dict, parent_node_id: int | None):
+        init = node['init']
+        for_loop_var = None
+        var_init_value = None
+        if init['__class__'] == 'HdlStmBlock':
+            init_assignment = init['body'][0]
+            for_loop_var = self.variables[init_assignment['dst']]
+            var_init_value = self.traverse(init_assignment['src'], None)
+        else:
+            print(f"Warning: Unknown init value in for loop on line {node['position'][0]}")
+        for_loop_node = HdlStmForNode(
+            var=for_loop_var,
+            init_value=var_init_value,
+            stop_condition=node['cond'],
+            step=node['step'],
+            parent_id=parent_node_id,
+            start_line=node['position'][0],
+            end_line=node['position'][2]
+        )
+
+        self.nodes[for_loop_node.node_id] = for_loop_node
+        self.nodes[parent_node_id].add_child(for_loop_node)
+
+        self.traverse(node=node['body'], parent_node_id=for_loop_node.node_id)
     #endregion TRAVERSAL METHODS
