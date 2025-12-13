@@ -2971,7 +2971,7 @@
                 "src": {
                     "__class__": "HdlOp",
                     "ops": [
-                        "digest_valid_reg",
+                        "digest_valid",
                         {
                             "__class__": "HdlOp",
                             "ops": [

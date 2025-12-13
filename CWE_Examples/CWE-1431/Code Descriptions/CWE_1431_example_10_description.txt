@@ -1,0 +1,5 @@
+This code example is from the Hack@DAC 2019 Alpha Stage SoC. It is from the aes_192 module.
+The 'out' output register is the result output for the module. In the vulnerable example 'out' is
+assigned the intermediate results from each round. This is a CWE-1431 vulnerability. I have implemented
+a secure fix by adding a 'next_out' register where I assign the intermediate results and then assign 'next_out'
+to 'out' when 'out_valid' is high.

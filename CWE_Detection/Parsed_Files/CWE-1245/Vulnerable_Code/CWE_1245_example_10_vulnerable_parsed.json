@@ -1,12 +1,7 @@
 [
     {
         "__class__": "HdlModuleDef",
-        "position": [
-            44,
-            1,
-            558,
-            9
-        ],
+        "position": [44, 1, 558, 9],
         "name": {
             "__class__": "str",
             "val": null
@@ -17,12 +12,7 @@
                 "__class__": "str",
                 "val": "======================================================================\n\n sha256_core.v\n -------------\n Verilog 2001 implementation of the SHA-256 hash function.\n This is the internal core with wide interfaces.\n\n\n Author: Joachim Strombergson\n Copyright (c) 2013, Secworks Sweden AB\n All rights reserved.\n\n Redistribution and use in source and binary forms, with or\n without modification, are permitted provided that the following\n conditions are met:\n\n 1. Redistributions of source code must retain the above copyright\n   notice, this list of conditions and the following disclaimer.\n\n 2. Redistributions in binary form must reproduce the above copyright\n   notice, this list of conditions and the following disclaimer in\n   the documentation and/or other materials provided with the\n   distribution.\n\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\n LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS\n FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE\n COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,\n INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,\n BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\n CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,\n STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\n ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF\n ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n\n======================================================================\n Modified by Matthew Hicks:\n  Convert to synchronous, positive level reset\n  Fix at 256-bit mode\n"
             },
-            "position": [
-                44,
-                1,
-                558,
-                9
-            ],
+            "position": [44, 1, 558, 9],
             "name": {
                 "__class__": "str",
                 "val": "sha256"
@@ -36,12 +26,7 @@
                         "__class__": "str",
                         "val": "----------------------------------------------------------------\n Internal constant and parameter definitions.\n----------------------------------------------------------------\n"
                     },
-                    "position": [
-                        65,
-                        11,
-                        65,
-                        36
-                    ],
+                    "position": [65, 11, 65, 36],
                     "name": {
                         "__class__": "str",
                         "val": "SHA256_H0_0"
@@ -59,12 +44,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        66,
-                        11,
-                        66,
-                        36
-                    ],
+                    "position": [66, 11, 66, 36],
                     "name": {
                         "__class__": "str",
                         "val": "SHA256_H0_1"
@@ -82,12 +62,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        67,
-                        11,
-                        67,
-                        36
-                    ],
+                    "position": [67, 11, 67, 36],
                     "name": {
                         "__class__": "str",
                         "val": "SHA256_H0_2"
@@ -105,12 +80,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        68,
-                        11,
-                        68,
-                        36
-                    ],
+                    "position": [68, 11, 68, 36],
                     "name": {
                         "__class__": "str",
                         "val": "SHA256_H0_3"
@@ -128,12 +98,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        69,
-                        11,
-                        69,
-                        36
-                    ],
+                    "position": [69, 11, 69, 36],
                     "name": {
                         "__class__": "str",
                         "val": "SHA256_H0_4"
@@ -151,12 +116,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        70,
-                        11,
-                        70,
-                        36
-                    ],
+                    "position": [70, 11, 70, 36],
                     "name": {
                         "__class__": "str",
                         "val": "SHA256_H0_5"
@@ -174,12 +134,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        71,
-                        11,
-                        71,
-                        36
-                    ],
+                    "position": [71, 11, 71, 36],
                     "name": {
                         "__class__": "str",
                         "val": "SHA256_H0_6"
@@ -197,12 +152,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        72,
-                        11,
-                        72,
-                        36
-                    ],
+                    "position": [72, 11, 72, 36],
                     "name": {
                         "__class__": "str",
                         "val": "SHA256_H0_7"
@@ -220,12 +170,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        74,
-                        11,
-                        74,
-                        28
-                    ],
+                    "position": [74, 11, 74, 28],
                     "name": {
                         "__class__": "str",
                         "val": "SHA256_ROUNDS"
@@ -242,12 +187,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        76,
-                        11,
-                        76,
-                        25
-                    ],
+                    "position": [76, 11, 76, 25],
                     "name": {
                         "__class__": "str",
                         "val": "CTRL_IDLE"
@@ -264,12 +204,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        77,
-                        11,
-                        77,
-                        25
-                    ],
+                    "position": [77, 11, 77, 25],
                     "name": {
                         "__class__": "str",
                         "val": "CTRL_ROUNDS"
@@ -286,12 +221,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        78,
-                        11,
-                        78,
-                        25
-                    ],
+                    "position": [78, 11, 78, 25],
                     "name": {
                         "__class__": "str",
                         "val": "CTRL_DONE"
@@ -308,12 +238,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        79,
-                        11,
-                        79,
-                        25
-                    ],
+                    "position": [79, 11, 79, 25],
                     "name": {
                         "__class__": "str",
                         "val": "CTRL_IGNORE"
@@ -332,12 +257,7 @@
             "ports": [
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        45,
-                        12,
-                        45,
-                        36
-                    ],
+                    "position": [45, 12, 45, 36],
                     "name": {
                         "__class__": "str",
                         "val": "clk"
@@ -349,12 +269,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        46,
-                        12,
-                        46,
-                        36
-                    ],
+                    "position": [46, 12, 46, 36],
                     "name": {
                         "__class__": "str",
                         "val": "rst"
@@ -366,12 +281,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        48,
-                        12,
-                        48,
-                        37
-                    ],
+                    "position": [48, 12, 48, 37],
                     "name": {
                         "__class__": "str",
                         "val": "init"
@@ -383,12 +293,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        49,
-                        12,
-                        49,
-                        37
-                    ],
+                    "position": [49, 12, 49, 37],
                     "name": {
                         "__class__": "str",
                         "val": "next"
@@ -400,12 +305,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        51,
-                        12,
-                        51,
-                        38
-                    ],
+                    "position": [51, 12, 51, 38],
                     "name": {
                         "__class__": "str",
                         "val": "block"
@@ -441,12 +341,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        53,
-                        12,
-                        53,
-                        40
-                    ],
+                    "position": [53, 12, 53, 40],
                     "name": {
                         "__class__": "str",
                         "val": "h_block"
@@ -482,12 +377,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        54,
-                        12,
-                        54,
-                        47
-                    ],
+                    "position": [54, 12, 54, 47],
                     "name": {
                         "__class__": "str",
                         "val": "h_block_update"
@@ -499,12 +389,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        56,
-                        12,
-                        56,
-                        38
-                    ],
+                    "position": [56, 12, 56, 38],
                     "name": {
                         "__class__": "str",
                         "val": "ready"
@@ -516,12 +401,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        57,
-                        12,
-                        57,
-                        39
-                    ],
+                    "position": [57, 12, 57, 39],
                     "name": {
                         "__class__": "str",
                         "val": "digest"
@@ -557,12 +437,7 @@
                 },
                 {
                     "__class__": "HdlIdDef",
-                    "position": [
-                        58,
-                        12,
-                        58,
-                        45
-                    ],
+                    "position": [58, 12, 58, 45],
                     "name": {
                         "__class__": "str",
                         "val": "digest_valid"
@@ -582,12 +457,7 @@
                     "__class__": "str",
                     "val": "----------------------------------------------------------------\n Registers including update variables and write enable.\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    85,
-                    14,
-                    85,
-                    18
-                ],
+                "position": [85, 14, 85, 18],
                 "name": {
                     "__class__": "str",
                     "val": "a_reg"
@@ -624,12 +494,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    86,
-                    14,
-                    86,
-                    18
-                ],
+                "position": [86, 14, 86, 18],
                 "name": {
                     "__class__": "str",
                     "val": "a_new"
@@ -666,12 +531,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    87,
-                    14,
-                    87,
-                    18
-                ],
+                "position": [87, 14, 87, 18],
                 "name": {
                     "__class__": "str",
                     "val": "b_reg"
@@ -708,12 +568,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    88,
-                    14,
-                    88,
-                    18
-                ],
+                "position": [88, 14, 88, 18],
                 "name": {
                     "__class__": "str",
                     "val": "b_new"
@@ -750,12 +605,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    89,
-                    14,
-                    89,
-                    18
-                ],
+                "position": [89, 14, 89, 18],
                 "name": {
                     "__class__": "str",
                     "val": "c_reg"
@@ -792,12 +642,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    90,
-                    14,
-                    90,
-                    18
-                ],
+                "position": [90, 14, 90, 18],
                 "name": {
                     "__class__": "str",
                     "val": "c_new"
@@ -834,12 +679,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    91,
-                    14,
-                    91,
-                    18
-                ],
+                "position": [91, 14, 91, 18],
                 "name": {
                     "__class__": "str",
                     "val": "d_reg"
@@ -876,12 +716,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    92,
-                    14,
-                    92,
-                    18
-                ],
+                "position": [92, 14, 92, 18],
                 "name": {
                     "__class__": "str",
                     "val": "d_new"
@@ -918,12 +753,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    93,
-                    14,
-                    93,
-                    18
-                ],
+                "position": [93, 14, 93, 18],
                 "name": {
                     "__class__": "str",
                     "val": "e_reg"
@@ -960,12 +790,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    94,
-                    14,
-                    94,
-                    18
-                ],
+                "position": [94, 14, 94, 18],
                 "name": {
                     "__class__": "str",
                     "val": "e_new"
@@ -1002,12 +827,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    95,
-                    14,
-                    95,
-                    18
-                ],
+                "position": [95, 14, 95, 18],
                 "name": {
                     "__class__": "str",
                     "val": "f_reg"
@@ -1044,12 +864,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    96,
-                    14,
-                    96,
-                    18
-                ],
+                "position": [96, 14, 96, 18],
                 "name": {
                     "__class__": "str",
                     "val": "f_new"
@@ -1086,12 +901,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    97,
-                    14,
-                    97,
-                    18
-                ],
+                "position": [97, 14, 97, 18],
                 "name": {
                     "__class__": "str",
                     "val": "g_reg"
@@ -1128,12 +938,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    98,
-                    14,
-                    98,
-                    18
-                ],
+                "position": [98, 14, 98, 18],
                 "name": {
                     "__class__": "str",
                     "val": "g_new"
@@ -1170,12 +975,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    99,
-                    14,
-                    99,
-                    18
-                ],
+                "position": [99, 14, 99, 18],
                 "name": {
                     "__class__": "str",
                     "val": "h_reg"
@@ -1212,12 +1012,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    100,
-                    14,
-                    100,
-                    18
-                ],
+                "position": [100, 14, 100, 18],
                 "name": {
                     "__class__": "str",
                     "val": "h_new"
@@ -1254,12 +1049,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    101,
-                    14,
-                    101,
-                    19
-                ],
+                "position": [101, 14, 101, 19],
                 "name": {
                     "__class__": "str",
                     "val": "a_h_we"
@@ -1284,12 +1074,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    103,
-                    14,
-                    103,
-                    19
-                ],
+                "position": [103, 14, 103, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H0_reg"
@@ -1326,12 +1111,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    104,
-                    14,
-                    104,
-                    19
-                ],
+                "position": [104, 14, 104, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H0_new"
@@ -1368,12 +1148,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    105,
-                    14,
-                    105,
-                    19
-                ],
+                "position": [105, 14, 105, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H1_reg"
@@ -1410,12 +1185,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    106,
-                    14,
-                    106,
-                    19
-                ],
+                "position": [106, 14, 106, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H1_new"
@@ -1452,12 +1222,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    107,
-                    14,
-                    107,
-                    19
-                ],
+                "position": [107, 14, 107, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H2_reg"
@@ -1494,12 +1259,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    108,
-                    14,
-                    108,
-                    19
-                ],
+                "position": [108, 14, 108, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H2_new"
@@ -1536,12 +1296,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    109,
-                    14,
-                    109,
-                    19
-                ],
+                "position": [109, 14, 109, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H3_reg"
@@ -1578,12 +1333,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    110,
-                    14,
-                    110,
-                    19
-                ],
+                "position": [110, 14, 110, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H3_new"
@@ -1620,12 +1370,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    111,
-                    14,
-                    111,
-                    19
-                ],
+                "position": [111, 14, 111, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H4_reg"
@@ -1662,12 +1407,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    112,
-                    14,
-                    112,
-                    19
-                ],
+                "position": [112, 14, 112, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H4_new"
@@ -1704,12 +1444,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    113,
-                    14,
-                    113,
-                    19
-                ],
+                "position": [113, 14, 113, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H5_reg"
@@ -1746,12 +1481,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    114,
-                    14,
-                    114,
-                    19
-                ],
+                "position": [114, 14, 114, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H5_new"
@@ -1788,12 +1518,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    115,
-                    14,
-                    115,
-                    19
-                ],
+                "position": [115, 14, 115, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H6_reg"
@@ -1830,12 +1555,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    116,
-                    14,
-                    116,
-                    19
-                ],
+                "position": [116, 14, 116, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H6_new"
@@ -1872,12 +1592,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    117,
-                    14,
-                    117,
-                    19
-                ],
+                "position": [117, 14, 117, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H7_reg"
@@ -1914,12 +1629,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    118,
-                    14,
-                    118,
-                    19
-                ],
+                "position": [118, 14, 118, 19],
                 "name": {
                     "__class__": "str",
                     "val": "H7_new"
@@ -1956,12 +1666,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    119,
-                    14,
-                    119,
-                    17
-                ],
+                "position": [119, 14, 119, 17],
                 "name": {
                     "__class__": "str",
                     "val": "H_we"
@@ -1986,12 +1691,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    121,
-                    13,
-                    121,
-                    21
-                ],
+                "position": [121, 13, 121, 21],
                 "name": {
                     "__class__": "str",
                     "val": "t_ctr_reg"
@@ -2028,12 +1728,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    122,
-                    13,
-                    122,
-                    21
-                ],
+                "position": [122, 13, 122, 21],
                 "name": {
                     "__class__": "str",
                     "val": "t_ctr_new"
@@ -2070,12 +1765,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    123,
-                    13,
-                    123,
-                    20
-                ],
+                "position": [123, 13, 123, 20],
                 "name": {
                     "__class__": "str",
                     "val": "t_ctr_we"
@@ -2100,12 +1790,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    124,
-                    13,
-                    124,
-                    21
-                ],
+                "position": [124, 13, 124, 21],
                 "name": {
                     "__class__": "str",
                     "val": "t_ctr_inc"
@@ -2130,12 +1815,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    125,
-                    13,
-                    125,
-                    21
-                ],
+                "position": [125, 13, 125, 21],
                 "name": {
                     "__class__": "str",
                     "val": "t_ctr_rst"
@@ -2160,12 +1840,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    127,
-                    5,
-                    127,
-                    20
-                ],
+                "position": [127, 5, 127, 20],
                 "name": {
                     "__class__": "str",
                     "val": "digest_valid_reg"
@@ -2190,12 +1865,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    128,
-                    5,
-                    128,
-                    20
-                ],
+                "position": [128, 5, 128, 20],
                 "name": {
                     "__class__": "str",
                     "val": "digest_valid_new"
@@ -2220,12 +1890,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    129,
-                    5,
-                    129,
-                    19
-                ],
+                "position": [129, 5, 129, 19],
                 "name": {
                     "__class__": "str",
                     "val": "digest_valid_we"
@@ -2250,12 +1915,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    131,
-                    5,
-                    131,
-                    20
-                ],
+                "position": [131, 5, 131, 20],
                 "name": {
                     "__class__": "str",
                     "val": "ignore_input_reg"
@@ -2280,12 +1940,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    132,
-                    5,
-                    132,
-                    20
-                ],
+                "position": [132, 5, 132, 20],
                 "name": {
                     "__class__": "str",
                     "val": "ignore_input_new"
@@ -2310,12 +1965,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    133,
-                    5,
-                    133,
-                    19
-                ],
+                "position": [133, 5, 133, 19],
                 "name": {
                     "__class__": "str",
                     "val": "ignore_input_en"
@@ -2340,12 +1990,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    135,
-                    13,
-                    135,
-                    27
-                ],
+                "position": [135, 13, 135, 27],
                 "name": {
                     "__class__": "str",
                     "val": "sha256_ctrl_reg"
@@ -2382,12 +2027,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    136,
-                    13,
-                    136,
-                    27
-                ],
+                "position": [136, 13, 136, 27],
                 "name": {
                     "__class__": "str",
                     "val": "sha256_ctrl_new"
@@ -2424,12 +2064,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    137,
-                    13,
-                    137,
-                    26
-                ],
+                "position": [137, 13, 137, 26],
                 "name": {
                     "__class__": "str",
                     "val": "sha256_ctrl_we"
@@ -2458,12 +2093,7 @@
                     "__class__": "str",
                     "val": "----------------------------------------------------------------\n Wires.\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    143,
-                    5,
-                    143,
-                    15
-                ],
+                "position": [143, 5, 143, 15],
                 "name": {
                     "__class__": "str",
                     "val": "digest_init"
@@ -2488,12 +2118,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    144,
-                    5,
-                    144,
-                    17
-                ],
+                "position": [144, 5, 144, 17],
                 "name": {
                     "__class__": "str",
                     "val": "digest_update"
@@ -2518,12 +2143,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    146,
-                    5,
-                    146,
-                    14
-                ],
+                "position": [146, 5, 146, 14],
                 "name": {
                     "__class__": "str",
                     "val": "state_init"
@@ -2548,12 +2168,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    147,
-                    5,
-                    147,
-                    16
-                ],
+                "position": [147, 5, 147, 16],
                 "name": {
                     "__class__": "str",
                     "val": "state_update"
@@ -2578,12 +2193,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    149,
-                    5,
-                    149,
-                    15
-                ],
+                "position": [149, 5, 149, 15],
                 "name": {
                     "__class__": "str",
                     "val": "first_block"
@@ -2608,12 +2218,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    151,
-                    5,
-                    151,
-                    14
-                ],
+                "position": [151, 5, 151, 14],
                 "name": {
                     "__class__": "str",
                     "val": "ready_flag"
@@ -2638,12 +2243,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    153,
-                    14,
-                    153,
-                    15
-                ],
+                "position": [153, 14, 153, 15],
                 "name": {
                     "__class__": "str",
                     "val": "t1"
@@ -2680,12 +2280,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    154,
-                    14,
-                    154,
-                    15
-                ],
+                "position": [154, 14, 154, 15],
                 "name": {
                     "__class__": "str",
                     "val": "t2"
@@ -2722,12 +2317,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    156,
-                    15,
-                    156,
-                    20
-                ],
+                "position": [156, 15, 156, 20],
                 "name": {
                     "__class__": "str",
                     "val": "k_data"
@@ -2763,12 +2353,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    158,
-                    15,
-                    158,
-                    20
-                ],
+                "position": [158, 15, 158, 20],
                 "name": {
                     "__class__": "str",
                     "val": "w_init"
@@ -2793,12 +2378,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    159,
-                    15,
-                    159,
-                    20
-                ],
+                "position": [159, 15, 159, 20],
                 "name": {
                     "__class__": "str",
                     "val": "w_next"
@@ -2823,12 +2403,7 @@
             },
             {
                 "__class__": "HdlIdDef",
-                "position": [
-                    160,
-                    15,
-                    160,
-                    20
-                ],
+                "position": [160, 15, 160, 20],
                 "name": {
                     "__class__": "str",
                     "val": "w_data"
@@ -2870,18 +2445,12 @@
                 "port_map": [
                     {
                         "__class__": "HdlOp",
-                        "ops": [
-                            "addr",
-                            "t_ctr_reg"
-                        ],
+                        "ops": ["addr", "t_ctr_reg"],
                         "fn": "MAP_ASSOCIATION"
                     },
                     {
                         "__class__": "HdlOp",
-                        "ops": [
-                            "K",
-                            "k_data"
-                        ],
+                        "ops": ["K", "k_data"],
                         "fn": "MAP_ASSOCIATION"
                     }
                 ]
@@ -2894,50 +2463,32 @@
                 "port_map": [
                     {
                         "__class__": "HdlOp",
-                        "ops": [
-                            "clk",
-                            "clk"
-                        ],
+                        "ops": ["clk", "clk"],
                         "fn": "MAP_ASSOCIATION"
                     },
                     {
                         "__class__": "HdlOp",
-                        "ops": [
-                            "rst",
-                            "rst"
-                        ],
+                        "ops": ["rst", "rst"],
                         "fn": "MAP_ASSOCIATION"
                     },
                     {
                         "__class__": "HdlOp",
-                        "ops": [
-                            "block",
-                            "block"
-                        ],
+                        "ops": ["block", "block"],
                         "fn": "MAP_ASSOCIATION"
                     },
                     {
                         "__class__": "HdlOp",
-                        "ops": [
-                            "init",
-                            "w_init"
-                        ],
+                        "ops": ["init", "w_init"],
                         "fn": "MAP_ASSOCIATION"
                     },
                     {
                         "__class__": "HdlOp",
-                        "ops": [
-                            "next",
-                            "w_next"
-                        ],
+                        "ops": ["next", "w_next"],
                         "fn": "MAP_ASSOCIATION"
                     },
                     {
                         "__class__": "HdlOp",
-                        "ops": [
-                            "w",
-                            "w_data"
-                        ],
+                        "ops": ["w", "w_data"],
                         "fn": "MAP_ASSOCIATION"
                     }
                 ]
@@ -2948,12 +2499,7 @@
                     "__class__": "str",
                     "val": "----------------------------------------------------------------\n Concurrent connectivity for ports etc.\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    187,
-                    8,
-                    187,
-                    25
-                ],
+                "position": [187, 8, 187, 25],
                 "labels": [],
                 "src": "ready_flag",
                 "dst": "ready",
@@ -2961,12 +2507,7 @@
             },
             {
                 "__class__": "HdlStmAssign",
-                "position": [
-                    189,
-                    8,
-                    190,
-                    48
-                ],
+                "position": [189, 8, 190, 48],
                 "labels": [],
                 "src": {
                     "__class__": "HdlOp",
@@ -3023,12 +2564,7 @@
             },
             {
                 "__class__": "HdlStmAssign",
-                "position": [
-                    192,
-                    8,
-                    192,
-                    38
-                ],
+                "position": [192, 8, 192, 38],
                 "labels": [],
                 "src": "digest_valid_reg",
                 "dst": "digest_valid",
@@ -3040,30 +2576,18 @@
                     "__class__": "str",
                     "val": "----------------------------------------------------------------\n reg_update\n Update functionality for all registers in the core.\n All registers are positive edge triggered with synchronous\n reset. All registers have write enable.\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    201,
-                    8,
-                    264,
-                    7
-                ],
+                "position": [201, 8, 264, 7],
                 "labels": [],
                 "sensitivity": [
                     {
                         "__class__": "HdlOp",
-                        "ops": [
-                            "clk"
-                        ],
+                        "ops": ["clk"],
                         "fn": "RISING"
                     }
                 ],
                 "body": {
                     "__class__": "HdlStmBlock",
-                    "position": [
-                        202,
-                        5,
-                        264,
-                        7
-                    ],
+                    "position": [202, 5, 264, 7],
                     "labels": [
                         {
                             "__class__": "str",
@@ -3074,39 +2598,22 @@
                     "body": [
                         {
                             "__class__": "HdlStmIf",
-                            "position": [
-                                203,
-                                9,
-                                263,
-                                15
-                            ],
+                            "position": [203, 9, 263, 15],
                             "labels": [],
                             "cond": {
                                 "__class__": "HdlOp",
-                                "ops": [
-                                    "rst"
-                                ],
+                                "ops": ["rst"],
                                 "fn": "NEG_LOG"
                             },
                             "if_true": {
                                 "__class__": "HdlStmBlock",
-                                "position": [
-                                    204,
-                                    13,
-                                    224,
-                                    15
-                                ],
+                                "position": [204, 13, 224, 15],
                                 "labels": [],
                                 "join_t": "SEQ",
                                 "body": [
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            205,
-                                            17,
-                                            205,
-                                            41
-                                        ],
+                                        "position": [205, 17, 205, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3119,12 +2626,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            206,
-                                            17,
-                                            206,
-                                            41
-                                        ],
+                                        "position": [206, 17, 206, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3137,12 +2639,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            207,
-                                            17,
-                                            207,
-                                            41
-                                        ],
+                                        "position": [207, 17, 207, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3155,12 +2652,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            208,
-                                            17,
-                                            208,
-                                            41
-                                        ],
+                                        "position": [208, 17, 208, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3173,12 +2665,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            209,
-                                            17,
-                                            209,
-                                            41
-                                        ],
+                                        "position": [209, 17, 209, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3191,12 +2678,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            210,
-                                            17,
-                                            210,
-                                            41
-                                        ],
+                                        "position": [210, 17, 210, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3209,12 +2691,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            211,
-                                            17,
-                                            211,
-                                            41
-                                        ],
+                                        "position": [211, 17, 211, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3227,12 +2704,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            212,
-                                            17,
-                                            212,
-                                            41
-                                        ],
+                                        "position": [212, 17, 212, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3245,12 +2717,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            213,
-                                            17,
-                                            213,
-                                            41
-                                        ],
+                                        "position": [213, 17, 213, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3263,12 +2730,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            214,
-                                            17,
-                                            214,
-                                            41
-                                        ],
+                                        "position": [214, 17, 214, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3281,12 +2743,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            215,
-                                            17,
-                                            215,
-                                            41
-                                        ],
+                                        "position": [215, 17, 215, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3299,12 +2756,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            216,
-                                            17,
-                                            216,
-                                            41
-                                        ],
+                                        "position": [216, 17, 216, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3317,12 +2769,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            217,
-                                            17,
-                                            217,
-                                            41
-                                        ],
+                                        "position": [217, 17, 217, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3335,12 +2782,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            218,
-                                            17,
-                                            218,
-                                            41
-                                        ],
+                                        "position": [218, 17, 218, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3353,12 +2795,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            219,
-                                            17,
-                                            219,
-                                            41
-                                        ],
+                                        "position": [219, 17, 219, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3371,12 +2808,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            220,
-                                            17,
-                                            220,
-                                            41
-                                        ],
+                                        "position": [220, 17, 220, 41],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3389,12 +2821,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            221,
-                                            17,
-                                            221,
-                                            37
-                                        ],
+                                        "position": [221, 17, 221, 37],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3406,12 +2833,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            222,
-                                            17,
-                                            222,
-                                            40
-                                        ],
+                                        "position": [222, 17, 222, 40],
                                         "labels": [],
                                         "src": {
                                             "__class__": "HdlValueInt",
@@ -3424,12 +2846,7 @@
                                     },
                                     {
                                         "__class__": "HdlStmAssign",
-                                        "position": [
-                                            223,
-                                            17,
-                                            223,
-                                            45
-                                        ],
+                                        "position": [223, 17, 223, 45],
                                         "labels": [],
                                         "src": "CTRL_IDLE",
                                         "dst": "sha256_ctrl_reg",
@@ -3440,43 +2857,25 @@
                             "elifs": [],
                             "if_false": {
                                 "__class__": "HdlStmBlock",
-                                "position": [
-                                    226,
-                                    13,
-                                    263,
-                                    15
-                                ],
+                                "position": [226, 13, 263, 15],
                                 "labels": [],
                                 "join_t": "SEQ",
                                 "body": [
                                     {
                                         "__class__": "HdlStmIf",
-                                        "position": [
-                                            228,
-                                            17,
-                                            238,
-                                            23
-                                        ],
+                                        "position": [228, 17, 238, 23],
                                         "labels": [],
                                         "cond": "a_h_we",
                                         "if_true": {
                                             "__class__": "HdlStmBlock",
-                                            "position": [
-                                                229,
-                                                21,
-                                                238,
-                                                23
-                                            ],
+                                            "position": [229, 21, 238, 23],
                                             "labels": [],
                                             "join_t": "SEQ",
                                             "body": [
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        230,
-                                                        25,
-                                                        230,
-                                                        38
+                                                        230, 25, 230, 38
                                                     ],
                                                     "labels": [],
                                                     "src": "a_new",
@@ -3486,10 +2885,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        231,
-                                                        25,
-                                                        231,
-                                                        38
+                                                        231, 25, 231, 38
                                                     ],
                                                     "labels": [],
                                                     "src": "b_new",
@@ -3499,10 +2895,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        232,
-                                                        25,
-                                                        232,
-                                                        38
+                                                        232, 25, 232, 38
                                                     ],
                                                     "labels": [],
                                                     "src": "c_new",
@@ -3512,10 +2905,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        233,
-                                                        25,
-                                                        233,
-                                                        38
+                                                        233, 25, 233, 38
                                                     ],
                                                     "labels": [],
                                                     "src": "d_new",
@@ -3525,10 +2915,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        234,
-                                                        25,
-                                                        234,
-                                                        38
+                                                        234, 25, 234, 38
                                                     ],
                                                     "labels": [],
                                                     "src": "e_new",
@@ -3538,10 +2925,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        235,
-                                                        25,
-                                                        235,
-                                                        38
+                                                        235, 25, 235, 38
                                                     ],
                                                     "labels": [],
                                                     "src": "f_new",
@@ -3551,10 +2935,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        236,
-                                                        25,
-                                                        236,
-                                                        38
+                                                        236, 25, 236, 38
                                                     ],
                                                     "labels": [],
                                                     "src": "g_new",
@@ -3564,10 +2945,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        237,
-                                                        25,
-                                                        237,
-                                                        38
+                                                        237, 25, 237, 38
                                                     ],
                                                     "labels": [],
                                                     "src": "h_new",
@@ -3580,32 +2958,19 @@
                                     },
                                     {
                                         "__class__": "HdlStmIf",
-                                        "position": [
-                                            240,
-                                            17,
-                                            250,
-                                            23
-                                        ],
+                                        "position": [240, 17, 250, 23],
                                         "labels": [],
                                         "cond": "H_we",
                                         "if_true": {
                                             "__class__": "HdlStmBlock",
-                                            "position": [
-                                                241,
-                                                21,
-                                                250,
-                                                23
-                                            ],
+                                            "position": [241, 21, 250, 23],
                                             "labels": [],
                                             "join_t": "SEQ",
                                             "body": [
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        242,
-                                                        25,
-                                                        242,
-                                                        40
+                                                        242, 25, 242, 40
                                                     ],
                                                     "labels": [],
                                                     "src": "H0_new",
@@ -3615,10 +2980,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        243,
-                                                        25,
-                                                        243,
-                                                        40
+                                                        243, 25, 243, 40
                                                     ],
                                                     "labels": [],
                                                     "src": "H1_new",
@@ -3628,10 +2990,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        244,
-                                                        25,
-                                                        244,
-                                                        40
+                                                        244, 25, 244, 40
                                                     ],
                                                     "labels": [],
                                                     "src": "H2_new",
@@ -3641,10 +3000,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        245,
-                                                        25,
-                                                        245,
-                                                        40
+                                                        245, 25, 245, 40
                                                     ],
                                                     "labels": [],
                                                     "src": "H3_new",
@@ -3654,10 +3010,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        246,
-                                                        25,
-                                                        246,
-                                                        40
+                                                        246, 25, 246, 40
                                                     ],
                                                     "labels": [],
                                                     "src": "H4_new",
@@ -3667,10 +3020,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        247,
-                                                        25,
-                                                        247,
-                                                        40
+                                                        247, 25, 247, 40
                                                     ],
                                                     "labels": [],
                                                     "src": "H5_new",
@@ -3680,10 +3030,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        248,
-                                                        25,
-                                                        248,
-                                                        40
+                                                        248, 25, 248, 40
                                                     ],
                                                     "labels": [],
                                                     "src": "H6_new",
@@ -3693,10 +3040,7 @@
                                                 {
                                                     "__class__": "HdlStmAssign",
                                                     "position": [
-                                                        249,
-                                                        25,
-                                                        249,
-                                                        40
+                                                        249, 25, 249, 40
                                                     ],
                                                     "labels": [],
                                                     "src": "H7_new",
@@ -3709,22 +3053,12 @@
                                     },
                                     {
                                         "__class__": "HdlStmIf",
-                                        "position": [
-                                            252,
-                                            17,
-                                            253,
-                                            43
-                                        ],
+                                        "position": [252, 17, 253, 43],
                                         "labels": [],
                                         "cond": "t_ctr_we",
                                         "if_true": {
                                             "__class__": "HdlStmAssign",
-                                            "position": [
-                                                253,
-                                                21,
-                                                253,
-                                                42
-                                            ],
+                                            "position": [253, 21, 253, 42],
                                             "labels": [],
                                             "src": "t_ctr_new",
                                             "dst": "t_ctr_reg",
@@ -3734,22 +3068,12 @@
                                     },
                                     {
                                         "__class__": "HdlStmIf",
-                                        "position": [
-                                            255,
-                                            17,
-                                            256,
-                                            57
-                                        ],
+                                        "position": [255, 17, 256, 57],
                                         "labels": [],
                                         "cond": "digest_valid_we",
                                         "if_true": {
                                             "__class__": "HdlStmAssign",
-                                            "position": [
-                                                256,
-                                                21,
-                                                256,
-                                                56
-                                            ],
+                                            "position": [256, 21, 256, 56],
                                             "labels": [],
                                             "src": "digest_valid_new",
                                             "dst": "digest_valid_reg",
@@ -3759,22 +3083,12 @@
                                     },
                                     {
                                         "__class__": "HdlStmIf",
-                                        "position": [
-                                            258,
-                                            17,
-                                            259,
-                                            55
-                                        ],
+                                        "position": [258, 17, 259, 55],
                                         "labels": [],
                                         "cond": "sha256_ctrl_we",
                                         "if_true": {
                                             "__class__": "HdlStmAssign",
-                                            "position": [
-                                                259,
-                                                21,
-                                                259,
-                                                54
-                                            ],
+                                            "position": [259, 21, 259, 54],
                                             "labels": [],
                                             "src": "sha256_ctrl_new",
                                             "dst": "sha256_ctrl_reg",
@@ -3784,22 +3098,12 @@
                                     },
                                     {
                                         "__class__": "HdlStmIf",
-                                        "position": [
-                                            261,
-                                            17,
-                                            262,
-                                            57
-                                        ],
+                                        "position": [261, 17, 262, 57],
                                         "labels": [],
                                         "cond": "ignore_input_en",
                                         "if_true": {
                                             "__class__": "HdlStmAssign",
-                                            "position": [
-                                                262,
-                                                21,
-                                                262,
-                                                56
-                                            ],
+                                            "position": [262, 21, 262, 56],
                                             "labels": [],
                                             "src": "ignore_input_new",
                                             "dst": "ignore_input_reg",
@@ -3819,12 +3123,7 @@
                     "__class__": "str",
                     "val": " reg_update\n----------------------------------------------------------------\n digest_logic\n\n The logic needed to init as well as update the digest.\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    272,
-                    8,
-                    322,
-                    7
-                ],
+                "position": [272, 8, 322, 7],
                 "labels": [],
                 "sensitivity": [
                     {
@@ -3833,12 +3132,7 @@
                 ],
                 "body": {
                     "__class__": "HdlStmBlock",
-                    "position": [
-                        273,
-                        5,
-                        322,
-                        7
-                    ],
+                    "position": [273, 5, 322, 7],
                     "labels": [
                         {
                             "__class__": "str",
@@ -3965,22 +3259,12 @@
                         },
                         {
                             "__class__": "HdlStmIf",
-                            "position": [
-                                284,
-                                9,
-                                295,
-                                15
-                            ],
+                            "position": [284, 9, 295, 15],
                             "labels": [],
                             "cond": "digest_init",
                             "if_true": {
                                 "__class__": "HdlStmBlock",
-                                "position": [
-                                    285,
-                                    13,
-                                    295,
-                                    15
-                                ],
+                                "position": [285, 13, 295, 15],
                                 "labels": [],
                                 "join_t": "SEQ",
                                 "body": [
@@ -3998,66 +3282,42 @@
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "H0_new",
-                                            "SHA256_H0_0"
-                                        ],
+                                        "ops": ["H0_new", "SHA256_H0_0"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "H1_new",
-                                            "SHA256_H0_1"
-                                        ],
+                                        "ops": ["H1_new", "SHA256_H0_1"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "H2_new",
-                                            "SHA256_H0_2"
-                                        ],
+                                        "ops": ["H2_new", "SHA256_H0_2"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "H3_new",
-                                            "SHA256_H0_3"
-                                        ],
+                                        "ops": ["H3_new", "SHA256_H0_3"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "H4_new",
-                                            "SHA256_H0_4"
-                                        ],
+                                        "ops": ["H4_new", "SHA256_H0_4"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "H5_new",
-                                            "SHA256_H0_5"
-                                        ],
+                                        "ops": ["H5_new", "SHA256_H0_5"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "H6_new",
-                                            "SHA256_H0_6"
-                                        ],
+                                        "ops": ["H6_new", "SHA256_H0_6"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "H7_new",
-                                            "SHA256_H0_7"
-                                        ],
+                                        "ops": ["H7_new", "SHA256_H0_7"],
                                         "fn": "ASSIGN"
                                     }
                                 ]
@@ -4066,22 +3326,12 @@
                         },
                         {
                             "__class__": "HdlStmIf",
-                            "position": [
-                                297,
-                                9,
-                                308,
-                                15
-                            ],
+                            "position": [297, 9, 308, 15],
                             "labels": [],
                             "cond": "digest_update",
                             "if_true": {
                                 "__class__": "HdlStmBlock",
-                                "position": [
-                                    298,
-                                    13,
-                                    308,
-                                    15
-                                ],
+                                "position": [298, 13, 308, 15],
                                 "labels": [],
                                 "join_t": "SEQ",
                                 "body": [
@@ -4091,10 +3341,7 @@
                                             "H0_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "H0_reg",
-                                                    "a_reg"
-                                                ],
+                                                "ops": ["H0_reg", "a_reg"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -4106,10 +3353,7 @@
                                             "H1_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "H1_reg",
-                                                    "b_reg"
-                                                ],
+                                                "ops": ["H1_reg", "b_reg"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -4121,10 +3365,7 @@
                                             "H2_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "H2_reg",
-                                                    "c_reg"
-                                                ],
+                                                "ops": ["H2_reg", "c_reg"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -4136,10 +3377,7 @@
                                             "H3_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "H3_reg",
-                                                    "d_reg"
-                                                ],
+                                                "ops": ["H3_reg", "d_reg"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -4151,10 +3389,7 @@
                                             "H4_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "H4_reg",
-                                                    "e_reg"
-                                                ],
+                                                "ops": ["H4_reg", "e_reg"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -4166,10 +3401,7 @@
                                             "H5_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "H5_reg",
-                                                    "f_reg"
-                                                ],
+                                                "ops": ["H5_reg", "f_reg"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -4181,10 +3413,7 @@
                                             "H6_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "H6_reg",
-                                                    "g_reg"
-                                                ],
+                                                "ops": ["H6_reg", "g_reg"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -4196,10 +3425,7 @@
                                             "H7_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "H7_reg",
-                                                    "h_reg"
-                                                ],
+                                                "ops": ["H7_reg", "h_reg"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -4223,22 +3449,12 @@
                         },
                         {
                             "__class__": "HdlStmIf",
-                            "position": [
-                                310,
-                                9,
-                                321,
-                                15
-                            ],
+                            "position": [310, 9, 321, 15],
                             "labels": [],
                             "cond": "h_block_update",
                             "if_true": {
                                 "__class__": "HdlStmBlock",
-                                "position": [
-                                    311,
-                                    13,
-                                    321,
-                                    15
-                                ],
+                                "position": [311, 13, 321, 15],
                                 "labels": [],
                                 "join_t": "SEQ",
                                 "body": [
@@ -4595,12 +3811,7 @@
                     "__class__": "str",
                     "val": " digest_logic\n----------------------------------------------------------------\n t1_logic\n\n The logic for the T1 function.\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    330,
-                    8,
-                    342,
-                    7
-                ],
+                "position": [330, 8, 342, 7],
                 "labels": [],
                 "sensitivity": [
                     {
@@ -4609,12 +3820,7 @@
                 ],
                 "body": {
                     "__class__": "HdlStmBlock",
-                    "position": [
-                        331,
-                        5,
-                        342,
-                        7
-                    ],
+                    "position": [331, 5, 342, 7],
                     "labels": [
                         {
                             "__class__": "str",
@@ -4625,12 +3831,7 @@
                     "body": [
                         {
                             "__class__": "HdlIdDef",
-                            "position": [
-                                332,
-                                22,
-                                332,
-                                25
-                            ],
+                            "position": [332, 22, 332, 25],
                             "name": {
                                 "__class__": "str",
                                 "val": "sum1"
@@ -4667,12 +3868,7 @@
                         },
                         {
                             "__class__": "HdlIdDef",
-                            "position": [
-                                333,
-                                22,
-                                333,
-                                23
-                            ],
+                            "position": [333, 22, 333, 23],
                             "name": {
                                 "__class__": "str",
                                 "val": "ch"
@@ -4891,10 +4087,7 @@
                                     "ops": [
                                         {
                                             "__class__": "HdlOp",
-                                            "ops": [
-                                                "e_reg",
-                                                "f_reg"
-                                            ],
+                                            "ops": ["e_reg", "f_reg"],
                                             "fn": "AND"
                                         },
                                         {
@@ -4902,9 +4095,7 @@
                                             "ops": [
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "e_reg"
-                                                    ],
+                                                    "ops": ["e_reg"],
                                                     "fn": "NEG"
                                                 },
                                                 "g_reg"
@@ -4962,12 +4153,7 @@
                     "__class__": "str",
                     "val": " t1_logic\n----------------------------------------------------------------\n t2_logic\n\n The logic for the T2 function\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    350,
-                    8,
-                    362,
-                    7
-                ],
+                "position": [350, 8, 362, 7],
                 "labels": [],
                 "sensitivity": [
                     {
@@ -4976,12 +4162,7 @@
                 ],
                 "body": {
                     "__class__": "HdlStmBlock",
-                    "position": [
-                        351,
-                        5,
-                        362,
-                        7
-                    ],
+                    "position": [351, 5, 362, 7],
                     "labels": [
                         {
                             "__class__": "str",
@@ -4992,12 +4173,7 @@
                     "body": [
                         {
                             "__class__": "HdlIdDef",
-                            "position": [
-                                352,
-                                22,
-                                352,
-                                25
-                            ],
+                            "position": [352, 22, 352, 25],
                             "name": {
                                 "__class__": "str",
                                 "val": "sum0"
@@ -5034,12 +4210,7 @@
                         },
                         {
                             "__class__": "HdlIdDef",
-                            "position": [
-                                353,
-                                22,
-                                353,
-                                24
-                            ],
+                            "position": [353, 22, 353, 24],
                             "name": {
                                 "__class__": "str",
                                 "val": "maj"
@@ -5261,18 +4432,12 @@
                                             "ops": [
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "a_reg",
-                                                        "b_reg"
-                                                    ],
+                                                    "ops": ["a_reg", "b_reg"],
                                                     "fn": "AND"
                                                 },
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "a_reg",
-                                                        "c_reg"
-                                                    ],
+                                                    "ops": ["a_reg", "c_reg"],
                                                     "fn": "AND"
                                                 }
                                             ],
@@ -5280,10 +4445,7 @@
                                         },
                                         {
                                             "__class__": "HdlOp",
-                                            "ops": [
-                                                "b_reg",
-                                                "c_reg"
-                                            ],
+                                            "ops": ["b_reg", "c_reg"],
                                             "fn": "AND"
                                         }
                                     ],
@@ -5298,10 +4460,7 @@
                                 "t2",
                                 {
                                     "__class__": "HdlOp",
-                                    "ops": [
-                                        "sum0",
-                                        "maj"
-                                    ],
+                                    "ops": ["sum0", "maj"],
                                     "fn": "ADD"
                                 }
                             ],
@@ -5316,12 +4475,7 @@
                     "__class__": "str",
                     "val": " t2_logic\n----------------------------------------------------------------\n state_logic\n\n The logic needed to init as well as update the state during\n round processing.\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    371,
-                    8,
-                    422,
-                    7
-                ],
+                "position": [371, 8, 422, 7],
                 "labels": [],
                 "sensitivity": [
                     {
@@ -5330,12 +4484,7 @@
                 ],
                 "body": {
                     "__class__": "HdlStmBlock",
-                    "position": [
-                        372,
-                        5,
-                        422,
-                        7
-                    ],
+                    "position": [372, 5, 422, 7],
                     "labels": [
                         {
                             "__class__": "str",
@@ -5462,22 +4611,12 @@
                         },
                         {
                             "__class__": "HdlStmIf",
-                            "position": [
-                                383,
-                                9,
-                                408,
-                                15
-                            ],
+                            "position": [383, 9, 408, 15],
                             "labels": [],
                             "cond": "state_init",
                             "if_true": {
                                 "__class__": "HdlStmBlock",
-                                "position": [
-                                    384,
-                                    13,
-                                    408,
-                                    15
-                                ],
+                                "position": [384, 13, 408, 15],
                                 "labels": [],
                                 "join_t": "SEQ",
                                 "body": [
@@ -5495,22 +4634,12 @@
                                     },
                                     {
                                         "__class__": "HdlStmIf",
-                                        "position": [
-                                            386,
-                                            17,
-                                            407,
-                                            23
-                                        ],
+                                        "position": [386, 17, 407, 23],
                                         "labels": [],
                                         "cond": "first_block",
                                         "if_true": {
                                             "__class__": "HdlStmBlock",
-                                            "position": [
-                                                387,
-                                                21,
-                                                396,
-                                                23
-                                            ],
+                                            "position": [387, 21, 396, 23],
                                             "labels": [],
                                             "join_t": "SEQ",
                                             "body": [
@@ -5583,77 +4712,48 @@
                                         "elifs": [],
                                         "if_false": {
                                             "__class__": "HdlStmBlock",
-                                            "position": [
-                                                398,
-                                                21,
-                                                407,
-                                                23
-                                            ],
+                                            "position": [398, 21, 407, 23],
                                             "labels": [],
                                             "join_t": "SEQ",
                                             "body": [
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "a_new",
-                                                        "H0_reg"
-                                                    ],
+                                                    "ops": ["a_new", "H0_reg"],
                                                     "fn": "ASSIGN"
                                                 },
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "b_new",
-                                                        "H1_reg"
-                                                    ],
+                                                    "ops": ["b_new", "H1_reg"],
                                                     "fn": "ASSIGN"
                                                 },
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "c_new",
-                                                        "H2_reg"
-                                                    ],
+                                                    "ops": ["c_new", "H2_reg"],
                                                     "fn": "ASSIGN"
                                                 },
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "d_new",
-                                                        "H3_reg"
-                                                    ],
+                                                    "ops": ["d_new", "H3_reg"],
                                                     "fn": "ASSIGN"
                                                 },
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "e_new",
-                                                        "H4_reg"
-                                                    ],
+                                                    "ops": ["e_new", "H4_reg"],
                                                     "fn": "ASSIGN"
                                                 },
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "f_new",
-                                                        "H5_reg"
-                                                    ],
+                                                    "ops": ["f_new", "H5_reg"],
                                                     "fn": "ASSIGN"
                                                 },
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "g_new",
-                                                        "H6_reg"
-                                                    ],
+                                                    "ops": ["g_new", "H6_reg"],
                                                     "fn": "ASSIGN"
                                                 },
                                                 {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "h_new",
-                                                        "H7_reg"
-                                                    ],
+                                                    "ops": ["h_new", "H7_reg"],
                                                     "fn": "ASSIGN"
                                                 }
                                             ]
@@ -5665,22 +4765,12 @@
                         },
                         {
                             "__class__": "HdlStmIf",
-                            "position": [
-                                410,
-                                9,
-                                421,
-                                15
-                            ],
+                            "position": [410, 9, 421, 15],
                             "labels": [],
                             "cond": "state_update",
                             "if_true": {
                                 "__class__": "HdlStmBlock",
-                                "position": [
-                                    411,
-                                    13,
-                                    421,
-                                    15
-                                ],
+                                "position": [411, 13, 421, 15],
                                 "labels": [],
                                 "join_t": "SEQ",
                                 "body": [
@@ -5690,10 +4780,7 @@
                                             "a_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "t1",
-                                                    "t2"
-                                                ],
+                                                "ops": ["t1", "t2"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -5701,26 +4788,17 @@
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "b_new",
-                                            "a_reg"
-                                        ],
+                                        "ops": ["b_new", "a_reg"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "c_new",
-                                            "b_reg"
-                                        ],
+                                        "ops": ["c_new", "b_reg"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "d_new",
-                                            "c_reg"
-                                        ],
+                                        "ops": ["d_new", "c_reg"],
                                         "fn": "ASSIGN"
                                     },
                                     {
@@ -5729,10 +4807,7 @@
                                             "e_new",
                                             {
                                                 "__class__": "HdlOp",
-                                                "ops": [
-                                                    "d_reg",
-                                                    "t1"
-                                                ],
+                                                "ops": ["d_reg", "t1"],
                                                 "fn": "ADD"
                                             }
                                         ],
@@ -5740,26 +4815,17 @@
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "f_new",
-                                            "e_reg"
-                                        ],
+                                        "ops": ["f_new", "e_reg"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "g_new",
-                                            "f_reg"
-                                        ],
+                                        "ops": ["g_new", "f_reg"],
                                         "fn": "ASSIGN"
                                     },
                                     {
                                         "__class__": "HdlOp",
-                                        "ops": [
-                                            "h_new",
-                                            "g_reg"
-                                        ],
+                                        "ops": ["h_new", "g_reg"],
                                         "fn": "ASSIGN"
                                     },
                                     {
@@ -5787,12 +4853,7 @@
                     "__class__": "str",
                     "val": " state_logic\n----------------------------------------------------------------\n t_ctr\n\n Update logic for the round counter, a monotonically\n increasing counter with reset.\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    431,
-                    8,
-                    447,
-                    7
-                ],
+                "position": [431, 8, 447, 7],
                 "labels": [],
                 "sensitivity": [
                     {
@@ -5801,12 +4862,7 @@
                 ],
                 "body": {
                     "__class__": "HdlStmBlock",
-                    "position": [
-                        432,
-                        5,
-                        447,
-                        7
-                    ],
+                    "position": [432, 5, 447, 7],
                     "labels": [
                         {
                             "__class__": "str",
@@ -5841,22 +4897,12 @@
                         },
                         {
                             "__class__": "HdlStmIf",
-                            "position": [
-                                436,
-                                9,
-                                440,
-                                15
-                            ],
+                            "position": [436, 9, 440, 15],
                             "labels": [],
                             "cond": "t_ctr_rst",
                             "if_true": {
                                 "__class__": "HdlStmBlock",
-                                "position": [
-                                    437,
-                                    13,
-                                    440,
-                                    15
-                                ],
+                                "position": [437, 13, 440, 15],
                                 "labels": [],
                                 "join_t": "SEQ",
                                 "body": [
@@ -5890,22 +4936,12 @@
                         },
                         {
                             "__class__": "HdlStmIf",
-                            "position": [
-                                442,
-                                9,
-                                446,
-                                15
-                            ],
+                            "position": [442, 9, 446, 15],
                             "labels": [],
                             "cond": "t_ctr_inc",
                             "if_true": {
                                 "__class__": "HdlStmBlock",
-                                "position": [
-                                    443,
-                                    13,
-                                    446,
-                                    15
-                                ],
+                                "position": [443, 13, 446, 15],
                                 "labels": [],
                                 "join_t": "SEQ",
                                 "body": [
@@ -5954,12 +4990,7 @@
                     "__class__": "str",
                     "val": " t_ctr\n----------------------------------------------------------------\n sha256_ctrl_fsm\n\n Logic for the state machine controlling the core behaviour.\n----------------------------------------------------------------\n"
                 },
-                "position": [
-                    455,
-                    8,
-                    556,
-                    7
-                ],
+                "position": [455, 8, 556, 7],
                 "labels": [],
                 "sensitivity": [
                     {
@@ -5968,12 +4999,7 @@
                 ],
                 "body": {
                     "__class__": "HdlStmBlock",
-                    "position": [
-                        456,
-                        5,
-                        556,
-                        7
-                    ],
+                    "position": [456, 5, 556, 7],
                     "labels": [
                         {
                             "__class__": "str",
@@ -6128,10 +5154,7 @@
                         },
                         {
                             "__class__": "HdlOp",
-                            "ops": [
-                                "sha256_ctrl_new",
-                                "CTRL_IDLE"
-                            ],
+                            "ops": ["sha256_ctrl_new", "CTRL_IDLE"],
                             "fn": "ASSIGN"
                         },
                         {
@@ -6148,12 +5171,7 @@
                         },
                         {
                             "__class__": "HdlStmCase",
-                            "position": [
-                                479,
-                                9,
-                                555,
-                                15
-                            ],
+                            "position": [479, 9, 555, 15],
                             "labels": [],
                             "type": "CASE",
                             "switch_on": "sha256_ctrl_reg",
@@ -6162,12 +5180,7 @@
                                     "CTRL_IDLE",
                                     {
                                         "__class__": "HdlStmBlock",
-                                        "position": [
-                                            481,
-                                            17,
-                                            516,
-                                            19
-                                        ],
+                                        "position": [481, 17, 516, 19],
                                         "labels": [],
                                         "join_t": "SEQ",
                                         "body": [
@@ -6185,28 +5198,17 @@
                                             },
                                             {
                                                 "__class__": "HdlStmIf",
-                                                "position": [
-                                                    484,
-                                                    21,
-                                                    515,
-                                                    23
-                                                ],
+                                                "position": [484, 21, 515, 23],
                                                 "labels": [],
                                                 "cond": {
                                                     "__class__": "HdlOp",
-                                                    "ops": [
-                                                        "init",
-                                                        "next"
-                                                    ],
+                                                    "ops": ["init", "next"],
                                                     "fn": "AND_LOG"
                                                 },
                                                 "if_true": {
                                                     "__class__": "HdlStmBlock",
                                                     "position": [
-                                                        485,
-                                                        25,
-                                                        490,
-                                                        27
+                                                        485, 25, 490, 27
                                                     ],
                                                     "labels": [],
                                                     "join_t": "SEQ",
@@ -6261,10 +5263,7 @@
                                                 "if_false": {
                                                     "__class__": "HdlStmBlock",
                                                     "position": [
-                                                        491,
-                                                        26,
-                                                        515,
-                                                        23
+                                                        491, 26, 515, 23
                                                     ],
                                                     "labels": [],
                                                     "join_t": "SEQ",
@@ -6272,20 +5271,15 @@
                                                         {
                                                             "__class__": "HdlStmIf",
                                                             "position": [
-                                                                492,
-                                                                25,
-                                                                503,
-                                                                31
+                                                                492, 25, 503, 31
                                                             ],
                                                             "labels": [],
                                                             "cond": "init",
                                                             "if_true": {
                                                                 "__class__": "HdlStmBlock",
                                                                 "position": [
-                                                                    493,
-                                                                    29,
-                                                                    503,
-                                                                    31
+                                                                    493, 29,
+                                                                    503, 31
                                                                 ],
                                                                 "labels": [],
                                                                 "join_t": "SEQ",
@@ -6401,20 +5395,15 @@
                                                         {
                                                             "__class__": "HdlStmIf",
                                                             "position": [
-                                                                505,
-                                                                25,
-                                                                514,
-                                                                31
+                                                                505, 25, 514, 31
                                                             ],
                                                             "labels": [],
                                                             "cond": "next",
                                                             "if_true": {
                                                                 "__class__": "HdlStmBlock",
                                                                 "position": [
-                                                                    506,
-                                                                    29,
-                                                                    514,
-                                                                    31
+                                                                    506, 29,
+                                                                    514, 31
                                                                 ],
                                                                 "labels": [],
                                                                 "join_t": "SEQ",
@@ -6513,12 +5502,7 @@
                                     "CTRL_ROUNDS",
                                     {
                                         "__class__": "HdlStmBlock",
-                                        "position": [
-                                            520,
-                                            17,
-                                            530,
-                                            19
-                                        ],
+                                        "position": [520, 17, 530, 19],
                                         "labels": [],
                                         "join_t": "SEQ",
                                         "body": [
@@ -6560,12 +5544,7 @@
                                             },
                                             {
                                                 "__class__": "HdlStmIf",
-                                                "position": [
-                                                    525,
-                                                    21,
-                                                    529,
-                                                    27
-                                                ],
+                                                "position": [525, 21, 529, 27],
                                                 "labels": [],
                                                 "cond": {
                                                     "__class__": "HdlOp",
@@ -6578,10 +5557,7 @@
                                                 "if_true": {
                                                     "__class__": "HdlStmBlock",
                                                     "position": [
-                                                        526,
-                                                        25,
-                                                        529,
-                                                        27
+                                                        526, 25, 529, 27
                                                     ],
                                                     "labels": [],
                                                     "join_t": "SEQ",
@@ -6617,12 +5593,7 @@
                                     "CTRL_DONE",
                                     {
                                         "__class__": "HdlStmBlock",
-                                        "position": [
-                                            534,
-                                            17,
-                                            541,
-                                            19
-                                        ],
+                                        "position": [534, 17, 541, 19],
                                         "labels": [],
                                         "join_t": "SEQ",
                                         "body": [
@@ -6689,32 +5660,19 @@
                                     "CTRL_IGNORE",
                                     {
                                         "__class__": "HdlStmBlock",
-                                        "position": [
-                                            543,
-                                            17,
-                                            554,
-                                            19
-                                        ],
+                                        "position": [543, 17, 554, 19],
                                         "labels": [],
                                         "join_t": "SEQ",
                                         "body": [
                                             {
                                                 "__class__": "HdlStmIf",
-                                                "position": [
-                                                    544,
-                                                    21,
-                                                    553,
-                                                    27
-                                                ],
+                                                "position": [544, 21, 553, 27],
                                                 "labels": [],
                                                 "cond": "ignore_input_reg",
                                                 "if_true": {
                                                     "__class__": "HdlStmBlock",
                                                     "position": [
-                                                        545,
-                                                        25,
-                                                        548,
-                                                        27
+                                                        545, 25, 548, 27
                                                     ],
                                                     "labels": [],
                                                     "join_t": "SEQ",
@@ -6745,10 +5703,7 @@
                                                 "if_false": {
                                                     "__class__": "HdlStmBlock",
                                                     "position": [
-                                                        550,
-                                                        25,
-                                                        553,
-                                                        27
+                                                        550, 25, 553, 27
                                                     ],
                                                     "labels": [],
                                                     "join_t": "SEQ",

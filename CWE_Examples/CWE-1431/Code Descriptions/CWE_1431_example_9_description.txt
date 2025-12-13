@@ -1,0 +1,5 @@
+This code example is from the Hack@DAC 2018 Phase 2 Buggy SoC. It is from the keccak module.
+The 'out' output signal is the reuslt output for the module. Within the module it is assigned the value
+of out1 which may hold intermediate values of the algorithm. This is an example of the CWE-1431 vulnerability 
+as these intermediate values should not be assigned to the module output unless valid. I have implemented a fix to show a correct
+design pattern and follows the coding style of the module.

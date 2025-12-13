@@ -172,7 +172,7 @@ module aes1_core(
   // Concurrent connectivity for ports etc.
   //----------------------------------------------------------------
   assign ready        = ready_reg;
-  assign result = (result_valid_reg) ? muxed_new_block : 128'h0; //Possible fix, only assign result when valid
+  assign result = (result_valid) ? muxed_new_block : 128'h0; //Possible fix, only assign result when valid
   assign result_valid = result_valid_reg;
 
 

@@ -186,7 +186,7 @@ sha256_w_mem w_mem_inst(
 //----------------------------------------------------------------
 assign ready = ready_flag;
 
-assign digest = (digest_valid_reg) ? {H0_reg, H1_reg, H2_reg, H3_reg,
+assign digest = (digest_valid) ? {H0_reg, H1_reg, H2_reg, H3_reg,
                  H4_reg, H5_reg, H6_reg, H7_reg} : 256'h0;
 
 assign digest_valid = digest_valid_reg;
