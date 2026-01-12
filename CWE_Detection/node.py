@@ -64,7 +64,7 @@ class HdlIdDefNode(Node):
         Returns:
             bool: True if the variable is a lock bit register, False otherwise
         """
-        LOCK_NAME_PATTERNS = [r"(?<!b)lock", r"lck", r"(?<!c)lk(?!c)"] #Detects block currently
+        LOCK_NAME_PATTERNS = [r"(?<!b)lock", r"lck", r"(?<!c)lk(?!c)"] 
         return any(re.search(p, self.name.lower()) for p in LOCK_NAME_PATTERNS)
 
     def is_debug_register(self) -> bool:
