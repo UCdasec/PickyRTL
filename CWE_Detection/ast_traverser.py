@@ -42,12 +42,14 @@ class AST_Traverser():
         Returns:
             (str | int, str | int): If variable has an associated value it is returned, if not the variable name is returned
         """
+        #Check for value of left-hand side variable
         try:
             if lhs in self.variables.keys():
                 lhs = self.variables[lhs].value
         except TypeError:
             lhs = None
 
+        #Check for value of right-hand side variable
         try:
             if rhs in self.variables.keys():
                 rhs = self.variables[rhs].value
@@ -65,16 +67,19 @@ class AST_Traverser():
         Returns:
             bool: True if node is reachable, False if not
         """
+        #Check if node has already been determined as rechable or not
         if node.reachable is not None and node.reachable:
             return node.reachable
 
+        #Only the top node has no parent id so it is always reachable
         if node.parent_id is None:
             node.reachable = True
             return True
 
         parent_node: Node = self.nodes[node.parent_id]
         
-        #Check if node is conditionally blocked
+        #If parent is a conditional, check if it is satisfiable
+        #If the conditional is satisfiable then the node is reachable and vice-versa
         if parent_node.node_type in ['HdlStmIf', 'Elif_Clause', 'Else_Clause']:
             if hasattr(parent_node, 'satisfiable') and parent_node.satisfiable is not None:
                 if not self.determine_conditional_satisfiability(parent_node):
@@ -84,12 +89,14 @@ class AST_Traverser():
                     node.reachable = True
                     return True
         
-        #Check if parent case is satisfiable
+        #If parent is a case statement, check if it is satisfiable, if not it is not reachable
         if parent_node.node_type == 'Case':
             if hasattr(parent_node, 'satisfiable') and not parent_node.satisfiable:
                 node.reachable = False
                 return False
             
+        
+        #If the parent is not a case or conditional, the reachability of the parent node determines the reachability of the node
         parent_reachable = self.determine_node_reachability(parent_node)
         node.reachable = parent_reachable
         return parent_reachable
@@ -103,11 +110,14 @@ class AST_Traverser():
         Returns:
             bool: True if the assignment is protected by a lock bit, False if not
         """
+        #If the parent node is a conditional check for lock bit variables, else return False
         parent_node = self.nodes[assignment_node.parent_id]
         if isinstance(parent_node, HdlStmIfNode) or isinstance(parent_node, Else_Clause):
             condition = parent_node.condition
             condition_variables = self.extract_conditional_variables(condition)
-            for var in condition_variables: #Check if any variable in conditional is a lock bit register
+            
+            #Check if any variable in the conditional is a lock bit, if so return True, if not return False
+            for var in condition_variables: 
                 if self.variables[var.name].possible_lock_bit_register:
                     destination_node: HdlIdDefNode = self.variables[assignment_node.destination]
                     if not destination_node.security_sensitive:
@@ -132,7 +142,9 @@ class AST_Traverser():
         if isinstance(parent_node, HdlStmIfNode):
             condition = parent_node.condition
             condition_variables = self.extract_conditional_variables(condition)
-            if any(self.variables[var.name].debug_register for var in condition_variables): #Check if the conditional contains a debug register
+
+            #Check if the conditional contains a debug register
+            if any(self.variables[var.name].debug_register for var in condition_variables):
                 return True
         else:
             return False
@@ -152,8 +164,7 @@ class AST_Traverser():
         #When node is a string it is just one variable
         if isinstance(node, str):
                 return [self.variables[node]]
-
-            
+    
         node_type = node.get('__class__')
 
         if node_type == 'HdlOp':
@@ -187,7 +198,7 @@ class AST_Traverser():
             if direct_var_assignment.source == direct_var_assignment.destination or indirect_destination == direct_var_assignment.source:
                 continue
 
-            #get variable assignments for the direct assignment source if the source is a variable
+            #Get variable assignments for the direct assignment source if the source is a variable
             if self.determine_node_reachability(direct_var_assignment):
                 if not isinstance(direct_var_assignment.source, int):
                     if direct_var_assignment.source:
@@ -211,6 +222,7 @@ class AST_Traverser():
         Returns:
             str: Parsed condition in python
         """
+        #Parse the condition based function type
         if isinstance(cond, str):
             return cond
         elif isinstance(cond, dict) and cond.get('__class__') == 'HdlOp':
@@ -252,6 +264,7 @@ class AST_Traverser():
         #Get variables from python condition
         variables = set(re.findall(r'\b[a-zA-Z_][a-zA-Z0-9_]*\b', cond)) - {"and", "or", "not", "(", ")", "==", " ", "!"}
         satisfying_assignments = []
+
         #Loop through values to determine which values evaluate to True
         for values in itertools.product([False, True], repeat=len(variables)):
             env = dict(zip(variables, values))
@@ -305,7 +318,6 @@ class AST_Traverser():
             conditional_node.satisfiable = True
             return True
         elif any(op in parsed_condition for op in ['==', '!=', '<=', '>', '<', '>=']):
-            #TO-DO: Need special handling for equals and !=, but for now assume satisfiable
             conditional_node.satisfiable = True
             return True
         satisfying_assignments = self.get_cond_satisfying_assignments(parsed_condition)   
@@ -319,7 +331,7 @@ class AST_Traverser():
         for var in conditional_variables:
             variable_assignments[var.name] = [assignment.source for assignment in self.gather_variable_assignments(self.variables[var.name]) if isinstance(assignment.source, int)]
 
-        #Check if any of the conditional satisfying assignments are possible    
+        #Check if any of the conditional satisfying assignments are possible 
         condition_satisfiable = False
         for satisfying_assignment in satisfying_assignments:
             satisfying_assignment_possible = True
@@ -366,6 +378,7 @@ class AST_Traverser():
             end_line=end_line
         )
 
+        #Discard the assignment node if the source or destination node is None
         if assignment_node.source is None or assignment_node.destination is None:
             print(f"Warning: Assignment source or destination is None in node {assignment_node.node_id}. Discarding the assignment node")
             return
@@ -393,13 +406,13 @@ class AST_Traverser():
         Returns:
             Any : Returns node, value of the node, or the callable node traverse method
         """
+        
+        #Check for special return cases
         if isinstance(node, str):
             return node
-        
-        if not '__class__' in node:
+        elif not '__class__' in node:
             return node
-        
-        if node['__class__'] == 'str':
+        elif node['__class__'] == 'str':
             return node['val']
 
         #Get Hdl class and matching traversal method
@@ -464,7 +477,7 @@ class AST_Traverser():
         self.nodes[module_dec_node.node_id] = module_dec_node
         self.nodes[parent_node_id].add_child(module_dec_node)
 
-        #traverse the ports and parameters
+        #Traverse the ports and parameters
         for param in node['params']:
             self.traverse(param, module_dec_node.node_id)
         for port in node['ports']:
@@ -499,6 +512,7 @@ class AST_Traverser():
             parent_node_id (int | None): Id of the parent node
         """
         line_pos = node['position'][0] + 1
+        #Traverse each object within the block body
         for obj in node['body']:
             if not 'position' in obj:
                 #If the object does not have a position tag, assign it the current line position and increment the line position
@@ -526,6 +540,7 @@ class AST_Traverser():
         if isinstance(node['src'], str) and self.variables[node['src']].possible_lock_bit_register:
             self.variables[node['dst']].possible_lock_bit_register = True
 
+        #Create the assignment node
         self.create_assignment_node(
             source = self.traverse(node['src'], None),
             destination=self.traverse(node['dst'], None), 
@@ -559,9 +574,9 @@ class AST_Traverser():
             #One variable switch statements
             case_statement_node = HdlStmCaseNode(switch_variable=self.variables[node['switch_on']], parent_id=parent_node_id, start_line=node['position'][0], end_line=node['position'][2])
             
+        #Add case statement node where necessary
         self.nodes[case_statement_node.node_id] = case_statement_node
         self.nodes[parent_node_id].add_child(case_statement_node)
-
         self.case_statements[case_statement_node.node_id] = case_statement_node
 
         #Traverse cases and create nodes for them
@@ -586,6 +601,7 @@ class AST_Traverser():
             self.nodes[case_node.node_id] = case_node
             self.nodes[case_statement_node.node_id].add_case(case_node)
 
+            #Traverse each case within the case statement
             line_num = case_start_line + 1
             for i in range(1, len(case)):
                 if 'position' not in case[i]:
@@ -630,6 +646,7 @@ class AST_Traverser():
         self.nodes[if_node.node_id] = if_node
         self.nodes[parent_node_id].add_child(if_node)
 
+        #Determine if the conditional is satsifiable
         if self.determine_conditional_satisfiability(if_node):
             self.satisfiable_conditionals[if_node.node_id] = if_node
         else:
@@ -649,6 +666,7 @@ class AST_Traverser():
             if_node.add_elif(elif_node)
             if_node.add_child(elif_node)
 
+            #Determine if the elif conditional is satisfiable
             if self.determine_conditional_satisfiability(elif_node):
                 self.satisfiable_conditionals[elif_node.node_id] = elif_node
             else:
@@ -673,6 +691,7 @@ class AST_Traverser():
             if_node.else_clause = else_node
             if_node.add_child(else_node)
 
+            #Determine if the else clause is able to be reached
             if self.determine_conditional_satisfiability(else_node):
                 self.satisfiable_conditionals[else_node.node_id] = else_node
             else:
@@ -730,12 +749,14 @@ class AST_Traverser():
         self.nodes[id_def_node.node_id] = id_def_node
         self.nodes[parent_node_id].add_child(id_def_node)
 
+        #Add node to input or output list if needed
         match id_def_node.direction:
             case "IN":
                 self.inputs[id_def_node.name] = id_def_node
             case 'OUT':
                 self.outputs[id_def_node.name] = id_def_node
 
+        #Add node to lock bit registers if it is a lock bit registers
         if id_def_node.possible_lock_bit_register:
             self.lock_bit_registers.append(id_def_node)
     
@@ -770,6 +791,7 @@ class AST_Traverser():
         Returns:
             Any: Value of the left hand side and right hand side after function is applied
         """
+        #Traverse the function depending on the operator
         match node['fn']:
             case 'DOWNTO':
                 lhs = self.traverse(node['ops'][0], None)
@@ -795,13 +817,13 @@ class AST_Traverser():
                     end_line=node['position'][2] if 'position' in node else None
                 )
             case 'INDEX':
-                #TO-DO: FIgure out something with the index. This is a stop gap
                 #Returns the variable name, but does not handle the actual indexing
                 return node['ops'][0]
             case 'SUB':
                 lhs = self.traverse(node['ops'][0], None)
                 rhs = self.traverse(node['ops'][1], None)
 
+                #Check variables for set values
                 lhs, rhs = self.check_variables(lhs, rhs)
 
                 try:
@@ -813,6 +835,7 @@ class AST_Traverser():
                 lhs = self.traverse(node['ops'][0], None)
                 rhs = self.traverse(node['ops'][1], None)
 
+                #Check variables for set values
                 lhs, rhs = self.check_variables(lhs, rhs)
 
                 if lhs is None or rhs is None:
@@ -824,6 +847,7 @@ class AST_Traverser():
                 lhs = self.traverse(node['ops'][0], None)
                 rhs = self.traverse(node['ops'][1], None)
 
+                #Check variables for set values
                 lhs, rhs = self.check_variables(lhs, rhs)
 
                 if lhs is None or rhs is None:
@@ -946,11 +970,12 @@ class AST_Traverser():
             if not isinstance(param_name, str):
                 continue
 
+            #Set the param to be module mapped
             if param_name in self.variables.keys():
                 param: HdlIdDefNode = self.variables[param_name]
                 param.module_mapping = node['module_name']
             else:
-                print("here")
+                continue
 
         for mapping in node['port_map']:
             if isinstance(mapping, str):
@@ -962,6 +987,7 @@ class AST_Traverser():
             
             if not isinstance(port_name, str):
                 continue
+            #Set the port to be module mapped
             port: HdlIdDefNode = self.variables[port_name]
             port.module_mapping = node['module_name']
 
@@ -975,6 +1001,8 @@ class AST_Traverser():
         init = node['init']
         for_loop_var = None
         var_init_value = None
+
+        #Traverse the init assignment in the for loop to get the variable initial value
         if init['__class__'] == 'HdlStmBlock':
             init_assignment = init['body'][0]
             if init_assignment['__class__'] == 'HdlIdDef':
@@ -986,6 +1014,8 @@ class AST_Traverser():
                 var_init_value = self.traverse(init_assignment['src'], None)
         else:
             print(f"Warning: Unknown init value in for loop on line {node['position'][0]}")
+
+        #Create for loop node
         for_loop_node = HdlStmForNode(
             var=for_loop_var,
             init_value=var_init_value,
@@ -999,5 +1029,6 @@ class AST_Traverser():
         self.nodes[for_loop_node.node_id] = for_loop_node
         self.nodes[parent_node_id].add_child(for_loop_node)
 
+        #Traverse the body of the for loop
         self.traverse(node=node['body'], parent_node_id=for_loop_node.node_id)
     #endregion TRAVERSAL METHODS

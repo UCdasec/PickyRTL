@@ -38,7 +38,7 @@ def load_json_file(file_path: str) -> dict:
     except FileNotFoundError:
         print(f"File {file_path} not found. Please check the path and try again.")
         return None
-    2
+
     if parsed_json is None:
         print(f"Failed to load JSON from {file_path}. The file may be empty or corrupted.")
     
@@ -54,6 +54,7 @@ def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.Data
         CWE_1431_results_df (pd.DataFrame): CWE 1431 detection results
         detection_statistics_df (pd.DataFrame): Detection statistics
     """
+    #Prompt the user to select a folder for the saved results
     selected_folder_path = file_selector(
         message="---Select a folder to save the results---", 
         start_path=Path(__file__).parent.resolve() / "Results",
@@ -61,6 +62,7 @@ def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.Data
         file_extensions_allowed=['.json']
     )
 
+    #Prompt the user for a file name
     file_name: str = inquirer.text(
         message="Enter a name for the results"
     ).execute()
@@ -94,6 +96,8 @@ def score_name(name: str, keywords: dict) -> int:
     """
     total_score = 0
     name_lower = name.lower()
+
+    #Assign a score to the name based on the keywords
     for keyword, weight in keywords.items():
         if keyword in name_lower:
             total_score += weight
@@ -173,16 +177,16 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
             if assignment.source not in assigned_to_state_variable:
                 assignment_reachable = ast_data.determine_node_reachability(assignment)
 
+                #If the assignment is reachable then the case is satisfiable
                 if assignment_reachable:
                     assigned_to_state_variable.append(assignment.source)
-                    #If the assignment is reachable then the case is satisfiable
                     case_node: Case = next((v for v in case_statement.cases.values() if assignment.source in v.case_values), None)
                     if case_node:
                         case_node.satisfiable = True
 
         #Gather all indirect assignments to the state variable through assignments to variables assigned to the state variable
         for assignment_to_state_variable in assigned_to_state_variable:
-            #Deals with when the state variable is assigned a number
+            #Deal with when the state variable is assigned a number
             if assignment_to_state_variable not in ast_data.variable_assignments.keys():
                 continue 
 
@@ -204,8 +208,8 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
             if not(any(item in assigned_to_state_variable for item in case.case_values)):
                 unreachable_states.append(case.primary_value)
 
+        #If there are any unreachable states, then the design is vulnerable
         if len(unreachable_states) > 0:
-            #TO_DO: Check if the state variable is mapped to another module, if so it is inconclusive as it could be updated from that module
             if case_statement.switch_variable.module_mapping:
                 return f'Inconclusive: {unreachable_states} state(s) may not be reachable, but state variable is mapped to {case_statement.switch_variable.module_mapping}; transitions may be externally controlled and not visible in this scope'
             for state in unreachable_states:
@@ -223,6 +227,7 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
         Returns:
             str: Secure if no deadlocks, vulnerable if there are deadlocks, or inconclusive
         """
+        #Define a class for transitions between states
         class Transition:
             def __init__(self, start_state, next_state, assignment, condition):
                 self.start_state = start_state
@@ -264,6 +269,8 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
 
             next_state = assignment.source
             start_state = find_start_state(node=assignment)
+
+            #Create the transition for the assignment
             transitions.append(Transition(start_state=start_state, next_state=next_state, assignment=assignment, condition=None))
 
         
@@ -458,7 +465,6 @@ def detect_CWE_226(file_name: str, ast_data: AST_Traverser, results: pd.DataFram
                         if len(registers_needing_reset) == 0:
                             break
                 elif isinstance(parent_node, HdlStmForNode):
-                    #TO-DO: Update to check that all bits of the register are reset through the for loop
                     #Check to make sure for loop is within reset logic
                     grandparent_node = ast_data.nodes[parent_node.parent_id]
                     if isinstance(grandparent_node, HdlStmIfNode) or isinstance(grandparent_node, Else_Clause): #Check if parent is a reset condition
@@ -507,7 +513,7 @@ def detect_CWE_1431(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
     """
     if ast_data.crypto_module:
         #1. Find the "result" output register
-            #Loop through outputs and choose one that is most likely to be the crypto data output
+        #Loop through outputs and choose one that is most likely to be the crypto data output
         crypto_result_output_keyword_scores = {
             "digest": 5,
             "hash": 5,
@@ -536,10 +542,6 @@ def detect_CWE_1431(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
             "result_valid": 5,
             "valid": 4,
         }
-        valid_signal_scores = [(output, score_name(output, crypto_valid_output_keyword_scores)) for output in remaining_module_outputs.keys()]
-        valid_signal_scores.sort(key=lambda x: x[1], reverse=True)
-        valid_signal = valid_signal_scores[0][0] if len(valid_signal_scores) > 0 else None
-
         valid_signal_scores = [(output, score_name(output, crypto_valid_output_keyword_scores)) for output in ast_data.variables.keys()]
         valid_signal_scores.sort(key=lambda x: x[1], reverse=True)
         highest_score = valid_signal_scores[0][1]
@@ -556,10 +558,6 @@ def detect_CWE_1431(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
         vulnerable_assignments = []
         #Loop though assignments and keep track fo assignments not gated by the valid signal
         for assignment in result_output_assignments:
-            print()
-            print(f"Source type: {type(assignment.source)}")
-            print(f"Destination type: {type(assignment.destination)}")
-            print()
             #Now check that assignment is gated with logic to ensure it is valid
             parent_node = ast_data.nodes[assignment.parent_id]
             if isinstance(parent_node, HdlStmIfNode):
@@ -575,6 +573,7 @@ def detect_CWE_1431(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
                     #If the source is a variable and not a predefined integer value, it is vulnerable
                     vulnerable_assignments.append(assignment)
 
+        #If there are any vulnerable assignments the design is marked as vulnerable
         if len(vulnerable_assignments) > 0:
             new_row = {
                 CWE_1431_RESULTS_DF_COLS.FILE_NAME.value: file_name,
@@ -804,7 +803,6 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             if matching_choice == "fuzzy":
                 #FUZZY MATCHING
                 if fuzzy_matching(var.name, list(security_registers['lock-bit-registers']), threshold):
-                    # print(f"{var.name} added as a lock bit register for {file_name}")
                     security_registers['lock-bit-registers'].add(var.name)
                     var.possible_lock_bit_register = True
                     ast_data.lock_bit_registers.append(var)
@@ -831,7 +829,6 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             if matching_choice == "fuzzy":
                 #FUZZY MATCHING
                 if fuzzy_matching(var.name, list(security_registers['security-sensitive-registers']), threshold):
-                    #I think I should check fi the variable has any assignments
                     if len(ast_data.variable_assignments[var.name]) > 0:
                         security_registers['security-sensitive-registers'].add(var.name)
                         var.security_sensitive = True

@@ -22,7 +22,6 @@ class Node():
         """
         self.children[child_node.node_id] = child_node
 
-
 class HdlModuleDefNode(Node):
     def __init__(self, start_line, end_line):
         super().__init__('HdlModuleDef', start_line, end_line)

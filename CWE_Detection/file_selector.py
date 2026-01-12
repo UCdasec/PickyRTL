@@ -48,6 +48,7 @@ def file_explorer(start_path: str=".", save_file: bool=False, file_extensions_al
             choices.extend(sub_folders)
 
 
+        #Allow users to go up the folder tree if not at the starting folder
         if not os.path.normpath(current_path) ==  os.path.normpath(start_path):
             choices.append("..")
 
@@ -80,7 +81,6 @@ def file_explorer(start_path: str=".", save_file: bool=False, file_extensions_al
                 if os.path.isdir(selected_path):
                     current_path = selected_path
                 else:
-                    print("xxxxx", selected_path)
                     return selected_path
 
 def file_selector(message: str="Select a folder or files", start_path: str=".", save_file:bool=False, file_extensions_allowed:list[str]=[]) -> str:
