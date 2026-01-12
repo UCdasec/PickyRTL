@@ -7,6 +7,7 @@ from node import *
 
 class AST_Traverser():
     def __init__(self):
+        self.module_name = None # Name of the modules
         self.nodes = {} # {node_id: Node}, Stores all nodes in the module
         self.procedural_blocks = {} # {HdlStmProcessNode: assignments within procedural block}, Stores all procedural blocks in the module
         self.current_procedural_block = None # Current procedural block being traversed
@@ -40,10 +41,17 @@ class AST_Traverser():
         Returns:
             (Any | int, Any | int): Returns variable names or associated values
         """
-        if lhs in self.variables.keys():
-            lhs = self.variables[lhs].value
-        if rhs in self.variables.keys():
-            rhs = self.variables[rhs].value
+        try:
+            if lhs in self.variables.keys():
+                lhs = self.variables[lhs].value
+        except TypeError:
+            lhs = None
+
+        try:
+            if rhs in self.variables.keys():
+                rhs = self.variables[rhs].value
+        except TypeError:
+            rhs = None
 
         return lhs, rhs
     
@@ -275,10 +283,12 @@ class AST_Traverser():
         condition = conditional_node.condition
         conditional_variables = self.extract_conditional_variables(condition)
         
-        #Check if all variables are inputs, if so the assignments are out of scope and if statement will be assumed to be satisfiable
-        if any(cond_var.direction == 'IN' for cond_var in conditional_variables):
+        #If any variables are inputs or mapped to other modules, the assignments are out of scope, assume satisfiable
+        if any(cond_var.direction == 'IN' for cond_var in conditional_variables) or any(cond_var.module_mapping is not None for cond_var in conditional_variables):
             conditional_node.satisfiable = True
             return True
+        
+        #
         
         #If the condition is just a variable with no operators, only need to check if that variable is ever set to true(1)
         if isinstance(condition, str):
@@ -335,6 +345,11 @@ class AST_Traverser():
         return False
     
     def create_assignment_node(self, source, destination, parent_node_id, start_line, end_line):
+        
+        if isinstance(destination, list):
+            print(f"Unsupported destination type \"{type(destination)}\"for assignment {destination} = {source}")
+            return
+
         #Create node
         assignment_node = HdlStmAssignNode(
             source=source, 
@@ -400,14 +415,15 @@ class AST_Traverser():
         if parent_node_id is not None:
             raise ValueError(f"HdlModuleDef should be the first node, parent_node_id is {parent_node_id}")
         
+        self.module_name = node["module_name"]
         self.loc = node['position'][2] - node['position'][0] + 2  # Calculate lines of code from start to end of the module definition
 
         #Check if module is a cryptographic module
         module_name = node['module_name']
         crypto_module_pattern = re.compile(
-            r'(?i)(?<![A-Za-z0-9])(?:aes\d*|sha\d*|crypto|hmac|md5|otp(?:_ctrl|_scrmbl)?|chacha|scrambl|cipher|hash|mac)(?![A-Za-z0-9])'
+            r'(?i)(?<![A-Za-z0-9])(?:aes\d*|sha\d*|crypto|hmac|md5|otp(?:_ctrl|_scrmbl)?|chacha|scrambl|cipher|hash|mac|keccak)(?![A-Za-z0-9])'
         )
-        if crypto_module_pattern.search(module_name):
+        if crypto_module_pattern.search(module_name) and "wrapper" not in module_name:
             print(f"\n\n\nCrypto module found {module_name}\n\n\n")
             self.crypto_module = True
 
@@ -811,6 +827,15 @@ class AST_Traverser():
             case 'MAP_ASSOCIATION':
                 #Maps variables to singed or unsigned. I have no need to handle this right now
                 pass
+            case 'CONCAT':
+                lhs = self.traverse(node['ops'][0], None)
+                rhs = self.traverse(node['ops'][1], None)
+
+                if isinstance(lhs, list) and isinstance(rhs, str):
+                    lhs.append(rhs)
+                    return lhs
+                else:
+                    return [lhs, rhs]
             case _:
                 print(f"HdlOP not implemented for {node['fn']}")
     
@@ -913,8 +938,12 @@ class AST_Traverser():
             
             if not isinstance(param_name, str):
                 continue
-            param: HdlIdDefNode = self.variables[param_name]
-            param.module_mapping = node['module_name']
+
+            if param_name in self.variables.keys():
+                param: HdlIdDefNode = self.variables[param_name]
+                param.module_mapping = node['module_name']
+            else:
+                print("here")
 
         for mapping in node['port_map']:
             if isinstance(mapping, str):
@@ -935,8 +964,13 @@ class AST_Traverser():
         var_init_value = None
         if init['__class__'] == 'HdlStmBlock':
             init_assignment = init['body'][0]
-            for_loop_var = self.variables[init_assignment['dst']]
-            var_init_value = self.traverse(init_assignment['src'], None)
+            if init_assignment['__class__'] == 'HdlIdDef':
+                self.traverse(init_assignment, parent_node_id)
+                for_loop_var = self.variables[init_assignment['name']['val']]
+                var_init_value = for_loop_var.value
+            elif init_assignment['__class__'] == 'HdlStmAssign':
+                for_loop_var = self.variables[init_assignment['dst']]
+                var_init_value = self.traverse(init_assignment['src'], None)
         else:
             print(f"Warning: Unknown init value in for loop on line {node['position'][0]}")
         for_loop_node = HdlStmForNode(
