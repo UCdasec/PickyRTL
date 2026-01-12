@@ -1,5 +1,0 @@
-This module is the same example as Example 3. I have added a peripheral reset signal named
-reset_peripheral. In the reset logic for the lock_status register I added the peripheral reset
-signal in to the conditional. Now the lock_status register can be reset on peripheral reset instead
-of only global reset. this can be mitigated by removing the reset_peripheral register
-from the reset conditional for lock_status.
