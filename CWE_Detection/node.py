@@ -1,5 +1,7 @@
 import math
 import re
+
+
 class Node():
     _next_node_id = -1
     def __init__(self, node_type, start_line, end_line, parent_id=None):
@@ -47,7 +49,6 @@ class HdlIdDefNode(Node):
         self.debug_register = self.is_debug_register() if direction == "IN" else False
         self.reset_register = self.is_reset_register()
 
-
     def calculate_possible_values(self):
         """Calculates the bit width of the variable
 
@@ -55,7 +56,7 @@ class HdlIdDefNode(Node):
             float | None: Returns bit width of the variable
         """
         if self.bit_width is None:
-            return 1 #TO-DO see if there is something I can do better here
+            return 1
         return math.pow(2, self.bit_width)
     
     def is_lock_name(self) -> bool:
@@ -84,6 +85,7 @@ class HdlIdDefNode(Node):
         """
         RESET_NAME_PATTERNS = [r"reset", r"rst"]
         return any(re.search(p, self.name.lower()) for p in RESET_NAME_PATTERNS)
+
 class HdlStmAssignNode(Node):
     def __init__(self, source, destination, parent_id, start_line, end_line):
         super().__init__('HdlStmAssign', start_line, end_line, parent_id)

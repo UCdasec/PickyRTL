@@ -1,6 +1,7 @@
 import copy
 import itertools
 import re
+from typing import Any
 
 from node import *
 
@@ -31,7 +32,7 @@ class AST_Traverser():
         Node._next_node_id = 0  # Reset the node ID counter
 
     #region HELPER METHODS
-    def check_variables(self, lhs: str, rhs: str):
+    def check_variables(self, lhs: str, rhs: str) -> tuple[str | int, str | int]:
         """Checks if lhs or rhs have a set value
 
         Args:
@@ -39,7 +40,7 @@ class AST_Traverser():
             rhs (str): Right hand side variable to check
 
         Returns:
-            (Any | int, Any | int): Returns variable names or associated values
+            (str | int, str | int): If variable has an associated value it is returned, if not the variable name is returned
         """
         try:
             if lhs in self.variables.keys():
@@ -62,7 +63,7 @@ class AST_Traverser():
             node (Node): Node to determine if it is reachable
 
         Returns:
-            bool: True if node is reachable, false if not
+            bool: True if node is reachable, False if not
         """
         if node.reachable is not None and node.reachable:
             return node.reachable
@@ -100,14 +101,14 @@ class AST_Traverser():
             assignment_node (HdlStmAssignNode): Assignment node to check if it is protected by a lock bit
 
         Returns:
-            bool: True if the assignment is protected by a lock bit
+            bool: True if the assignment is protected by a lock bit, False if not
         """
         parent_node = self.nodes[assignment_node.parent_id]
         if isinstance(parent_node, HdlStmIfNode) or isinstance(parent_node, Else_Clause):
             condition = parent_node.condition
             condition_variables = self.extract_conditional_variables(condition)
-            for var in condition_variables:
-                if self.variables[var.name].possible_lock_bit_register: #If condition has a lock bit variable
+            for var in condition_variables: #Check if any variable in conditional is a lock bit register
+                if self.variables[var.name].possible_lock_bit_register:
                     destination_node: HdlIdDefNode = self.variables[assignment_node.destination]
                     if not destination_node.security_sensitive:
                         destination_node.security_sensitive = True
@@ -131,7 +132,7 @@ class AST_Traverser():
         if isinstance(parent_node, HdlStmIfNode):
             condition = parent_node.condition
             condition_variables = self.extract_conditional_variables(condition)
-            if any(self.variables[var.name].debug_register for var in condition_variables): #If condition has a debug register variable
+            if any(self.variables[var.name].debug_register for var in condition_variables): #Check if the conditional contains a debug register
                 return True
         else:
             return False
@@ -164,8 +165,8 @@ class AST_Traverser():
         elif node_type == 'HdlValueInt':
             return []
 
-    def gather_variable_assignments(self, var: HdlIdDefNode, indirect_destination: str | None=None):
-        """_summary_
+    def gather_variable_assignments(self, var: HdlIdDefNode, indirect_destination: str | None=None) -> list[HdlStmAssignNode]:
+        """Gathers all direct and indirect assignments to variables. Direct assignments are given its value explicitly in the statement. Indirect assignments are when the variable gets its value from another variable.
 
         Args:
             var (HdlIdDefNode): HdlIdDefNode to gather assignments for
@@ -194,9 +195,9 @@ class AST_Traverser():
 
         #Convert indirect assignments to direct assignments by copying the assignments and changing the destination
         for indirect_assignment in indirect_variable_assignments.copy():
-             new_direct_assignment = copy.deepcopy(indirect_assignment)
-             new_direct_assignment.destination = var.name
-             direct_variable_assignments.append(new_direct_assignment)
+            new_direct_assignment = copy.deepcopy(indirect_assignment)
+            new_direct_assignment.destination = var.name
+            direct_variable_assignments.append(new_direct_assignment)
 
         #Return only reachable assignments
         return [assignment for assignment in direct_variable_assignments if assignment.reachable]
@@ -239,7 +240,7 @@ class AST_Traverser():
         else:
             return 'UNKNOWN_CONDITION'
         
-    def get_cond_satisfying_assignments(self, cond: str):
+    def get_cond_satisfying_assignments(self, cond: str) -> list[dict[str, bool]]:
         """Gets all of the variable assignments that satisfy the condition
 
         Args:
@@ -262,7 +263,7 @@ class AST_Traverser():
                 print(f"Error evaluating conditional expression: {e}")
         return satisfying_assignments
 
-    def determine_conditional_satisfiability(self, conditional_node: HdlStmIfNode | Else_Clause | Elif_Clause):
+    def determine_conditional_satisfiability(self, conditional_node: HdlStmIfNode | Else_Clause | Elif_Clause) -> bool:
         """Determines whether the condition in the conditional node can be satisfied by checking all assignments to variables in the condition.
 
         Args:
@@ -288,8 +289,6 @@ class AST_Traverser():
             conditional_node.satisfiable = True
             return True
         
-        #
-        
         #If the condition is just a variable with no operators, only need to check if that variable is ever set to true(1)
         if isinstance(condition, str):
             var_assignments = self.gather_variable_assignments(conditional_variables[0])
@@ -299,7 +298,6 @@ class AST_Traverser():
                     conditional_node.satisfiable = True
                     return True
 
-        
         #Parse condition
         parsed_condition = self.parse_condition(condition)
         if 'UNKNOWN_CONDITION' in parsed_condition:
@@ -344,7 +342,16 @@ class AST_Traverser():
         conditional_node.satisfiable = False
         return False
     
-    def create_assignment_node(self, source, destination, parent_node_id, start_line, end_line):
+    def create_assignment_node(self, source: Any, destination: str, parent_node_id: int | None, start_line: int, end_line: int):
+        """Creates an assignment node based on the provided source, destination, parent_node_id, start_line, and end_line
+
+        Args:
+            source (Any): The source of the assignment. Can be a str, int, list, etc.
+            destination (str): The destination variable name of the assignment
+            parent_node_id (int | None): The id of the parent node
+            start_line (int): The start line of the assignment
+            end_line (int): The end line of the assignment
+        """
         
         if isinstance(destination, list):
             print(f"Unsupported destination type \"{type(destination)}\"for assignment {destination} = {source}")
@@ -381,10 +388,10 @@ class AST_Traverser():
 
         Args:
             node (dict): The node to traverse
-            parent_node_id (int | None): THe id of the parent node
+            parent_node_id (int | None): The id of the parent node
 
         Returns:
-            Any : Returns node, value fo the node, or the callable node traverse method
+            Any : Returns node, value of the node, or the callable node traverse method
         """
         if isinstance(node, str):
             return node
@@ -959,6 +966,12 @@ class AST_Traverser():
             port.module_mapping = node['module_name']
 
     def traverse_HdlStmFor(self, node: dict, parent_node_id: int | None):
+        """Traverses the body of the for loop
+
+        Args:
+            node (dict): HdlStmFor node to traverse
+            parent_node_id (int | None): Id of parent node
+        """
         init = node['init']
         for_loop_var = None
         var_init_value = None

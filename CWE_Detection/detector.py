@@ -45,7 +45,7 @@ def load_json_file(file_path: str) -> dict:
     return parsed_json
 
 def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.DataFrame,  CWE_226_results_df: pd.DataFrame,  CWE_1431_results_df: pd.DataFrame, detection_statistics_df: pd.DataFrame):
-    """Creates a file explorer allowing the user to select where to save the results
+    """Creates a file explorer allowing the user to select where to save the results and then saves the results at the selected location
 
     Args:
         CWE_1245_results_df (pd.DataFrame): CWE 1245 detection results
@@ -82,7 +82,7 @@ def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.Data
     else:
         print("File save operation cancelled.")
 
-def score_name(name: str, keywords: dict):
+def score_name(name: str, keywords: dict) -> int:
     """Scores the name based on similarity to keywords
 
     Args:
@@ -99,11 +99,10 @@ def score_name(name: str, keywords: dict):
             total_score += weight
     return total_score
 
-def detect_CWE_1245(file_name: str, ast_data: AST_Traverser, case_statement: HdlStmCaseNode, results: pd.DataFrame) -> pd.DataFrame:
+def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, results: pd.DataFrame) -> pd.DataFrame:
     """Checks the case statement for CWE_1245 vulnerabilities
 
     Args:
-        file_name(str): Name of the file being analyzed
         ast_data (AST_Traverser): AST data from the file
         case_statement (HdlStmCaseNode): Case statement to check for vulnerabilities
         results (pd.Dataframe): Dataframe to store the results in
@@ -305,8 +304,25 @@ def detect_CWE_1245(file_name: str, ast_data: AST_Traverser, case_statement: Hdl
     return results
 
 def detect_CWE_1233(file_name: str, ast_data: AST_Traverser, results: pd.DataFrame):
-    #Scenario 1: All security sensitive register assignments are locked
-    def verify_security_sensitive_register_coverage(security_sensitive_register):
+    """Detects two scenarios of CWE 1233 vulnerabilities in the file
+    (1): Security sensitive register coverage
+    (2): Lock enforcement completeness
+
+    Args:
+        file_name (str): Name of the file being detected for vulnerabilities
+        ast_data (AST_Traverser): AST data from the file
+        results (pd.DataFrame): Dataframe that contains the CWE 1233 detection results
+    """
+
+    def verify_security_sensitive_register_coverage(security_sensitive_register: HdlIdDefNode) -> str:
+        """Scenario 1: Check if all assignments to the security sensitive register are protected with lock bits
+
+        Args:
+            security_sensitive_register (HdlIdDefNode): The security sensitive register to check for vulnerabilities
+
+        Returns:
+            str: Secure or Vulnerable with short description
+        """
         assignments = ast_data.variable_assignments[security_sensitive_register.name]
         unprotected_register_assignments = []
 
@@ -323,8 +339,15 @@ def detect_CWE_1233(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
         else:
             return "Secure: All assignments are protected"
         
-    #Scenario 2: All locked assignments reject unauthorized writes
-    def verify_lock_enforcement_completeness(security_sensitive_register):
+    def verify_lock_enforcement_completeness(security_sensitive_register: HdlIdDefNode) -> str:
+        """Scenario 2: Check if locked assignments correctly reject unauthorized writes
+
+        Args:
+            security_sensitive_register (HdlIdDefNode): The security sensitive register to check for vulnerabilities
+
+        Returns:
+            str: Secure or Vulnerable with short description
+        """
         incorrectly_enforced_assignments = []
         assignments = ast_data.variable_assignments[security_sensitive_register.name]
 
@@ -376,6 +399,13 @@ def detect_CWE_1233(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
         results.loc[len(results)] = new_row
 
 def detect_CWE_226(file_name: str, ast_data: AST_Traverser, results: pd.DataFrame):
+    """First determines which registers need to be reset and then ensures that the register is reset
+
+    Args:
+        file_name (str): Name of the file being detected for vulnerabilities
+        ast_data (AST_Traverser): AST data from the file
+        results (pd.DataFrame): Dataframe that contains the CWE 226 vulnerabilities
+    """
     #Determine if any assignments in each procedural block are security sensitive registers
     #If so check for reset logic for that register
     security_sensitive_register_names = [reg.name for reg in ast_data.security_sensitive_registers]
@@ -467,11 +497,17 @@ def detect_CWE_226(file_name: str, ast_data: AST_Traverser, results: pd.DataFram
             }
             results.loc[len(results)] = new_row                    
 
-def detect_CWE_1431(file_name: str, ast_data: AST_Traverser, results: pd.DataFrame):    
+def detect_CWE_1431(file_name: str, ast_data: AST_Traverser, results: pd.DataFrame):
+    """Checks cryptographic modules for results leakage through the module output. Skips non-cryptographic modules
+
+    Args:
+        file_name (str): Name of the file being detected for vulnerabilities
+        ast_data (AST_Traverser): AST data from the file
+        results (pd.DataFrame): Dataframe that contains the CWE 1431 detection results
+    """
     if ast_data.crypto_module:
         #1. Find the "result" output register
             #Loop through outputs and choose one that is most likely to be the crypto data output
-            #TO-DO maybe I need to ensure that the result output has assignments to it
         crypto_result_output_keyword_scores = {
             "digest": 5,
             "hash": 5,
@@ -573,10 +609,7 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
         file_path (str): File path of file for detection
 
     Returns:
-        tuple (pd.Dataframe, pd.Dataframe, pd.Dataframe): First dataframe contains CWE 1245 detection results,
-                                                          second dataframe contains CWE 1233 detection results,
-                                                          third dataframe contains detailed results,
-                                                          fourth dataframe contains detection statistics
+        tuple (pd.Dataframe, pd.Dataframe, pd.Dataframe): First dataframe contains CWE 1245 detection results, second dataframe contains CWE 1233 detection results, third dataframe contains detailed results, fourth dataframe contains detection statistics
     """
     start_time = time.perf_counter()
     file_name = os.path.basename(file_path)
@@ -625,7 +658,7 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
                         CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
                         CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
                     }
-                    detect_CWE_1245(file_name=file_name, ast_data=traverser, case_statement=case, results=results_row)
+                    detect_CWE_1245(ast_data=traverser, case_statement=case, results=results_row)
 
                     #Concat current results and new results row
                     CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([results_row])], ignore_index=True)
@@ -841,7 +874,7 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
                     CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
                     CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
                 }
-                detect_CWE_1245(file_name, ast_data, case, results=results_row)
+                detect_CWE_1245(ast_data=ast_data, case_statement=case, results=results_row)
 
                 #Concat current results and new results row
                 CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([results_row])], ignore_index=True)
@@ -862,9 +895,7 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
 
     return CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, CWE_1431_results_df, detection_statistics_df
 
-
 def main():
-
     while True:
         mode_select = inquirer.select(
             message="---Select Mode---",
@@ -921,7 +952,6 @@ def main():
             case "Exit":
                 print("Goodbye")
                 break
-        
 
 if __name__ == "__main__":
     main()

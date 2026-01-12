@@ -1,10 +1,9 @@
 import os
-from pathlib import Path
 
 from InquirerPy import inquirer
 
 
-def file_explorer(start_path: str=".", save_file: bool=False, file_extensions_allowed:list[str]=[]):
+def file_explorer(start_path: str=".", save_file: bool=False, file_extensions_allowed:list[str]=[]) -> str:
     """Creates a file explorer allowing the user to select a file or folder
 
     Args:

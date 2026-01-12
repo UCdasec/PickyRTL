@@ -4,12 +4,6 @@ import re
 from pathlib import Path
 
 from file_selector import file_selector
-# from hdlConvertor import HdlConvertor
-# from hdlConvertorAst.hdlAst import HdlDirection, HdlModuleDec, HdlModuleDef
-# from hdlConvertorAst.hdlAst._structural import HdlContext
-# from hdlConvertorAst.language import Language
-# from hdlConvertorAst.to.json import ToJson
-from InquirerPy import inquirer
 
 
 def parse_file(file_path:str):
@@ -83,7 +77,8 @@ def parse_folder(folder_path:str):
         parse_file(file_path)
 
 def parse():
-    #Main function that can be called from detector
+    """Creates a file explorer to select an HDL file or folder of HDL files to parse
+    """
     while True:
         selected_path = file_selector(
             message="---Select a folder or file to parse---",
@@ -98,10 +93,6 @@ def parse():
         else:
             print("Invalid Selection. Please Select a Valid File or Folder")
             return
-    
-
-if __name__ == "__main__":
-    parse()
 
 
 
