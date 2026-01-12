@@ -4,6 +4,7 @@ import os
 import time
 import tkinter as tk
 from collections import defaultdict
+from parser import parse
 from pathlib import Path
 
 import jellyfish
@@ -14,7 +15,6 @@ from file_selector import *
 from InquirerPy import inquirer
 from node import *
 from rapidfuzz import fuzz
-from parser import parse
 
 
 def load_json_file(file_path: str) -> dict:
@@ -44,13 +44,14 @@ def load_json_file(file_path: str) -> dict:
     
     return parsed_json
 
-def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.DataFrame,  CWE_226_results_df: pd.DataFrame, detection_statistics_df: pd.DataFrame):
+def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.DataFrame,  CWE_226_results_df: pd.DataFrame,  CWE_1431_results_df: pd.DataFrame, detection_statistics_df: pd.DataFrame):
     """Creates a file explorer allowing the user to select where to save the results
 
     Args:
         CWE_1245_results_df (pd.DataFrame): CWE 1245 detection results
         CWE_1233_results_df (pd.DataFrame): CWE 1233 detection results
         CWE_226_results_df (pd.DataFrame): CWE 226 detection results
+        CWE_1431_results_df (pd.DataFrame): CWE 1431 detection results
         detection_statistics_df (pd.DataFrame): Detection statistics
     """
     selected_folder_path = file_selector(
@@ -73,6 +74,7 @@ def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.Data
                 CWE_1245_results_df.to_excel(writer, sheet_name="CWE 1245 Results", index=False)
                 CWE_1233_results_df.to_excel(writer, sheet_name="CWE 1233 Results", index=False)
                 CWE_226_results_df.to_excel(writer, sheet_name="CWE 226 Results", index=False)
+                CWE_1431_results_df.to_excel(writer, sheet_name="CWE 1431 Results", index=False)
                 detection_statistics_df.to_excel(writer, sheet_name="Detection Statistics", index=False)
             print(f"Results saved successfully to {save_path}")
         except Exception as e:
@@ -351,13 +353,25 @@ def detect_CWE_1233(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
         else:
             return f"Secure: All locked assignments correctly enforce and reject unauthorized writes"
 
-    for security_sensitive_register in ast_data.security_sensitive_registers:
+    if len(ast_data.security_sensitive_registers) > 0:
+        for security_sensitive_register in ast_data.security_sensitive_registers:
+            new_row = {
+                CWE_1233_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                CWE_1233_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
+                CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER.value: security_sensitive_register.name,
+                CWE_1233_RESULTS_DF_COLS.ASSIGNMENT_LINE_NUMS.value: [assignment.start_line for assignment in ast_data.variable_assignments[security_sensitive_register.name]],
+                CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value: verify_lock_enforcement_completeness(security_sensitive_register),
+                CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value: verify_security_sensitive_register_coverage(security_sensitive_register),
+            }
+            results.loc[len(results)] = new_row
+    else:
         new_row = {
             CWE_1233_RESULTS_DF_COLS.FILE_NAME.value: file_name,
-            CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER.value: security_sensitive_register.name,
-            CWE_1233_RESULTS_DF_COLS.ASSIGNMENT_LINE_NUMS.value: [assignment.start_line for assignment in ast_data.variable_assignments[security_sensitive_register.name]],
-            CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value: verify_lock_enforcement_completeness(security_sensitive_register),
-            CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value: verify_security_sensitive_register_coverage(security_sensitive_register),
+            CWE_1233_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
+            CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER.value: None,
+            CWE_1233_RESULTS_DF_COLS.ASSIGNMENT_LINE_NUMS.value: None,
+            CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value: f"Secure: Skipped for detection, no security sensitive registers detected",
+            CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value: f"Secure: Skipped for detection, no security sensitive registers detected",
         }
         results.loc[len(results)] = new_row
 
@@ -383,7 +397,7 @@ def detect_CWE_226(file_name: str, ast_data: AST_Traverser, results: pd.DataFram
                 
                 parent_node = ast_data.nodes[reset_assignment.parent_id]
                 if isinstance(parent_node, HdlStmIfNode) or isinstance(parent_node, Else_Clause): #Check if parent is a reset condition
-                    conditional_variables = AST_Traverser.extract_conditional_variables(ast_data, parent_node.condition)
+                    conditional_variables = ast_data.extract_conditional_variables(parent_node.condition)
                     
                     if any(not var.reset_register for var in conditional_variables):
                         #If any variable in the conditional is not a reset register it is not reset logic.
@@ -394,6 +408,7 @@ def detect_CWE_226(file_name: str, ast_data: AST_Traverser, results: pd.DataFram
                             registers_needing_reset.remove(reset_assignment.destination)
                             new_row = {
                                 CWE_226_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                                CWE_226_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
                                 CWE_226_RESULTS_DF_COLS.REGISTER.value: reset_assignment.destination,
                                 CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value: f"Secure: Reset logic found for {reset_assignment.destination} (Line No: {reset_assignment.start_line})",
                             }
@@ -405,6 +420,7 @@ def detect_CWE_226(file_name: str, ast_data: AST_Traverser, results: pd.DataFram
                         registers_needing_reset.remove(reset_assignment.destination)
                         new_row = {
                             CWE_226_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                            CWE_226_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
                             CWE_226_RESULTS_DF_COLS.REGISTER.value: reset_assignment.destination,
                             CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value: f"Secure: Reset logic found for {reset_assignment.destination} (Line No: {reset_assignment.start_line})",
                         }
@@ -416,7 +432,7 @@ def detect_CWE_226(file_name: str, ast_data: AST_Traverser, results: pd.DataFram
                     #Check to make sure for loop is within reset logic
                     grandparent_node = ast_data.nodes[parent_node.parent_id]
                     if isinstance(grandparent_node, HdlStmIfNode) or isinstance(grandparent_node, Else_Clause): #Check if parent is a reset condition
-                        conditional_variables = AST_Traverser.extract_conditional_variables(ast_data, grandparent_node.condition)
+                        conditional_variables = ast_data.extract_conditional_variables(grandparent_node.condition)
                         
                         if any(not var.reset_register for var in conditional_variables):
                             #If any variable in the conditional is not a reset register it is not reset logic.
@@ -427,16 +443,25 @@ def detect_CWE_226(file_name: str, ast_data: AST_Traverser, results: pd.DataFram
                                 registers_needing_reset.remove(reset_assignment.destination)
                                 new_row = {
                                     CWE_226_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                                    CWE_226_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
                                     CWE_226_RESULTS_DF_COLS.REGISTER.value: reset_assignment.destination,
                                     CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value: f"Secure: Reset logic found for {reset_assignment.destination} (Line No: {reset_assignment.start_line})",
                                 }
                                 results.loc[len(results)] = new_row
                                 if len(registers_needing_reset) == 0:
                                     break
-
+        else:
+            new_row = {
+                CWE_226_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                CWE_226_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
+                CWE_226_RESULTS_DF_COLS.REGISTER.value: None,
+                CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value: f"Secure: Skipped for detection, no registers needing reset detected",
+            }
+            results.loc[len(results)] = new_row                            
         for reg in registers_needing_reset:
             new_row = {
                 CWE_226_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                CWE_226_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
                 CWE_226_RESULTS_DF_COLS.REGISTER.value: reg,
                 CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value: f"Vulnerable: No reset logic found for {reg}",
             }
@@ -446,7 +471,8 @@ def detect_CWE_1431(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
     if ast_data.crypto_module:
         #1. Find the "result" output register
             #Loop through outputs and choose one that is most likely to be the crypto data output
-        crypto_output_keyword_scores = {
+            #TO-DO maybe I need to ensure that the result output has assignments to it
+        crypto_result_output_keyword_scores = {
             "digest": 5,
             "hash": 5,
             "result": 4,
@@ -455,21 +481,90 @@ def detect_CWE_1431(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
             "mac": 5,
             "data_out": 3,
             "data_o": 3,
+            "out": 1,
+            "o,": 1,
             "valid": -5,
             "ready": -5,
         }   
-        output_scores = [(output, score_name(output, crypto_output_keyword_scores)) for output in ast_data.outputs.keys()]
-        output_scores.sort(key=lambda x: x[1], reverse=True)
-        print(file_name)
-        print(output_scores)
-        print(f"Selected output register for analysis: {output_scores[0][0]}")
-        print()
+        result_output_scores = [(output, score_name(output, crypto_result_output_keyword_scores)) for output in ast_data.outputs.keys()]
+        result_output_scores.sort(key=lambda x: x[1], reverse=True)
+        result_output = result_output_scores[0][0]
+
         #2. Find the "result_valid" output register
+        remaining_module_outputs = copy.copy(ast_data.outputs)
+        remaining_module_outputs.pop(result_output)
+        crypto_valid_output_keyword_scores = {
+            "digest_valid": 5,
+            "hash_valid": 5,
+            "data_out_valid": 5,
+            "result_valid": 5,
+            "valid": 4,
+        }
+        valid_signal_scores = [(output, score_name(output, crypto_valid_output_keyword_scores)) for output in remaining_module_outputs.keys()]
+        valid_signal_scores.sort(key=lambda x: x[1], reverse=True)
+        valid_signal = valid_signal_scores[0][0] if len(valid_signal_scores) > 0 else None
+
+        valid_signal_scores = [(output, score_name(output, crypto_valid_output_keyword_scores)) for output in ast_data.variables.keys()]
+        valid_signal_scores.sort(key=lambda x: x[1], reverse=True)
+        highest_score = valid_signal_scores[0][1]
+        possible_valid_signals = []
+        for s in valid_signal_scores:
+            if s[1] == highest_score:
+                possible_valid_signals.append(s[0])
+            else:
+                break
+        # If valid signal is none, either it has implemented logic other ways or it is vulnerable
+
         #3. Check that assignments to register from #1 are only made when register from #2 indicates a valid output
-        pass
+        result_output_assignments = ast_data.variable_assignments[result_output]
+        vulnerable_assignments = []
+        #Loop though assignments and keep track fo assignments not gated by the valid signal
+        for assignment in result_output_assignments:
+            print()
+            print(f"Source type: {type(assignment.source)}")
+            print(f"Destination type: {type(assignment.destination)}")
+            print()
+            #Now check that assignment is gated with logic to ensure it is valid
+            parent_node = ast_data.nodes[assignment.parent_id]
+            if isinstance(parent_node, HdlStmIfNode):
+                condition_variables = ast_data.extract_conditional_variables(parent_node.condition)
+
+                #Check that one of the possible valid signals is in the conditional
+                if not any(var.name in possible_valid_signals for var in condition_variables):
+                    #Check to ensure assignment source is not a predefined integer value (eliminates FPs originating form resets)
+                    if not isinstance(assignment.source, int):
+                        vulnerable_assignments.append(assignment)
+            else:
+                if not isinstance(assignment.source, int):
+                    #If the source is a variable and not a predefined integer value, it is vulnerable
+                    vulnerable_assignments.append(assignment)
+
+        if len(vulnerable_assignments) > 0:
+            new_row = {
+                CWE_1431_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                CWE_1431_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
+                CWE_1431_RESULTS_DF_COLS.RESULT_OUTPUT.value: result_output,
+                CWE_1431_RESULTS_DF_COLS.INTERMEDIATE_RESULTS_LEAKAGE.value: f"Vulnerable: '{result_output}' is assigned before result is valid",
+            }
+            results.loc[len(results)] = new_row 
+        else:
+            new_row = {
+                CWE_1431_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                CWE_1431_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
+                CWE_1431_RESULTS_DF_COLS.RESULT_OUTPUT.value: result_output,
+                CWE_1431_RESULTS_DF_COLS.INTERMEDIATE_RESULTS_LEAKAGE.value: f"Secure: '{result_output}' assignments are gated with valid logic",
+            }
+            results.loc[len(results)] = new_row 
+            
     else:
         #Skip for non-cryptographic modules
-        return
+        new_row = {
+            CWE_1431_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+            CWE_1431_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
+            CWE_1431_RESULTS_DF_COLS.RESULT_OUTPUT.value: None,
+            CWE_1431_RESULTS_DF_COLS.INTERMEDIATE_RESULTS_LEAKAGE.value: f"Secure: Skipped for detection, not a cryptographic module",
+        }
+        results.loc[len(results)] = new_row   
 
 def run_detection_on_file(file_path: str) -> pd.DataFrame:
     """Runs vulnerability detection on the file at the file path
@@ -488,65 +583,77 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
 
     CWE_1245_results_df = pd.DataFrame(columns=[col.value for col in CWE_1245_RESULTS_DF_COLS])
     CWE_1233_results_df = pd.DataFrame(columns=[col.value for col in CWE_1233_RESULTS_DF_COLS])
+    CWE_226_results_df = pd.DataFrame(columns=[col.value for col in CWE_226_RESULTS_DF_COLS])
+    CWE_1431_results_df = pd.DataFrame(columns=[col.value for col in CWE_1431_RESULTS_DF_COLS])
     detection_statistics_df = pd.DataFrame(columns=[col.value for col in DETECTION_STATISTICS_DF_COLS])
 
     #Load JSON and traverse
     json_data = load_json_file(file_path)
-    traverser = AST_Traverser()
     for module in json_data:
-        traverser.traverse(module, None)
+        if module.get("__class__", None) == "HdlModuleDef":
+            traverser = AST_Traverser()
+            traverser.traverse(module, None)
 
-    # Loop through unsatisfiable conditionals to see if they are now satisfiable
-    unsatisfiable_conditionals = copy.deepcopy(traverser.unsatisfiable_conditionals)
-    for cond in unsatisfiable_conditionals.values():
-        if traverser.determine_conditional_satisfiability(conditional_node=cond):
-            traverser.satisfiable_conditionals[cond.node_id] = cond
-            traverser.unsatisfiable_conditionals.pop(cond.node_id)
-    del unsatisfiable_conditionals
+            # Loop through unsatisfiable conditionals to see if they are now satisfiable
+            unsatisfiable_conditionals = copy.deepcopy(traverser.unsatisfiable_conditionals)
+            for cond in unsatisfiable_conditionals.values():
+                if traverser.determine_conditional_satisfiability(conditional_node=cond):
+                    traverser.satisfiable_conditionals[cond.node_id] = cond
+                    traverser.unsatisfiable_conditionals.pop(cond.node_id)
+            del unsatisfiable_conditionals
 
-    #CWE 1245 Detection
-    if len(traverser.case_statements) == 0:
-        #If there are no case statements return the one row 
-        CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([{
-            CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
-            CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: 'No case statements found',
-            CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
-            CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
-            CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
-        }])], ignore_index=True)
-    else:
-        case_num = 1
-        #Loop through each case statement and run detection
-        for case in traverser.case_statements.values():
-            results_row = {
-                CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
-                CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: case_num,
-                CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
-                CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
-                CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
-            }
-            detect_CWE_1245(file_name=file_name, ast_data=traverser, case_statement=case, results=results_row)
+            #CWE 1245 Detection
+            if len(traverser.case_statements) == 0:
+                #If there are no case statements return the one row 
+                CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([{
+                    CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                    CWE_1245_RESULTS_DF_COLS.MODULE_NAME.value: traverser.module_name,
+                    CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: 'No case statements found',
+                    CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
+                    CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
+                    CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
+                }])], ignore_index=True)
+            else:
+                case_num = 1
+                #Loop through each case statement and run detection
+                for case in traverser.case_statements.values():
+                    results_row = {
+                        CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                        CWE_1245_RESULTS_DF_COLS.MODULE_NAME.value: traverser.module_name,
+                        CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: case_num,
+                        CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
+                        CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
+                        CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
+                    }
+                    detect_CWE_1245(file_name=file_name, ast_data=traverser, case_statement=case, results=results_row)
 
-            #Concat current results and new results row
-            CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([results_row])], ignore_index=True)
-            case_num += 1
-    
-    #CWE 1233 Detection
-    detect_CWE_1233(file_name=file_name, ast_data=traverser, results=CWE_1233_results_df)
+                    #Concat current results and new results row
+                    CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([results_row])], ignore_index=True)
+                    case_num += 1
+            
+            #CWE 1233 Detection
+            detect_CWE_1233(file_name=file_name, ast_data=traverser, results=CWE_1233_results_df)
 
-    #Calculate end of detection time here and assign to rows in each dataframe
-    end_time = time.perf_counter()
-    detection_time = end_time - start_time
-    detection_statistics_df = pd.concat([
-        detection_statistics_df,
-        pd.DataFrame([{
-            DETECTION_STATISTICS_DF_COLS.FILE_NAME.value: file_name,
-            DETECTION_STATISTICS_DF_COLS.LINES_OF_CODE.value: traverser.loc,
-            DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value: detection_time
-        }])
-    ], ignore_index=True)
+            #CWE-226 Detection
+            detect_CWE_226(file_name=file_name, ast_data=traverser, results=CWE_226_results_df)
 
-    return CWE_1245_results_df, CWE_1233_results_df, detection_statistics_df
+            #CWE-1431 Detection
+            detect_CWE_1431(file_name=file_name, ast_data=traverser, results=CWE_1431_results_df)
+
+            #Calculate end of detection time here and assign to rows in each dataframe
+            end_time = time.perf_counter()
+            detection_time = end_time - start_time
+            detection_statistics_df = pd.concat([
+                detection_statistics_df,
+                pd.DataFrame([{
+                    DETECTION_STATISTICS_DF_COLS.FILE_NAME.value: file_name,
+                    DETECTION_STATISTICS_DF_COLS.MODULE_NAME.value: traverser.module_name,
+                    DETECTION_STATISTICS_DF_COLS.LINES_OF_CODE.value: traverser.loc,
+                    DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value: detection_time
+                }])
+            ], ignore_index=True)
+
+    return CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, CWE_1431_results_df, detection_statistics_df
 
 def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Runs vulnerability detection on each file in the folder at the specified path. Runs detection after traversal of all files so security sensitive registers and lock bti registers can be checked against one another
@@ -606,57 +713,55 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
     CWE_1245_results_df = pd.DataFrame(columns=[col.value for col in CWE_1245_RESULTS_DF_COLS])
     CWE_1233_results_df = pd.DataFrame(columns=[col.value for col in CWE_1233_RESULTS_DF_COLS])
     CWE_226_results_df = pd.DataFrame(columns=[col.value for col in CWE_226_RESULTS_DF_COLS])
+    CWE_1431_results_df = pd.DataFrame(columns=[col.value for col in CWE_1431_RESULTS_DF_COLS])
     detection_statistics_df = pd.DataFrame(columns=[col.value for col in DETECTION_STATISTICS_DF_COLS])
-
-    start_time_parsing = time.perf_counter()
 
     #Parse the AST for each file
     parsed_AST_data_dict = {} #Store the parsed AST data with file name as the key and parsed AST data as value
     security_registers = defaultdict(set)
     for file_name in os.listdir(folder_path):
+        start_time_parsing = time.perf_counter()
         file_path = os.path.join(folder_path, file_name)
 
         #Load JSON and traverse the file
         json_data = load_json_file(file_path=file_path)
-        traverser = AST_Traverser()
         for module in json_data:
-            traverser.traverse(module, None)
+            if module.get("__class__", None) == "HdlModuleDef":
+                traverser = AST_Traverser()
+                traverser.traverse(module, None)
 
-        #Loop through unsatisfiable conditionals to see if they are now satisfiable
-        unsatisfiable_conditionals = copy.deepcopy(traverser.unsatisfiable_conditionals)
-        for cond in unsatisfiable_conditionals.values():
-            if traverser.determine_conditional_satisfiability(conditional_node=cond):
-                traverser.satisfiable_conditionals[cond.node_id] = cond
-                traverser.unsatisfiable_conditionals.pop(cond.node_id)
-        del unsatisfiable_conditionals
+                #Loop through unsatisfiable conditionals to see if they are now satisfiable
+                unsatisfiable_conditionals = copy.deepcopy(traverser.unsatisfiable_conditionals)
+                for cond in unsatisfiable_conditionals.values():
+                    if traverser.determine_conditional_satisfiability(conditional_node=cond):
+                        traverser.satisfiable_conditionals[cond.node_id] = cond
+                        traverser.unsatisfiable_conditionals.pop(cond.node_id)
+                del unsatisfiable_conditionals
 
-        #Add identified security sensitive register names and lock bit register names for matching later
-        for reg in traverser.security_sensitive_registers:
-            security_registers["security-sensitive-registers"].add(reg.name)
-        
-        for reg in traverser.lock_bit_registers:
-            security_registers["lock-bit-registers"].add(reg.name)
+                #Add identified security sensitive register names and lock bit register names for matching later
+                for reg in traverser.security_sensitive_registers:
+                    security_registers["security-sensitive-registers"].add(reg.name)
+                
+                for reg in traverser.lock_bit_registers:
+                    security_registers["lock-bit-registers"].add(reg.name)
 
-        parsed_AST_data_dict[file_name] = traverser
+                parsed_AST_data_dict[(file_name, traverser.module_name)] = traverser
 
-        end_time_parsing = time.perf_counter()
-        parsing_duration = end_time_parsing - start_time_parsing
-        detection_statistics_df = pd.concat([
-            detection_statistics_df,
-            pd.DataFrame([{
-                DETECTION_STATISTICS_DF_COLS.FILE_NAME.value: file_name,
-                DETECTION_STATISTICS_DF_COLS.LINES_OF_CODE.value: traverser.loc,
-                DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value: parsing_duration
-        }])], ignore_index=True)
-
-    # for file_name, ast_data in parsed_AST_data_dict.items():
-    #     detect_CWE_1431(file_name=file_name, ast_data=ast_data, results=None)
-    # return
+                end_time_parsing = time.perf_counter()
+                parsing_duration = end_time_parsing - start_time_parsing
+                detection_statistics_df = pd.concat([
+                    detection_statistics_df,
+                    pd.DataFrame([{
+                        DETECTION_STATISTICS_DF_COLS.FILE_NAME.value: file_name,
+                        DETECTION_STATISTICS_DF_COLS.MODULE_NAME.value: traverser.module_name,
+                        DETECTION_STATISTICS_DF_COLS.LINES_OF_CODE.value: traverser.loc,
+                        DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value: parsing_duration
+                }])], ignore_index=True)
 
     matching_choice, threshold = ask_matching_mode()
 
     #Match identified register lock bits to any variables to find unidentified lock bits
-    for file_name, ast_data in parsed_AST_data_dict.items():
+    for (file_name, module_name), ast_data in parsed_AST_data_dict.items():
         start_time_lock_bit_matching = time.perf_counter()
         for var in ast_data.variables.values():
             #If the variable has already been identified or it is not an input we don't need to check it
@@ -682,9 +787,8 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
         lock_bit_matching_duration = end_time_lock_bit_matching - start_time_lock_bit_matching
         detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += lock_bit_matching_duration
 
-
     #Match variables in each file to the list of known security sensitive and lock bit registers
-    for file_name, ast_data in parsed_AST_data_dict.items():
+    for (file_name, module_name), ast_data in parsed_AST_data_dict.items():
         start_time_security_sensitive_register_matching = time.perf_counter()
         for var in ast_data.variables.values():
             #If variable has been identified as security sensitive or a lock bit we don't need to double check
@@ -710,13 +814,16 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
         security_sensitive_register_matching_duration = end_time_security_sensitive_register_matching - start_time_security_sensitive_register_matching
         detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += security_sensitive_register_matching_duration
 
-    #CWE 1245 Detection
-    for file_name, ast_data in parsed_AST_data_dict.items():
-        start_time_1245_detection = time.perf_counter()
+    #Detection
+    for (file_name, module_name), ast_data in parsed_AST_data_dict.items():
+        detection_start_time = time.perf_counter()
+
+        #CWE-1245 Detection
         if len(ast_data.case_statements) == 0:
             #If there are no case statements return the one row 
             CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([{
                 CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                CWE_1245_RESULTS_DF_COLS.MODULE_NAME.value: module_name,
                 CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: 'No case statements found',
                 CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
                 CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
@@ -728,6 +835,7 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             for case in ast_data.case_statements.values():
                 results_row = {
                     CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
+                    CWE_1245_RESULTS_DF_COLS.MODULE_NAME.value: module_name,
                     CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: case_num,
                     CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
                     CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
@@ -739,32 +847,20 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
                 CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([results_row])], ignore_index=True)
                 case_num += 1
 
-        end_time_1245_detection = time.perf_counter()
-        cwe_1245_detection_duration = end_time_1245_detection - start_time_1245_detection
-        detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += cwe_1245_detection_duration
-
-        
-    #CWE 1233 Detection
-    for file_name, ast_data in parsed_AST_data_dict.items():
-        start_time_1233_detection = time.perf_counter()
-
+        #CWE-1233 Detection
         detect_CWE_1233(file_name=file_name, ast_data=ast_data, results=CWE_1233_results_df)
 
-        end_time_1233_detection = time.perf_counter()
-        cwe_1233_detection_duration = end_time_1233_detection - start_time_1233_detection
-        detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += cwe_1233_detection_duration
-
-    #CWE 226 Detection
-    for file_name, ast_data in parsed_AST_data_dict.items():
-        start_time_226_detection = time.perf_counter()
-
+        #CWE-226 Detection
         detect_CWE_226(file_name=file_name, ast_data=ast_data, results=CWE_226_results_df)
 
-        end_time_226_detection = time.perf_counter()
-        cwe_226_detection_duration = end_time_226_detection - start_time_226_detection
-        detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += cwe_226_detection_duration
+        #CWE-1431 Detection
+        detect_CWE_1431(file_name=file_name, ast_data=ast_data, results=CWE_1431_results_df)
 
-    return CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, detection_statistics_df
+        detection_end_time = time.perf_counter()
+        detection_duration = detection_end_time - detection_start_time
+        detection_statistics_df.loc[detection_statistics_df[DETECTION_STATISTICS_DF_COLS.FILE_NAME.value] == file_name, DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value] += detection_duration
+
+    return CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, CWE_1431_results_df, detection_statistics_df
 
 
 def main():
@@ -773,8 +869,9 @@ def main():
         mode_select = inquirer.select(
             message="---Select Mode---",
             choices=[
+                "Detect",
                 "Parse",
-                "Detect"
+                "Exit"
             ]
         ).execute()
 
@@ -789,9 +886,9 @@ def main():
 
                 #Run folder or file detection based on selected path
                 if os.path.isdir(selected_path):
-                    CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, detection_statistics_df = run_detection_on_folder(selected_path)
+                    CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, CWE_1431_results_df, detection_statistics_df = run_detection_on_folder(selected_path)
                 elif os.path.isfile(selected_path):
-                    CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, detection_statistics_df = run_detection_on_file(selected_path)
+                    CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, CWE_1431_results_df, detection_statistics_df = run_detection_on_file(selected_path)
                 else:
                     print("Invalid selection. Please select a valid file or folder.")
                     return
@@ -818,9 +915,12 @@ def main():
                 }])
                 CWE_1245_results_df = pd.concat([CWE_1245_results_df, CWE_1245_total_row], ignore_index=True)
 
-                save_results(CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, detection_statistics_df)
+                save_results(CWE_1245_results_df, CWE_1233_results_df, CWE_226_results_df, CWE_1431_results_df, detection_statistics_df)
             case "Parse":
                 parse()
+            case "Exit":
+                print("Goodbye")
+                break
         
 
 if __name__ == "__main__":
