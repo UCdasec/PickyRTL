@@ -18,6 +18,12 @@ def parse_file(file_path:str):
     Args:
         file_path (str): Path to the HDL file to be parsed.
     """
+    from hdlConvertor import HdlConvertor
+    from hdlConvertorAst.hdlAst import HdlDirection, HdlModuleDec, HdlModuleDef
+    from hdlConvertorAst.hdlAst._structural import HdlContext
+    from hdlConvertorAst.language import Language
+    from hdlConvertorAst.to.json import ToJson
+
     convertor = HdlConvertor()
     to_json = ToJson()
 
@@ -77,12 +83,6 @@ def parse_folder(folder_path:str):
         parse_file(file_path)
 
 def parse():
-    from hdlConvertor import HdlConvertor
-    from hdlConvertorAst.hdlAst import HdlDirection, HdlModuleDec, HdlModuleDef
-    from hdlConvertorAst.hdlAst._structural import HdlContext
-    from hdlConvertorAst.language import Language
-    from hdlConvertorAst.to.json import ToJson
-
     #Main function that can be called from detector
     while True:
         selected_path = file_selector(
