@@ -72,11 +72,6 @@ logic [63:0] rdata;
 // Write side
 always @(posedge clk_i)
     begin
-        // if(~(rst_ni && ~rst_5))
-        //     begin
-        //         fuse_req_o <= 0;
-        //         fuse_addr_o <= 0;
-        //     end
         if(en && we)
             case(address[7:3])
                 0:
