@@ -389,7 +389,7 @@ def detect_CWE_1233(file_name: str, ast_data: AST_Traverser, results: pd.DataFra
                 CWE_1233_RESULTS_DF_COLS.FILE_NAME.value: file_name,
                 CWE_1233_RESULTS_DF_COLS.MODULE_NAME.value: ast_data.module_name,
                 CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER.value: security_sensitive_register.name,
-                CWE_1233_RESULTS_DF_COLS.ASSIGNMENT_LINE_NUMS.value: [assignment.start_line for assignment in ast_data.variable_assignments[security_sensitive_register.name]],
+                CWE_1233_RESULTS_DF_COLS.ASSIGNMENT_LINE_NUMS.value: [assignment.start_line if assignment.start_line else "Unknown" for assignment in ast_data.variable_assignments[security_sensitive_register.name]],
                 CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value: verify_lock_enforcement_completeness(security_sensitive_register),
                 CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value: verify_security_sensitive_register_coverage(security_sensitive_register),
             }
