@@ -1,0 +1,620 @@
+[
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            1,
+            1,
+            51,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "position": [
+                1,
+                1,
+                51,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "insecure_resource_reuse"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        2,
+                        5,
+                        2,
+                        26
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "clk"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        3,
+                        5,
+                        3,
+                        30
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "reset_n"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Control signals\r\n"
+                    },
+                    "position": [
+                        6,
+                        5,
+                        6,
+                        34
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "load_secret"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Load sensitive data\r\n"
+                    },
+                    "position": [
+                        7,
+                        5,
+                        7,
+                        37
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "switch_to_user"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Switch from privileged to user mode\r\n"
+                    },
+                    "position": [
+                        8,
+                        5,
+                        8,
+                        32
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "user_read"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " User attempts to read data\r\n Data inputs\r\n"
+                    },
+                    "position": [
+                        11,
+                        5,
+                        11,
+                        32
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "secret_in"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "31",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Sensitive value (e.g., cryptographic key)\r\n Data output\r\n"
+                    },
+                    "position": [
+                        14,
+                        5,
+                        14,
+                        31
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "data_out"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "31",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                }
+            ]
+        },
+        "module_name": "insecure_resource_reuse",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " Simple mode encoding\r\n Simple mode encoding\r\n"
+                },
+                "position": [
+                    18,
+                    16,
+                    18,
+                    37
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "MODE_PRIVILEGED"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlValueInt",
+                    "val": "0",
+                    "bits": 1,
+                    "base": 2
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    19,
+                    16,
+                    19,
+                    37
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "MODE_USER"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlValueInt",
+                    "val": "1",
+                    "bits": 1,
+                    "base": 2
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    21,
+                    9,
+                    21,
+                    12
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "mode"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "str",
+                            "val": null
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " Register that stores sensitive information\r\n"
+                },
+                "position": [
+                    24,
+                    16,
+                    24,
+                    28
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "sensitive_reg"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "31",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "position": [
+                    26,
+                    12,
+                    49,
+                    7
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "clk"
+                        ],
+                        "fn": "RISING"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        26,
+                        27,
+                        49,
+                        7
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmIf",
+                            "position": [
+                                27,
+                                9,
+                                48,
+                                11
+                            ],
+                            "labels": [],
+                            "cond": {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "reset_n"
+                                ],
+                                "fn": "NEG_LOG"
+                            },
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    27,
+                                    23,
+                                    32,
+                                    11
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "doc": {
+                                            "__class__": "str",
+                                            "val": " Reset only sets the mode\r\n NOTE: sensitive_reg is NOT cleared here\r\n"
+                                        },
+                                        "position": [
+                                            30,
+                                            13,
+                                            30,
+                                            39
+                                        ],
+                                        "labels": [],
+                                        "src": "MODE_PRIVILEGED",
+                                        "dst": "mode",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            31,
+                                            13,
+                                            31,
+                                            29
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "bits": 32,
+                                            "base": 2
+                                        },
+                                        "dst": "data_out",
+                                        "is_blocking": false
+                                    }
+                                ]
+                            },
+                            "elifs": [],
+                            "if_false": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    32,
+                                    18,
+                                    48,
+                                    11
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmIf",
+                                        "doc": {
+                                            "__class__": "str",
+                                            "val": " Load sensitive data in privileged mode\r\n"
+                                        },
+                                        "position": [
+                                            34,
+                                            13,
+                                            36,
+                                            15
+                                        ],
+                                        "labels": [],
+                                        "cond": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "mode",
+                                                        "MODE_PRIVILEGED"
+                                                    ],
+                                                    "fn": "EQ"
+                                                },
+                                                "load_secret"
+                                            ],
+                                            "fn": "AND_LOG"
+                                        },
+                                        "if_true": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                34,
+                                                57,
+                                                36,
+                                                15
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        35,
+                                                        17,
+                                                        35,
+                                                        42
+                                                    ],
+                                                    "labels": [],
+                                                    "src": "secret_in",
+                                                    "dst": "sensitive_reg",
+                                                    "is_blocking": false
+                                                }
+                                            ]
+                                        },
+                                        "elifs": []
+                                    },
+                                    {
+                                        "__class__": "HdlStmIf",
+                                        "doc": {
+                                            "__class__": "str",
+                                            "val": " Transition to user mode\r\n"
+                                        },
+                                        "position": [
+                                            39,
+                                            13,
+                                            41,
+                                            15
+                                        ],
+                                        "labels": [],
+                                        "cond": "switch_to_user",
+                                        "if_true": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                39,
+                                                33,
+                                                41,
+                                                15
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        40,
+                                                        17,
+                                                        40,
+                                                        33
+                                                    ],
+                                                    "labels": [],
+                                                    "src": "MODE_USER",
+                                                    "dst": "mode",
+                                                    "is_blocking": false
+                                                }
+                                            ]
+                                        },
+                                        "elifs": []
+                                    },
+                                    {
+                                        "__class__": "HdlStmIf",
+                                        "doc": {
+                                            "__class__": "str",
+                                            "val": " User can read data once in user mode\r\n"
+                                        },
+                                        "position": [
+                                            44,
+                                            13,
+                                            47,
+                                            15
+                                        ],
+                                        "labels": [],
+                                        "cond": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "mode",
+                                                        "MODE_USER"
+                                                    ],
+                                                    "fn": "EQ"
+                                                },
+                                                "user_read"
+                                            ],
+                                            "fn": "AND_LOG"
+                                        },
+                                        "if_true": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                44,
+                                                49,
+                                                47,
+                                                15
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "doc": {
+                                                        "__class__": "str",
+                                                        "val": " Reuse of sensitive_reg without clearing\r\n"
+                                                    },
+                                                    "position": [
+                                                        46,
+                                                        17,
+                                                        46,
+                                                        41
+                                                    ],
+                                                    "labels": [],
+                                                    "src": "sensitive_reg",
+                                                    "dst": "data_out",
+                                                    "is_blocking": false
+                                                }
+                                            ]
+                                        },
+                                        "elifs": []
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+]
