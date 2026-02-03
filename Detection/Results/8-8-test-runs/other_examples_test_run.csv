@@ -1,0 +1,47 @@
+file_name,case_number,state_coverage,unreachable_states,deadlocks,LoC,detection_time
+adder_implicit_parsed.json,No case statements found,,,,64,0.01491390005685389
+aes_parsed.json,No case statements found,,,,194,0.04370739997830242
+aFifo_parsed.json,No case statements found,,,,99,0.01699229993391782
+and_or_parsed.json,No case statements found,,,,20,0.011813500081188977
+arbiter_parsed.json,No case statements found,,,,120,0.016963599948212504
+arbiter_tb_parsed.json,No case statements found,,,,63,0.020076200016774237
+cam_parsed.json,No case statements found,,,,55,0.014854999957606196
+decoder_using_case_parsed.json,1,Secure: Defined states cover all possible values,Inconclusive: State variable (binary_in) is an input; transitions may be externally controlled and not visible in this scope,Inconclusive: State variable (binary_in) is an input; transitions may be externally controlled and not visible in this scope,38,0.011839099926874042
+define_parsed.json,No case statements found,,,,17,0.011462400085292757
+dff_async_reset_parsed.json,No case statements found,,,,25,0.011918599950149655
+directive_verilogpp_parsed.json,1,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.019266200019046664
+directive_verilogpp_parsed.json,2,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.02240040001925081
+directive_verilogpp_parsed.json,3,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.025314500089734793
+directive_verilogpp_parsed.json,4,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.02812080003786832
+directive_verilogpp_parsed.json,5,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.03081170003861189
+directive_verilogpp_parsed.json,6,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.03342980006709695
+dlatch_reset_parsed.json,No case statements found,,,,25,0.010505300015211105
+FibonacciModule_insecure_parsed.json,1,Secure: Defined states cover all possible values,Secure: All states reachable,Secure: No deadlocks detected,79,0.01142009999603033
+FibonacciModule_secure_parsed.json,1,Secure: Defined states cover all possible values,Secure: All states reachable,Secure: No deadlocks detected,79,0.011808800045400858
+fifo_rx_parsed.json,1,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.018774299998767674
+fifo_rx_parsed.json,2,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.02193029993213713
+fifo_rx_parsed.json,3,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.024739200016483665
+fifo_rx_parsed.json,4,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.027538699912838638
+fifo_rx_parsed.json,5,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.030123399919830263
+fifo_rx_parsed.json,6,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,349,0.032736499910242856
+function_non_ansi_parsed.json,No case statements found,,,,18,0.01121300004888326
+generate_for_parsed.json,No case statements found,,,,27,0.01067049999255687
+if_elseif_else_parsed.json,No case statements found,,,,28,0.0102495999308303
+include_parsed.json,No case statements found,,,,149,0.02715209999587387
+lfsr_updown_tb_parsed.json,No case statements found,,,,35,0.014345500036142766
+macro_parsed.json,No case statements found,,,,15,0.010464400053024292
+parity_using_function2_parsed.json,No case statements found,,,,26,0.011565799941308796
+PasswordChecker_insecure_parsed.json,1,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,105,0.013895099982619286
+PasswordChecker_secure_parsed.json,1,Secure: Default state covers rest of possible values,Secure: All states reachable,Secure: No deadlocks detected,105,0.013048099935986102
+pri_encoder_using_assign_parsed.json,No case statements found,,,,31,0.011971700005233288
+pri_encoder_using_if_parsed.json,No case statements found,,,,51,0.011970999999903142
+ram_sp_ar_sw_parsed.json,No case statements found,,,,53,0.011850800015963614
+ram_sp_sr_sw_parsed.json,No case statements found,,,,57,0.01271059992723167
+replication_parsed.json,No case statements found,,,,48,0.013953999965451658
+rom_using_file_parsed.json,No case statements found,,,,21,0.012288499972783029
+simple_subunit_parsed.json,No case statements found,,,,15,0.009657700080424547
+sram_parsed.json,No case statements found,,,,35,0.011168000055477023
+test_verilog_primitives_parsed.json,No case statements found,,,,11,0.011718499939888716
+timescale_parsed.json,No case statements found,,,,,0.00991919997613877
+uart_parsed.json,No case statements found,,,,149,0.022770899930037558
+Total,45,"{'Secure': 17, 'Vulnerable': 0, 'Inconclusive': 0}","{'Secure': 16, 'Vulnerable': 0, 'Inconclusive': 1}","{'Secure': 16, 'Vulnerable': 0, 'Inconclusive': 1}",6045,0.786046999739483
