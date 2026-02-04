@@ -2,3 +2,4 @@ Detection/__pycache__
 Detection/Results
 Detection/test.py
 Detection/register_matching_statistics.py
+.vscode/
