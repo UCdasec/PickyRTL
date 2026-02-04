@@ -1,0 +1,15 @@
+hdlConvertor-binary==2.3
+hdlConvertorAst @ git+https://github.com/Nic30/hdlConvertorAst.git@1031b981ffea7502d971812cf3f640e313ca62b6
+inquirerpy==0.3.4
+jellyfish==1.2.1
+numpy==2.4.2
+packaging==26.0
+pandas==3.0.0
+pfzy==0.3.4
+prompt_toolkit==3.0.52
+python-dateutil==2.9.0.post0
+RapidFuzz==3.14.3
+setuptools==80.10.2
+six==1.17.0
+wcwidth==0.5.3
+wheel==0.46.3
