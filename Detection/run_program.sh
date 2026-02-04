@@ -23,7 +23,7 @@ setup_dependencies() {
 
     # Check if requirements are installed
     echo 'Checking if packages are installed...'
-    
+
     if [ -f "requirements.txt" ]; then
         DRYRUN_OUTPUT=$(pip install -r requirements.txt)
         if "$DRYRUN_OUTPUT" | grep -q "Collecting" 2>/dev/null; then
@@ -39,5 +39,8 @@ setup_dependencies() {
 
 setup_dependencies
 
+echo "Starting the program..."
+echo 
 #Run the main Python script
 python3 main.py
+
