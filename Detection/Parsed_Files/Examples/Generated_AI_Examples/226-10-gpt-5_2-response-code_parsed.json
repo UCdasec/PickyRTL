@@ -1,0 +1,525 @@
+[
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            11,
+            1,
+            46,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": "------------------------------------------------------------------------------\n Module: session_key_buffer\n Description:\n  Simple session-based key buffer. A secret key is loaded during an\n  authenticated session and later reused by a new session.\n  The key register is intentionally NOT cleared on reset or session end,\n  demonstrating CWE-226: Sensitive Information in Resource Not Removed\n  Before Reuse.\n------------------------------------------------------------------------------\n"
+            },
+            "position": [
+                11,
+                1,
+                46,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "session_key_buffer"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        12,
+                        5,
+                        12,
+                        26
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "clk"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        13,
+                        5,
+                        13,
+                        28
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "rst_n"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " active-low reset\n"
+                    },
+                    "position": [
+                        14,
+                        5,
+                        14,
+                        36
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "session_start"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " begins a new session\n"
+                    },
+                    "position": [
+                        15,
+                        5,
+                        15,
+                        34
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "session_end"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " ends the current session\n"
+                    },
+                    "position": [
+                        16,
+                        5,
+                        16,
+                        35
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "key_write_en"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " write enable for secret key\n"
+                    },
+                    "position": [
+                        17,
+                        5,
+                        17,
+                        29
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "key_in"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "31",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " incoming secret key\n"
+                    },
+                    "position": [
+                        18,
+                        5,
+                        18,
+                        30
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "key_out"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "31",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " key visible to active session\n"
+                    },
+                    "position": [
+                        19,
+                        5,
+                        19,
+                        37
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "session_active"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "str",
+                                "val": null
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                }
+            ]
+        },
+        "module_name": "session_key_buffer",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " Register intended to store sensitive information (secret key)\n"
+                },
+                "position": [
+                    23,
+                    16,
+                    23,
+                    29
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "secret_key_reg"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "31",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": " Session state tracking\n"
+                },
+                "position": [
+                    26,
+                    12,
+                    41,
+                    7
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "clk"
+                        ],
+                        "fn": "RISING"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "rst_n"
+                        ],
+                        "fn": "FALLING"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        26,
+                        44,
+                        41,
+                        7
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmIf",
+                            "position": [
+                                27,
+                                9,
+                                40,
+                                11
+                            ],
+                            "labels": [],
+                            "cond": {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "rst_n"
+                                ],
+                                "fn": "NEG_LOG"
+                            },
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    27,
+                                    21,
+                                    31,
+                                    11
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            28,
+                                            13,
+                                            28,
+                                            34
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "bits": 1,
+                                            "base": 2
+                                        },
+                                        "dst": "session_active",
+                                        "is_blocking": false
+                                    }
+                                ]
+                            },
+                            "elifs": [],
+                            "if_false": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    31,
+                                    18,
+                                    40,
+                                    11
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmIf",
+                                        "position": [
+                                            32,
+                                            13,
+                                            35,
+                                            39
+                                        ],
+                                        "labels": [],
+                                        "cond": "session_start",
+                                        "if_true": {
+                                            "__class__": "HdlStmAssign",
+                                            "position": [
+                                                33,
+                                                17,
+                                                33,
+                                                38
+                                            ],
+                                            "labels": [],
+                                            "src": {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "bits": 1,
+                                                "base": 2
+                                            },
+                                            "dst": "session_active",
+                                            "is_blocking": false
+                                        },
+                                        "elifs": [
+                                            [
+                                                "session_end",
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        35,
+                                                        17,
+                                                        35,
+                                                        38
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlValueInt",
+                                                        "val": "0",
+                                                        "bits": 1,
+                                                        "base": 2
+                                                    },
+                                                    "dst": "session_active",
+                                                    "is_blocking": false
+                                                }
+                                            ]
+                                        ]
+                                    },
+                                    {
+                                        "__class__": "HdlStmIf",
+                                        "position": [
+                                            37,
+                                            13,
+                                            38,
+                                            41
+                                        ],
+                                        "labels": [],
+                                        "cond": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "key_write_en",
+                                                "session_active"
+                                            ],
+                                            "fn": "AND_LOG"
+                                        },
+                                        "if_true": {
+                                            "__class__": "HdlStmAssign",
+                                            "position": [
+                                                38,
+                                                17,
+                                                38,
+                                                40
+                                            ],
+                                            "labels": [],
+                                            "src": "key_in",
+                                            "dst": "secret_key_reg",
+                                            "is_blocking": false
+                                        },
+                                        "elifs": []
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "__class__": "HdlStmAssign",
+                "doc": {
+                    "__class__": "str",
+                    "val": " Expose the stored key whenever a session is active\n"
+                },
+                "position": [
+                    44,
+                    12,
+                    44,
+                    60
+                ],
+                "labels": [],
+                "src": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "session_active",
+                        "secret_key_reg",
+                        {
+                            "__class__": "HdlValueInt",
+                            "val": "0",
+                            "bits": 32,
+                            "base": 2
+                        }
+                    ],
+                    "fn": "TERNARY"
+                },
+                "dst": "key_out",
+                "is_blocking": false
+            }
+        ]
+    }
+]
