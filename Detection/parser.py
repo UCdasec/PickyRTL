@@ -79,20 +79,19 @@ def parse_folder(folder_path:str):
 def parse():
     """Creates a file explorer to select an HDL file or folder of HDL files to parse
     """
-    while True:
-        selected_path = file_selector(
-            message="---Select a folder or file to parse---",
-            start_path=Path(__file__).parent.resolve() / "../Examples",
-            file_extensions_allowed=['.v', '.sv']
-        )
-        
-        if os.path.isdir(selected_path):
-            parse_folder(selected_path)
-        elif os.path.isfile(selected_path):
-            parse_file(selected_path)
-        else:
-            print("Invalid Selection. Please Select a Valid File or Folder")
-            return
+    selected_path = file_selector(
+        message="---Select a folder or file to parse---",
+        start_path=Path(__file__).parent.resolve() / "../Examples",
+        file_extensions_allowed=['.v', '.sv']
+    )
+    
+    if os.path.isdir(selected_path):
+        parse_folder(selected_path)
+    elif os.path.isfile(selected_path):
+        parse_file(selected_path)
+    else:
+        print("Invalid Selection. Please Select a Valid File or Folder")
+        return
 
 
 
