@@ -55,9 +55,11 @@ def save_results(CWE_1245_results_df: pd.DataFrame, CWE_1233_results_df: pd.Data
         detection_statistics_df (pd.DataFrame): Detection statistics
     """
     #Prompt the user to select a folder for the saved results
+    start_path = Path(__file__).parent.resolve() / "Results"
+    os.makedirs(start_path, exist_ok=True)
     selected_folder_path = file_selector(
         message="---Select a folder to save the results---", 
-        start_path=Path(__file__).parent.resolve() / "Results",
+        start_path=start_path,
         save_file=True,
         file_extensions_allowed=['.json']
     )
