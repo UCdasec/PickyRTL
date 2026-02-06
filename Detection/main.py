@@ -924,9 +924,10 @@ def main():
                     return
                 
                 #Create total rows for each dataframe
+                total_case_stmts = pd.to_numeric(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value], errors='coerce').notna().sum()
                 CWE_1245_total_row = pd.DataFrame([{
                     CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: 'Total',
-                    CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: f"{CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value].count()} case statements",
+                    CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: f"{total_case_stmts} case statements",
                     CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: {
                         'Secure': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Secure').sum(),
                         'Vulnerable': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Vulnerable').sum(),
