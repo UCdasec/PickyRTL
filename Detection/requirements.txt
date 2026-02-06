@@ -3,7 +3,7 @@ hdlConvertorAst @ git+https://github.com/Nic30/hdlConvertorAst.git@1031b981ffea7
 inquirerpy==0.3.4
 jellyfish==1.2.1
 numpy==2.4.2
-openpyxl==3.15
+openpyxl==3.1.5
 packaging==26.0
 pandas==3.0.0
 pfzy==0.3.4
