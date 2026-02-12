@@ -1,0 +1,1888 @@
+[
+    {
+        "__class__": "HdlModuleDef",
+        "position": [
+            7,
+            1,
+            140,
+            9
+        ],
+        "name": {
+            "__class__": "str",
+            "val": null
+        },
+        "dec": {
+            "__class__": "HdlModuleDec",
+            "doc": {
+                "__class__": "str",
+                "val": " ================================================================\n Multi-Context Key Management Unit (Intentionally Vulnerable)\n Domain: Key management unit\n Weakness: CWE-226 - Sensitive Information in Resource Not Removed Before Reuse\n ================================================================\n"
+            },
+            "position": [
+                7,
+                1,
+                140,
+                9
+            ],
+            "name": {
+                "__class__": "str",
+                "val": "key_management_unit"
+            },
+            "objs": [],
+            "declaration_only": false,
+            "params": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        8,
+                        15,
+                        8,
+                        30
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "KEY_WIDTH"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "128",
+                        "base": 10
+                    },
+                    "direction": "INTERNAL"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        9,
+                        15,
+                        9,
+                        28
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "NUM_SLOTS"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "4",
+                        "base": 10
+                    },
+                    "direction": "INTERNAL"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        10,
+                        15,
+                        10,
+                        28
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "USER_WIDTH"
+                    },
+                    "type": {
+                        "__class__": "HdlTypeAuto"
+                    },
+                    "value": {
+                        "__class__": "HdlValueInt",
+                        "val": "2",
+                        "base": 10
+                    },
+                    "direction": "INTERNAL"
+                }
+            ],
+            "ports": [
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        12,
+                        5,
+                        12,
+                        35
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "clk"
+                    },
+                    "type": "wire",
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        13,
+                        5,
+                        13,
+                        37
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "rst_n"
+                    },
+                    "type": "wire",
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Allocation interface\n"
+                    },
+                    "position": [
+                        16,
+                        5,
+                        16,
+                        41
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "alloc_req"
+                    },
+                    "type": "wire",
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        17,
+                        5,
+                        17,
+                        45
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "alloc_user_id"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "USER_WIDTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10
+                                            }
+                                        ],
+                                        "fn": "SUB"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        18,
+                        5,
+                        18,
+                        46
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "alloc_key_data"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "KEY_WIDTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10
+                                            }
+                                        ],
+                                        "fn": "SUB"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        19,
+                        5,
+                        19,
+                        43
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "alloc_grant"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "str",
+                                "val": null
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        20,
+                        5,
+                        20,
+                        45
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "alloc_slot_id"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "1",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Release interface\n"
+                    },
+                    "position": [
+                        23,
+                        5,
+                        23,
+                        43
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "release_req"
+                    },
+                    "type": "wire",
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        24,
+                        5,
+                        24,
+                        47
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "release_slot_id"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "1",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Read interface\n"
+                    },
+                    "position": [
+                        27,
+                        5,
+                        27,
+                        40
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "read_req"
+                    },
+                    "type": "wire",
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        28,
+                        5,
+                        28,
+                        44
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "read_slot_id"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "wire",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "1",
+                                        "base": 10
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "IN"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        29,
+                        5,
+                        29,
+                        45
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "read_key_data"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "KEY_WIDTH",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10
+                                            }
+                                        ],
+                                        "fn": "SUB"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "position": [
+                        30,
+                        5,
+                        30,
+                        42
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "read_valid"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "str",
+                                "val": null
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                },
+                {
+                    "__class__": "HdlIdDef",
+                    "doc": {
+                        "__class__": "str",
+                        "val": " Status\n"
+                    },
+                    "position": [
+                        33,
+                        5,
+                        33,
+                        43
+                    ],
+                    "name": {
+                        "__class__": "str",
+                        "val": "slot_in_use"
+                    },
+                    "type": {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "reg",
+                            {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    {
+                                        "__class__": "HdlOp",
+                                        "ops": [
+                                            "NUM_SLOTS",
+                                            {
+                                                "__class__": "HdlValueInt",
+                                                "val": "1",
+                                                "base": 10
+                                            }
+                                        ],
+                                        "fn": "SUB"
+                                    },
+                                    {
+                                        "__class__": "HdlValueInt",
+                                        "val": "0",
+                                        "base": 10
+                                    }
+                                ],
+                                "fn": "DOWNTO"
+                            },
+                            {
+                                "__class__": "str",
+                                "val": null
+                            }
+                        ],
+                        "fn": "PARAMETRIZATION"
+                    },
+                    "direction": "OUT"
+                }
+            ]
+        },
+        "module_name": "key_management_unit",
+        "objs": [
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " ============================================================\n Internal storage resources\n ============================================================\n Key storage memory (resource type 1: memory block)\n"
+                },
+                "position": [
+                    41,
+                    25,
+                    41,
+                    51
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "key_storage"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "reg",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "KEY_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "SUB"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "DOWNTO"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "NUM_SLOTS",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "SUB"
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        }
+                    ],
+                    "fn": "INDEX"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " Ownership tracking (resource type 2: registers)\n"
+                },
+                "position": [
+                    44,
+                    26,
+                    44,
+                    51
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "slot_owner"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                "reg",
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "USER_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "1",
+                                                    "base": 10
+                                                }
+                                            ],
+                                            "fn": "SUB"
+                                        },
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "DOWNTO"
+                                },
+                                {
+                                    "__class__": "str",
+                                    "val": null
+                                }
+                            ],
+                            "fn": "PARAMETRIZATION"
+                        },
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlOp",
+                                    "ops": [
+                                        "NUM_SLOTS",
+                                        {
+                                            "__class__": "HdlValueInt",
+                                            "val": "1",
+                                            "base": 10
+                                        }
+                                    ],
+                                    "fn": "SUB"
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        }
+                    ],
+                    "fn": "INDEX"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "doc": {
+                    "__class__": "str",
+                    "val": " FSM state (resource type 3: control register)\n"
+                },
+                "position": [
+                    47,
+                    15,
+                    47,
+                    19
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "state"
+                },
+                "is_static": true,
+                "type": {
+                    "__class__": "HdlOp",
+                    "ops": [
+                        "reg",
+                        {
+                            "__class__": "HdlOp",
+                            "ops": [
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "1",
+                                    "base": 10
+                                },
+                                {
+                                    "__class__": "HdlValueInt",
+                                    "val": "0",
+                                    "base": 10
+                                }
+                            ],
+                            "fn": "DOWNTO"
+                        },
+                        {
+                            "__class__": "str",
+                            "val": null
+                        }
+                    ],
+                    "fn": "PARAMETRIZATION"
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    49,
+                    16,
+                    49,
+                    31
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "IDLE"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlValueInt",
+                    "val": "0",
+                    "bits": 2,
+                    "base": 10
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    50,
+                    16,
+                    50,
+                    31
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "ALLOCATE"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlValueInt",
+                    "val": "1",
+                    "bits": 2,
+                    "base": 10
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    51,
+                    16,
+                    51,
+                    31
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "RELEASE"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlValueInt",
+                    "val": "2",
+                    "bits": 2,
+                    "base": 10
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    52,
+                    16,
+                    52,
+                    31
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "READ"
+                },
+                "is_const": true,
+                "type": {
+                    "__class__": "HdlTypeAuto"
+                },
+                "value": {
+                    "__class__": "HdlValueInt",
+                    "val": "3",
+                    "bits": 2,
+                    "base": 10
+                },
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlIdDef",
+                "position": [
+                    54,
+                    13,
+                    54,
+                    13
+                ],
+                "name": {
+                    "__class__": "str",
+                    "val": "i"
+                },
+                "is_static": true,
+                "type": "integer",
+                "direction": "INTERNAL"
+            },
+            {
+                "__class__": "HdlStmProcess",
+                "doc": {
+                    "__class__": "str",
+                    "val": " ============================================================\n FSM for resource lifecycle management\n ============================================================\n"
+                },
+                "position": [
+                    60,
+                    12,
+                    138,
+                    7
+                ],
+                "labels": [],
+                "sensitivity": [
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "clk"
+                        ],
+                        "fn": "RISING"
+                    },
+                    {
+                        "__class__": "HdlOp",
+                        "ops": [
+                            "rst_n"
+                        ],
+                        "fn": "FALLING"
+                    }
+                ],
+                "body": {
+                    "__class__": "HdlStmBlock",
+                    "position": [
+                        60,
+                        44,
+                        138,
+                        7
+                    ],
+                    "labels": [],
+                    "join_t": "SEQ",
+                    "body": [
+                        {
+                            "__class__": "HdlStmIf",
+                            "position": [
+                                61,
+                                9,
+                                137,
+                                11
+                            ],
+                            "labels": [],
+                            "cond": {
+                                "__class__": "HdlOp",
+                                "ops": [
+                                    "rst_n"
+                                ],
+                                "fn": "NEG_LOG"
+                            },
+                            "if_true": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    61,
+                                    21,
+                                    76,
+                                    11
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            62,
+                                            13,
+                                            62,
+                                            32
+                                        ],
+                                        "labels": [],
+                                        "src": "IDLE",
+                                        "dst": "state",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            63,
+                                            13,
+                                            63,
+                                            32
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "bits": 1,
+                                            "base": 2
+                                        },
+                                        "dst": "alloc_grant",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            64,
+                                            13,
+                                            64,
+                                            32
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "bits": 1,
+                                            "base": 2
+                                        },
+                                        "dst": "read_valid",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            65,
+                                            13,
+                                            65,
+                                            34
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlValueInt",
+                                            "val": "00",
+                                            "bits": 2,
+                                            "base": 2
+                                        },
+                                        "dst": "alloc_slot_id",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            66,
+                                            13,
+                                            66,
+                                            46
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "KEY_WIDTH",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "bits": 1,
+                                                    "base": 2
+                                                }
+                                            ],
+                                            "fn": "REPL_CONCAT"
+                                        },
+                                        "dst": "read_key_data",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            67,
+                                            13,
+                                            67,
+                                            45
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "NUM_SLOTS",
+                                                {
+                                                    "__class__": "HdlValueInt",
+                                                    "val": "0",
+                                                    "bits": 1,
+                                                    "base": 2
+                                                }
+                                            ],
+                                            "fn": "REPL_CONCAT"
+                                        },
+                                        "dst": "slot_in_use",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmFor",
+                                        "doc": {
+                                            "__class__": "str",
+                                            "val": " Intentionally NOT clearing key_storage memory here\n CWE-226 pattern begins at reset\n"
+                                        },
+                                        "position": [
+                                            72,
+                                            13,
+                                            74,
+                                            15
+                                        ],
+                                        "labels": [],
+                                        "init": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                72,
+                                                13,
+                                                74,
+                                                15
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        72,
+                                                        18,
+                                                        72,
+                                                        22
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlValueInt",
+                                                        "val": "0",
+                                                        "base": 10
+                                                    },
+                                                    "dst": "i",
+                                                    "is_blocking": true
+                                                }
+                                            ]
+                                        },
+                                        "cond": {
+                                            "__class__": "HdlOp",
+                                            "ops": [
+                                                "i",
+                                                "NUM_SLOTS"
+                                            ],
+                                            "fn": "LT"
+                                        },
+                                        "step": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                72,
+                                                13,
+                                                74,
+                                                15
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlOp",
+                                                    "ops": [
+                                                        "i",
+                                                        {
+                                                            "__class__": "HdlOp",
+                                                            "ops": [
+                                                                "i",
+                                                                {
+                                                                    "__class__": "HdlValueInt",
+                                                                    "val": "1",
+                                                                    "base": 10
+                                                                }
+                                                            ],
+                                                            "fn": "ADD"
+                                                        }
+                                                    ],
+                                                    "fn": "ASSIGN"
+                                                }
+                                            ]
+                                        },
+                                        "body": {
+                                            "__class__": "HdlStmBlock",
+                                            "position": [
+                                                72,
+                                                51,
+                                                74,
+                                                15
+                                            ],
+                                            "labels": [],
+                                            "join_t": "SEQ",
+                                            "body": [
+                                                {
+                                                    "__class__": "HdlStmAssign",
+                                                    "position": [
+                                                        73,
+                                                        17,
+                                                        73,
+                                                        51
+                                                    ],
+                                                    "labels": [],
+                                                    "src": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "USER_WIDTH",
+                                                            {
+                                                                "__class__": "HdlValueInt",
+                                                                "val": "0",
+                                                                "bits": 1,
+                                                                "base": 2
+                                                            }
+                                                        ],
+                                                        "fn": "REPL_CONCAT"
+                                                    },
+                                                    "dst": {
+                                                        "__class__": "HdlOp",
+                                                        "ops": [
+                                                            "slot_owner",
+                                                            "i"
+                                                        ],
+                                                        "fn": "INDEX"
+                                                    },
+                                                    "is_blocking": false
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "elifs": [],
+                            "if_false": {
+                                "__class__": "HdlStmBlock",
+                                "position": [
+                                    76,
+                                    18,
+                                    137,
+                                    11
+                                ],
+                                "labels": [],
+                                "join_t": "SEQ",
+                                "body": [
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            77,
+                                            13,
+                                            77,
+                                            31
+                                        ],
+                                        "labels": [],
+                                        "src": "IDLE",
+                                        "dst": "state",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            78,
+                                            13,
+                                            78,
+                                            31
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "bits": 1,
+                                            "base": 2
+                                        },
+                                        "dst": "alloc_grant",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmAssign",
+                                        "position": [
+                                            79,
+                                            13,
+                                            79,
+                                            31
+                                        ],
+                                        "labels": [],
+                                        "src": {
+                                            "__class__": "HdlValueInt",
+                                            "val": "0",
+                                            "bits": 1,
+                                            "base": 2
+                                        },
+                                        "dst": "read_valid",
+                                        "is_blocking": false
+                                    },
+                                    {
+                                        "__class__": "HdlStmCase",
+                                        "position": [
+                                            81,
+                                            13,
+                                            136,
+                                            19
+                                        ],
+                                        "labels": [],
+                                        "type": "CASE",
+                                        "switch_on": "state",
+                                        "cases": [
+                                            [
+                                                "IDLE",
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        82,
+                                                        23,
+                                                        89,
+                                                        19
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlStmIf",
+                                                            "position": [
+                                                                83,
+                                                                21,
+                                                                88,
+                                                                38
+                                                            ],
+                                                            "labels": [],
+                                                            "cond": "alloc_req",
+                                                            "if_true": {
+                                                                "__class__": "HdlStmAssign",
+                                                                "position": [
+                                                                    84,
+                                                                    25,
+                                                                    84,
+                                                                    41
+                                                                ],
+                                                                "labels": [],
+                                                                "src": "ALLOCATE",
+                                                                "dst": "state",
+                                                                "is_blocking": false
+                                                            },
+                                                            "elifs": [
+                                                                [
+                                                                    "release_req",
+                                                                    {
+                                                                        "__class__": "HdlStmAssign",
+                                                                        "position": [
+                                                                            86,
+                                                                            25,
+                                                                            86,
+                                                                            40
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "src": "RELEASE",
+                                                                        "dst": "state",
+                                                                        "is_blocking": false
+                                                                    }
+                                                                ],
+                                                                [
+                                                                    "read_req",
+                                                                    {
+                                                                        "__class__": "HdlStmAssign",
+                                                                        "position": [
+                                                                            88,
+                                                                            25,
+                                                                            88,
+                                                                            37
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "src": "READ",
+                                                                        "dst": "state",
+                                                                        "is_blocking": false
+                                                                    }
+                                                                ]
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            [
+                                                "ALLOCATE",
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        94,
+                                                        27,
+                                                        105,
+                                                        19
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlStmFor",
+                                                            "position": [
+                                                                95,
+                                                                21,
+                                                                104,
+                                                                23
+                                                            ],
+                                                            "labels": [],
+                                                            "init": {
+                                                                "__class__": "HdlStmBlock",
+                                                                "position": [
+                                                                    95,
+                                                                    21,
+                                                                    104,
+                                                                    23
+                                                                ],
+                                                                "labels": [],
+                                                                "join_t": "SEQ",
+                                                                "body": [
+                                                                    {
+                                                                        "__class__": "HdlStmAssign",
+                                                                        "position": [
+                                                                            95,
+                                                                            26,
+                                                                            95,
+                                                                            30
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "src": {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "base": 10
+                                                                        },
+                                                                        "dst": "i",
+                                                                        "is_blocking": true
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "cond": {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "i",
+                                                                    "NUM_SLOTS"
+                                                                ],
+                                                                "fn": "LT"
+                                                            },
+                                                            "step": {
+                                                                "__class__": "HdlStmBlock",
+                                                                "position": [
+                                                                    95,
+                                                                    21,
+                                                                    104,
+                                                                    23
+                                                                ],
+                                                                "labels": [],
+                                                                "join_t": "SEQ",
+                                                                "body": [
+                                                                    {
+                                                                        "__class__": "HdlOp",
+                                                                        "ops": [
+                                                                            "i",
+                                                                            {
+                                                                                "__class__": "HdlOp",
+                                                                                "ops": [
+                                                                                    "i",
+                                                                                    {
+                                                                                        "__class__": "HdlValueInt",
+                                                                                        "val": "1",
+                                                                                        "base": 10
+                                                                                    }
+                                                                                ],
+                                                                                "fn": "ADD"
+                                                                            }
+                                                                        ],
+                                                                        "fn": "ASSIGN"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "body": {
+                                                                "__class__": "HdlStmBlock",
+                                                                "position": [
+                                                                    95,
+                                                                    59,
+                                                                    104,
+                                                                    23
+                                                                ],
+                                                                "labels": [],
+                                                                "join_t": "SEQ",
+                                                                "body": [
+                                                                    {
+                                                                        "__class__": "HdlStmIf",
+                                                                        "position": [
+                                                                            96,
+                                                                            25,
+                                                                            103,
+                                                                            27
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "cond": {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                {
+                                                                                    "__class__": "HdlOp",
+                                                                                    "ops": [
+                                                                                        "slot_in_use",
+                                                                                        "i"
+                                                                                    ],
+                                                                                    "fn": "INDEX"
+                                                                                }
+                                                                            ],
+                                                                            "fn": "NEG_LOG"
+                                                                        },
+                                                                        "if_true": {
+                                                                            "__class__": "HdlStmBlock",
+                                                                            "position": [
+                                                                                96,
+                                                                                46,
+                                                                                103,
+                                                                                27
+                                                                            ],
+                                                                            "labels": [],
+                                                                            "join_t": "SEQ",
+                                                                            "body": [
+                                                                                {
+                                                                                    "__class__": "HdlStmAssign",
+                                                                                    "position": [
+                                                                                        97,
+                                                                                        29,
+                                                                                        97,
+                                                                                        52
+                                                                                    ],
+                                                                                    "labels": [],
+                                                                                    "src": {
+                                                                                        "__class__": "HdlValueInt",
+                                                                                        "val": "1",
+                                                                                        "bits": 1,
+                                                                                        "base": 2
+                                                                                    },
+                                                                                    "dst": {
+                                                                                        "__class__": "HdlOp",
+                                                                                        "ops": [
+                                                                                            "slot_in_use",
+                                                                                            "i"
+                                                                                        ],
+                                                                                        "fn": "INDEX"
+                                                                                    },
+                                                                                    "is_blocking": false
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlStmAssign",
+                                                                                    "position": [
+                                                                                        98,
+                                                                                        29,
+                                                                                        98,
+                                                                                        61
+                                                                                    ],
+                                                                                    "labels": [],
+                                                                                    "src": "alloc_user_id",
+                                                                                    "dst": {
+                                                                                        "__class__": "HdlOp",
+                                                                                        "ops": [
+                                                                                            "slot_owner",
+                                                                                            "i"
+                                                                                        ],
+                                                                                        "fn": "INDEX"
+                                                                                    },
+                                                                                    "is_blocking": false
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlStmAssign",
+                                                                                    "position": [
+                                                                                        99,
+                                                                                        29,
+                                                                                        99,
+                                                                                        62
+                                                                                    ],
+                                                                                    "labels": [],
+                                                                                    "src": "alloc_key_data",
+                                                                                    "dst": {
+                                                                                        "__class__": "HdlOp",
+                                                                                        "ops": [
+                                                                                            "key_storage",
+                                                                                            "i"
+                                                                                        ],
+                                                                                        "fn": "INDEX"
+                                                                                    },
+                                                                                    "is_blocking": false
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlStmAssign",
+                                                                                    "position": [
+                                                                                        100,
+                                                                                        29,
+                                                                                        100,
+                                                                                        54
+                                                                                    ],
+                                                                                    "labels": [],
+                                                                                    "src": {
+                                                                                        "__class__": "HdlOp",
+                                                                                        "ops": [
+                                                                                            "i",
+                                                                                            {
+                                                                                                "__class__": "HdlOp",
+                                                                                                "ops": [
+                                                                                                    {
+                                                                                                        "__class__": "HdlValueInt",
+                                                                                                        "val": "1",
+                                                                                                        "base": 10
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "__class__": "HdlValueInt",
+                                                                                                        "val": "0",
+                                                                                                        "base": 10
+                                                                                                    }
+                                                                                                ],
+                                                                                                "fn": "DOWNTO"
+                                                                                            }
+                                                                                        ],
+                                                                                        "fn": "INDEX"
+                                                                                    },
+                                                                                    "dst": "alloc_slot_id",
+                                                                                    "is_blocking": false
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlStmAssign",
+                                                                                    "position": [
+                                                                                        101,
+                                                                                        29,
+                                                                                        101,
+                                                                                        52
+                                                                                    ],
+                                                                                    "labels": [],
+                                                                                    "src": {
+                                                                                        "__class__": "HdlValueInt",
+                                                                                        "val": "1",
+                                                                                        "bits": 1,
+                                                                                        "base": 2
+                                                                                    },
+                                                                                    "dst": "alloc_grant",
+                                                                                    "is_blocking": false
+                                                                                },
+                                                                                {
+                                                                                    "__class__": "HdlStmNop",
+                                                                                    "position": [
+                                                                                        102,
+                                                                                        29,
+                                                                                        102,
+                                                                                        45
+                                                                                    ],
+                                                                                    "labels": []
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        "elifs": []
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            [
+                                                "RELEASE",
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        110,
+                                                        26,
+                                                        119,
+                                                        19
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlStmIf",
+                                                            "position": [
+                                                                111,
+                                                                21,
+                                                                118,
+                                                                23
+                                                            ],
+                                                            "labels": [],
+                                                            "cond": {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "slot_in_use",
+                                                                    "release_slot_id"
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "if_true": {
+                                                                "__class__": "HdlStmBlock",
+                                                                "position": [
+                                                                    111,
+                                                                    55,
+                                                                    118,
+                                                                    23
+                                                                ],
+                                                                "labels": [],
+                                                                "join_t": "SEQ",
+                                                                "body": [
+                                                                    {
+                                                                        "__class__": "HdlStmAssign",
+                                                                        "position": [
+                                                                            112,
+                                                                            25,
+                                                                            112,
+                                                                            60
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "src": {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "0",
+                                                                            "bits": 1,
+                                                                            "base": 2
+                                                                        },
+                                                                        "dst": {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                "slot_in_use",
+                                                                                "release_slot_id"
+                                                                            ],
+                                                                            "fn": "INDEX"
+                                                                        },
+                                                                        "is_blocking": false
+                                                                    },
+                                                                    {
+                                                                        "__class__": "HdlStmAssign",
+                                                                        "doc": {
+                                                                            "__class__": "str",
+                                                                            "val": " CWE-226:\n key_storage[release_slot_id] is NOT cleared.\n slot_owner is cleared but key remains intact.\n"
+                                                                        },
+                                                                        "position": [
+                                                                            117,
+                                                                            25,
+                                                                            117,
+                                                                            73
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "src": {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                "USER_WIDTH",
+                                                                                {
+                                                                                    "__class__": "HdlValueInt",
+                                                                                    "val": "0",
+                                                                                    "bits": 1,
+                                                                                    "base": 2
+                                                                                }
+                                                                            ],
+                                                                            "fn": "REPL_CONCAT"
+                                                                        },
+                                                                        "dst": {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                "slot_owner",
+                                                                                "release_slot_id"
+                                                                            ],
+                                                                            "fn": "INDEX"
+                                                                        },
+                                                                        "is_blocking": false
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "elifs": []
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            [
+                                                "READ",
+                                                {
+                                                    "__class__": "HdlStmBlock",
+                                                    "position": [
+                                                        124,
+                                                        23,
+                                                        134,
+                                                        19
+                                                    ],
+                                                    "labels": [],
+                                                    "join_t": "SEQ",
+                                                    "body": [
+                                                        {
+                                                            "__class__": "HdlStmIf",
+                                                            "position": [
+                                                                125,
+                                                                21,
+                                                                133,
+                                                                23
+                                                            ],
+                                                            "labels": [],
+                                                            "cond": {
+                                                                "__class__": "HdlOp",
+                                                                "ops": [
+                                                                    "slot_in_use",
+                                                                    "read_slot_id"
+                                                                ],
+                                                                "fn": "INDEX"
+                                                            },
+                                                            "if_true": {
+                                                                "__class__": "HdlStmBlock",
+                                                                "position": [
+                                                                    125,
+                                                                    52,
+                                                                    128,
+                                                                    23
+                                                                ],
+                                                                "labels": [],
+                                                                "join_t": "SEQ",
+                                                                "body": [
+                                                                    {
+                                                                        "__class__": "HdlStmAssign",
+                                                                        "position": [
+                                                                            126,
+                                                                            25,
+                                                                            126,
+                                                                            66
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "src": {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                "key_storage",
+                                                                                "read_slot_id"
+                                                                            ],
+                                                                            "fn": "INDEX"
+                                                                        },
+                                                                        "dst": "read_key_data",
+                                                                        "is_blocking": false
+                                                                    },
+                                                                    {
+                                                                        "__class__": "HdlStmAssign",
+                                                                        "position": [
+                                                                            127,
+                                                                            25,
+                                                                            127,
+                                                                            45
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "src": {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2
+                                                                        },
+                                                                        "dst": "read_valid",
+                                                                        "is_blocking": false
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "elifs": [],
+                                                            "if_false": {
+                                                                "__class__": "HdlStmBlock",
+                                                                "position": [
+                                                                    128,
+                                                                    30,
+                                                                    133,
+                                                                    23
+                                                                ],
+                                                                "labels": [],
+                                                                "join_t": "SEQ",
+                                                                "body": [
+                                                                    {
+                                                                        "__class__": "HdlStmAssign",
+                                                                        "doc": {
+                                                                            "__class__": "str",
+                                                                            "val": " Even if slot is free, return memory contents\n (Residual data exposure)\n"
+                                                                        },
+                                                                        "position": [
+                                                                            131,
+                                                                            25,
+                                                                            131,
+                                                                            66
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "src": {
+                                                                            "__class__": "HdlOp",
+                                                                            "ops": [
+                                                                                "key_storage",
+                                                                                "read_slot_id"
+                                                                            ],
+                                                                            "fn": "INDEX"
+                                                                        },
+                                                                        "dst": "read_key_data",
+                                                                        "is_blocking": false
+                                                                    },
+                                                                    {
+                                                                        "__class__": "HdlStmAssign",
+                                                                        "position": [
+                                                                            132,
+                                                                            25,
+                                                                            132,
+                                                                            45
+                                                                        ],
+                                                                        "labels": [],
+                                                                        "src": {
+                                                                            "__class__": "HdlValueInt",
+                                                                            "val": "1",
+                                                                            "bits": 1,
+                                                                            "base": 2
+                                                                        },
+                                                                        "dst": "read_valid",
+                                                                        "is_blocking": false
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+]
