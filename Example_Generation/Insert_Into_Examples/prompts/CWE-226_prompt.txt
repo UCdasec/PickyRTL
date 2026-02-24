@@ -1,0 +1,13 @@
+Your task is to insert a CWE-226 weakness into the provided Verilog or SystemVerilog file by modifying the code. 
+
+CWE-226 refers to sensitive information in resource not removed before reuse. This weakness is introduced when a product releases a resource such as memory so that it can be made available for reuse, but it does nto clear or "zeroize" the information contained in the resource before the product performs a critical state transition or makes the resource available for reuse by other entities.
+
+When modifying the code, ensure you follow these rules:
+- Modify it so a sensitive resource is not cleared before reuse
+- Do not introduce any syntax errors
+- Only modify existing code and do not add any registers
+
+When providing the whole modified module, also provide a brief explanation of how the weakness was inserted. 
+If you believe that a CWE-226 weakness cannot be correctly inserted into this module, please give an explanation as to why.
+
+Below is the provided code:

@@ -1,0 +1,13 @@
+Your task is to insert a CWE-1431 weakness into the provided Verilog or SystemVerilog file by modifying the code. 
+
+CWE-1431 refers to driving intermediate cryptographic state/results to hardware module outputs. This occurs when the product uses a hardware module implementing a cryptographic algorithm that writes sensitive information about the intermediate state or results of its cryptographic operations via one of its output wires (typically the output port containing the final result).
+
+When modifying the code, ensure you follow these rules:
+- Modify it so sensitive information is leaked through a module output
+- Do not introduce any syntax errors
+- Only modify existing code and do not add any registers
+
+When providing the whole modified module, also provide a brief explanation of how the weakness was inserted. 
+If you believe that a CWE-1431 weakness cannot be correctly inserted into this module, please give an explanation as to why.
+
+Below is the provided code:
