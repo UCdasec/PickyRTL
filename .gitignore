@@ -3,3 +3,4 @@ Detection/Results
 Detection/test.py
 Detection/register_matching_statistics.py
 .vscode/
+.venv/
