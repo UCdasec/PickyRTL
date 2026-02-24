@@ -1,0 +1,144 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally includes a CWE-1233 weakness**.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+module secure_control_block (
+    input  wire        clk,
+    input  wire        rst_n,
+
+    // Simple bus interface
+    input  wire        bus_we,
+    input  wire [3:0]  bus_addr,
+    input  wire [31:0] bus_wdata,
+    output reg  [31:0] bus_rdata,
+
+    // Debug interface (intended for manufacturing)
+    input  wire        dbg_we,
+    input  wire [31:0] dbg_wdata
+);
+
+    // Address map
+    localparam ADDR_SECURE_CFG = 4'h0;
+    localparam ADDR_LOCK      = 4'h1;
+
+    // Security-sensitive configuration register
+    // Controls privileged system behavior
+    reg [31:0] secure_cfg_reg;
+
+    // Lock bit intended to prevent further modification
+    reg        lock_bit;
+
+    // Write logic
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            secure_cfg_reg <= 32'h0000_0000;
+            lock_bit       <= 1'b0;
+        end else begin
+            // Normal bus writes
+            if (bus_we) begin
+                case (bus_addr)
+                    ADDR_SECURE_CFG: begin
+                        // Intended: should block writes when lock_bit == 1
+                        // Actual: lock_bit is NOT checked
+                        secure_cfg_reg <= bus_wdata;
+                    end
+
+                    ADDR_LOCK: begin
+                        // Lock bit can be set once
+                        lock_bit <= 1'b1;
+                    end
+                endcase
+            end
+
+            // Debug write path (higher priority, bypasses lock intent)
+            if (dbg_we) begin
+                // Direct write to security-sensitive register
+                // No lock bit enforcement
+                secure_cfg_reg <= dbg_wdata;
+            end
+        end
+    end
+
+    // Read logic
+    always @(*) begin
+        case (bus_addr)
+            ADDR_SECURE_CFG: bus_rdata = secure_cfg_reg;
+            ADDR_LOCK:       bus_rdata = {31'b0, lock_bit};
+            default:         bus_rdata = 32'h0000_0000;
+        endcase
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+This module implements a **simple security control block** with:
+
+- A **security-sensitive configuration register (`secure_cfg_reg`)**
+    
+    This register is assumed to control privileged or protected system behavior (for example, enabling debug access, secure boot overrides, or privilege escalation features).
+    
+- A **lock bit (`lock_bit`)**
+    
+    Once written, this bit is intended to permanently lock the configuration register and prevent further modification.
+    
+- Two write interfaces:
+    - A **normal bus interface**, representing standard software access
+    - A **debug interface**, representing manufacturing or diagnostic access
+- A basic address map allowing software to:
+    - Read/write the secure configuration register
+    - Set the lock bit
+
+---
+
+## 3. CWE-1233 Weakness Explanation
+
+### Where the Weakness Exists
+
+The CWE-1233 vulnerability is introduced in **both write paths** that update `secure_cfg_reg`:
+
+```verilog
+secure_cfg_reg <= bus_wdata;
+
+```
+
+and
+
+```verilog
+secure_cfg_reg <= dbg_wdata;
+
+```
+
+### How the Weakness Works
+
+- The module **defines a lock bit** (`lock_bit`) whose purpose is to prevent further modification of the security-sensitive register once set.
+- However, **neither write path checks the value of `lock_bit`** before updating `secure_cfg_reg`.
+- As a result:
+    - Even after the lock bit is set, **normal bus writes can still modify the protected register**
+    - The debug interface provides a **secondary, non-obvious bypass path** that also ignores the lock entirely
+
+### Why This Is CWE-1233
+
+CWE-1233 describes cases where **security-critical hardware controls lack proper lock-bit enforcement**. In this module:
+
+- The lock bit exists
+- The lock bit is writable and readable
+- The lock bit is **never enforced**
+- Unauthorized writes remain possible indefinitely
+
+This creates a clear and explicit **missing lock bit protection** weakness in the hardware logic.
+
+---
+
+If you want, I can:
+
+- Make the vulnerability subtler (e.g., partial register locking)
+- Add timing-dependent lock failures
+- Create a multi-stage configuration flow with a flawed lock sequence

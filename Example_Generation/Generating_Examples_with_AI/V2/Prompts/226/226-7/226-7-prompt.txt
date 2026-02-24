@@ -1,0 +1,61 @@
+Task:
+
+Generate a self-contained Verilog HDL module that intentionally includes a CWE-226 weakness.
+
+Requirements:
+
+- The module must be syntactically correct and synthesizable Verilog
+- The module’s functionality is left to your discretion
+- The weakness should be explicitly present in the logic, not just commented
+- Do not mitigate or correct the weakness
+
+Design Complexity Requirements for CWE-226:
+To ensure varied and realistic implementations, incorporate at least TWO of the following elements:
+1. Multiple resource types - Include at least 2-3 different resource types (registers, buffers, FIFOs, memory blocks)
+2. Multi-user or multi-context architecture - Design supports multiple users, processes, or security contexts sharing resources
+3. Resource allocation and deallocation logic - Implement mechanisms to assign and release resources dynamically
+4. State machine for resource lifecycle - FSM managing resource states (allocated, in-use, released, idle)
+5. Parameterized design - Configurable resource counts, buffer depths, or data widths
+6. Handshaking and control signaling - Request/grant, valid/ready, or transaction completion signals
+7. Priority or arbitration logic - Multiple requestors competing for shared resources with scheduling
+8. Multi-stage processing pipeline - Data flows through multiple stages, each with temporary storage
+9. Status and tracking registers - Ownership tracking, validity flags, or usage counters for resources
+10. Error detection and handling - Overflow detection, invalid access flags, or security violation indicators
+
+Application Domain Variation:
+Choose ONE application domain for each generation to ensure diversity:
+1. Shared cryptographic accelerator - Multiple processes share crypto engine with key registers and intermediate result buffers
+2. Multi-context DMA controller - DMA channels serving different security domains with source/destination address registers
+3. Shared authentication module - Password comparison or token validation with credential storage registers
+4. Transaction buffer manager - Packet buffers or transaction queues shared across multiple network/bus interfaces
+5. Key management unit - Secure key storage with key slots allocated and released for different cryptographic operations
+6. Session management controller - Maintains session tokens, IDs, or state for multiple concurrent sessions
+7. Secure mailbox/message passing - Inter-processor communication with message buffers exchanged between security domains
+8. Multi-tenant memory controller - Memory regions allocated to different processes with address range registers
+9. Shared FIFO or queue manager - Data queues shared between producer/consumer with different security levels
+10. Credential cache - Stores temporary authentication credentials, biometric templates, or access tokens
+11. TLB or cache controller - Address translation or cache entries belonging to different processes/contexts
+12. Encryption/decryption engine pool - Multiple crypto cores with plaintext/ciphertext staging registers
+
+The module should include:
+- At least 3-5 input signals (including clock and reset)
+- At least 2-4 output signals
+- Realistic signal names reflecting the chosen application domain
+
+Output Format:
+
+1. Provide the complete Verilog module
+2. Explain the functionality of the module
+3. Explain where and how the CWE-226 weakness is introduced
+
+CWE-226: Sensitive Information in Resource Not Removed Before Reuse
+
+Hardware and software systems reuse resources such as memory, registers, and storage regions across different processes with different privilege levels or security levels. When a resource is released, any sensitive data it contains should be cleared before the resource is made available for reuse.
+
+Vulnerability Pattern:
+
+This weakness occurs when a resource containing sensitive information is not cleared before being released for reuse.  This manifests when a register retains sensitive values across module reset or critical state transitions. 
+
+Security Impact:
+
+Failure to remove sensitive information before resources are reused can lead to confidentiality violations. Untrusted actors may recover residual data from reused resources. This could expose cryptographic secrets or private user information.

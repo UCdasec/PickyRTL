@@ -1,0 +1,117 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally includes a CWE-226 weakness** (Sensitive Information in Resource Not Removed Before Reuse), followed by clear explanations.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+// Description:
+// Simple session-based key storage module.
+// A secret key is loaded during an active session and can be read out.
+// When a session ends, the storage resource is reused without clearing
+// the sensitive data (intentional CWE-226 weakness).
+
+module session_key_store (
+    input  wire        clk,
+    input  wire        rst_n,
+
+    // Session control
+    input  wire        start_session,
+    input  wire        end_session,
+
+    // Key handling
+    input  wire        load_key,
+    input  wire [127:0] key_in,
+
+    // Data output
+    input  wire        read_key,
+    output reg  [127:0] key_out
+);
+
+    // Indicates whether a session is currently active
+    reg session_active;
+
+    // Sensitive resource: stores a secret key
+    reg [127:0] key_buffer;
+
+    // Session and key management
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            session_active <= 1'b0;
+            key_out        <= 128'b0;
+            // NOTE: key_buffer is NOT cleared here intentionally
+        end else begin
+            if (start_session) begin
+                session_active <= 1'b1;
+            end
+
+            if (end_session) begin
+                session_active <= 1'b0;
+                // key_buffer is intentionally retained
+            end
+
+            if (session_active && load_key) begin
+                key_buffer <= key_in;
+            end
+
+            if (read_key) begin
+                key_out <= key_buffer;
+            end
+        end
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Functionality Explanation
+
+This module implements a **simple session-based key storage mechanism**:
+
+- A session is started using `start_session` and ended using `end_session`
+- During an active session:
+    - A 128-bit secret key can be loaded into internal storage (`key_buffer`)
+- At any time, the stored key can be read via `read_key`
+- The module is synchronous, resettable, and fully synthesizable
+
+The `key_buffer` register represents a **sensitive resource**, such as a cryptographic key or authentication token, intended to be valid only during a session.
+
+---
+
+## 3. CWE-226 Weakness Explanation
+
+**CWE-226: Sensitive Information in Resource Not Removed Before Reuse**
+
+### Where the Weakness Is Introduced
+
+The vulnerability is centered on the following register:
+
+```verilog
+reg [127:0] key_buffer;
+
+```
+
+### How the Weakness Manifests
+
+- When `end_session` is asserted, the module:
+    - Marks the session as inactive
+    - **Does not clear `key_buffer`**
+- When a new session is started:
+    - The same `key_buffer` resource is reused
+    - Residual sensitive data from the previous session remains accessible
+- A subsequent `read_key` operation can expose the previous session’s secret key
+
+### Why This Is CWE-226
+
+- `key_buffer` contains **sensitive information**
+- The resource is **logically released** at `end_session`
+- The data is **not removed before reuse**
+- This creates a confidentiality risk if sessions correspond to different users, privilege levels, or security domains
+
+No mitigation (such as clearing `key_buffer` on session end or reset) is implemented, making the weakness **explicit and intentional**, as required.
+
+---
+
+If you want a contrasting **secure version** later (for training or diffing purposes), I can provide that too.

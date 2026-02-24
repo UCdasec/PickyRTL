@@ -1,0 +1,284 @@
+## 1. Complete Verilog Module (Intentionally Vulnerable to CWE-1431)
+
+```verilog
+// ============================================================
+// Iterative Hash Core (Custom SHA-like Compression Engine)
+// Intentionally contains CWE-1431 weakness:
+// Drives intermediate hash state to output port.
+// ============================================================
+
+module iterative_hash_core #(
+    parameter DATA_WIDTH  = 256,
+    parameter STATE_WIDTH = 256,
+    parameter NUM_ROUNDS  = 16
+)(
+    input                       clk,
+    input                       rst_n,
+    input                       start,
+    input      [DATA_WIDTH-1:0] block_i,
+    input      [STATE_WIDTH-1:0] iv_i,
+
+    output reg [STATE_WIDTH-1:0] hash_o,
+    output reg                  valid_o,
+    output reg                  busy_o,
+
+    // *** CWE-1431 WEAKNESS: intermediate internal state exposed ***
+    output     [STATE_WIDTH-1:0] debug_state_o
+);
+
+    // ============================================================
+    // Internal Registers
+    // ============================================================
+
+    reg [STATE_WIDTH-1:0] state_q, state_d;
+    reg [DATA_WIDTH-1:0]  block_q;
+    reg [4:0]             round_ctr_q;
+    reg [1:0]             fsm_q, fsm_d;
+
+    localparam FSM_IDLE  = 2'd0;
+    localparam FSM_LOAD  = 2'd1;
+    localparam FSM_ROUND = 2'd2;
+    localparam FSM_DONE  = 2'd3;
+
+    // ============================================================
+    // Round Function (bit-level manipulation)
+    // ============================================================
+
+    wire [STATE_WIDTH-1:0] mix_rot;
+    wire [STATE_WIDTH-1:0] mix_xor;
+    wire [STATE_WIDTH-1:0] mix_add;
+
+    // Rotate left by round counter amount
+    assign mix_rot = (state_q << round_ctr_q) | 
+                     (state_q >> (STATE_WIDTH - round_ctr_q));
+
+    // XOR with message block
+    assign mix_xor = mix_rot ^ block_q;
+
+    // Add round-dependent constant (simple linear function)
+    assign mix_add = mix_xor + 
+                     {{(STATE_WIDTH-8){1'b0}}, round_ctr_q, 3'b101};
+
+    // Next state
+    always @(*) begin
+        state_d = state_q;
+        fsm_d   = fsm_q;
+
+        case (fsm_q)
+            FSM_IDLE: begin
+                if (start)
+                    fsm_d = FSM_LOAD;
+            end
+
+            FSM_LOAD: begin
+                fsm_d = FSM_ROUND;
+            end
+
+            FSM_ROUND: begin
+                state_d = mix_add;
+
+                if (round_ctr_q == NUM_ROUNDS-1)
+                    fsm_d = FSM_DONE;
+            end
+
+            FSM_DONE: begin
+                fsm_d = FSM_IDLE;
+            end
+        endcase
+    end
+
+    // ============================================================
+    // Sequential Logic
+    // ============================================================
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state_q      <= {STATE_WIDTH{1'b0}};
+            block_q      <= {DATA_WIDTH{1'b0}};
+            round_ctr_q  <= 5'd0;
+            fsm_q        <= FSM_IDLE;
+            valid_o      <= 1'b0;
+            busy_o       <= 1'b0;
+            hash_o       <= {STATE_WIDTH{1'b0}};
+        end else begin
+            fsm_q <= fsm_d;
+
+            case (fsm_q)
+                FSM_IDLE: begin
+                    valid_o <= 1'b0;
+                    busy_o  <= 1'b0;
+                    round_ctr_q <= 5'd0;
+
+                    if (start) begin
+                        block_q <= block_i;
+                        state_q <= iv_i;
+                        busy_o  <= 1'b1;
+                    end
+                end
+
+                FSM_LOAD: begin
+                    round_ctr_q <= 5'd0;
+                end
+
+                FSM_ROUND: begin
+                    state_q <= state_d;
+                    round_ctr_q <= round_ctr_q + 1'b1;
+                end
+
+                FSM_DONE: begin
+                    hash_o  <= state_q;
+                    valid_o <= 1'b1;
+                    busy_o  <= 1'b0;
+                end
+            endcase
+        end
+    end
+
+    // ============================================================
+    // CWE-1431 VULNERABILITY
+    // ============================================================
+    // Intermediate hash state is continuously exposed,
+    // even during active processing rounds.
+    assign debug_state_o = state_q;
+
+endmodule
+```
+
+---
+
+# 2. Functionality Explanation
+
+This module implements a **custom iterative hash compression core**, conceptually similar to a simplified SHA-style engine.
+
+### Implemented Design Elements
+
+This design includes multiple advanced structural elements:
+
+### 1. Parameterized Design
+
+* `DATA_WIDTH`
+* `STATE_WIDTH`
+* `NUM_ROUNDS`
+
+These allow configurable block size, state size, and number of compression rounds.
+
+### 2. State Machine Control (FSM)
+
+Four states:
+
+* `FSM_IDLE` – waits for `start`
+* `FSM_LOAD` – initializes processing
+* `FSM_ROUND` – performs iterative compression rounds
+* `FSM_DONE` – outputs final hash
+
+### 3. Round-Based Iterative Processing
+
+* A round counter (`round_ctr_q`)
+* Each cycle updates the internal state
+* Total rounds defined by `NUM_ROUNDS`
+
+### 4. Internal Temporary Storage
+
+* `state_q` holds evolving internal hash state
+* `block_q` stores input message block
+* `mix_rot`, `mix_xor`, `mix_add` are intermediate transformation stages
+
+### 5. Bit-Level Manipulation
+
+Each round performs:
+
+* Variable rotation
+* XOR with message block
+* Addition of round-dependent constant
+
+---
+
+### Operational Flow
+
+1. `start` asserted in `FSM_IDLE`
+2. Initial vector (`iv_i`) loaded into `state_q`
+3. Message block captured
+4. Iterative transformation performed for `NUM_ROUNDS`
+5. Final state copied to `hash_o`
+6. `valid_o` asserted
+
+---
+
+# 3. CWE-1431 Weakness Explanation
+
+## CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs
+
+### Where the Vulnerability Exists
+
+```verilog
+assign debug_state_o = state_q;
+```
+
+### Why This Is a Vulnerability
+
+`state_q` is the **internal compression state** of the hash function. During operation:
+
+* It contains partially processed hash values
+* It evolves deterministically from:
+
+  * Initial vector (`iv_i`)
+  * Message block (`block_i`)
+  * Round constants
+
+Because `debug_state_o` continuously drives `state_q`:
+
+* Intermediate round values are externally observable
+* The full internal evolution of the hash function is leaked
+* An attacker can:
+
+  * Observe round-by-round transformation
+  * Perform differential cryptanalysis
+  * Recover sensitive state relationships
+  * Potentially reconstruct secrets derived from `iv_i`
+
+---
+
+### Why This Violates Secure Cryptographic Design
+
+Cryptographic compression functions rely on:
+
+* Concealing intermediate states
+* Only exposing final digest outputs
+* Preventing observation of internal round evolution
+
+Here:
+
+* The internal state is exported **during every round**
+* Leakage occurs while `busy_o` is high
+* Leakage is unconditional (no gating on `valid_o`)
+
+---
+
+### Security Impact
+
+An adversary observing `debug_state_o` can:
+
+* Capture intermediate hash states
+* Reconstruct internal transformations
+* Derive structural weaknesses
+* Potentially recover sensitive key-derived values if `iv_i` contains secret material
+
+This directly matches the CWE-1431 definition:
+
+> Driving intermediate cryptographic state/results to hardware module outputs.
+
+---
+
+## Summary of Vulnerability
+
+| Property                             | Status |
+| ------------------------------------ | ------ |
+| Intermediate state exposed           | Yes    |
+| Exposure during active rounds        | Yes    |
+| Output gated by completion signal    | No     |
+| Cryptographic sensitivity            | High   |
+| Explicit in logic (not comment-only) | Yes    |
+
+---
+
+If you'd like, I can generate another variant using a different cryptographic domain (e.g., block cipher, MAC, Galois multiplier, KDF, etc.) with a distinct leakage pattern.

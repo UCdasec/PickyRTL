@@ -1,0 +1,103 @@
+### 1. Complete Verilog Module
+
+```verilog
+module insecure_fsm_controller (
+    input  wire        clk,
+    input  wire        rst_n,
+    input  wire        start,
+    input  wire [7:0]  password,
+    output reg         access_granted
+);
+
+    // 3-bit state register, but not all values are safely handled
+    reg [2:0] state;
+    reg [2:0] next_state;
+
+    // State encoding
+    localparam IDLE   = 3'b000;
+    localparam AUTH   = 3'b001;
+    localparam GRANT  = 3'b010;
+    localparam LOCKED = 3'b011;
+    // Note: 3'b111 is intentionally left as an undocumented "trap" state
+
+    // Sequential state update
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n)
+            state <= IDLE;
+        else
+            state <= next_state;
+    end
+
+    // Combinational next-state logic (intentionally flawed)
+    always @(*) begin
+        access_granted = 1'b0;
+
+        case (state)
+            IDLE: begin
+                if (start)
+                    next_state = AUTH;
+            end
+
+            AUTH: begin
+                if (password == 8'hA5)
+                    next_state = GRANT;
+                else
+                    next_state = LOCKED;
+            end
+
+            GRANT: begin
+                access_granted = 1'b1;
+                // Transition depends on an impossible condition:
+                // password can never be 8'hFF because upstream logic masks MSB (not shown here)
+                if (password == 8'hFF)
+                    next_state = IDLE;
+            end
+
+            LOCKED: begin
+                // No transition out of LOCKED unless reset
+                next_state = LOCKED;
+            end
+
+            // Intentionally no default case
+            // States such as 3'b100–3'b111 are not covered
+        endcase
+    end
+
+endmodule
+
+```
+
+---
+
+### 2. Functionality of the Module
+
+This module implements a simple access-control finite state machine:
+
+- **IDLE**: Waits for a `start` signal.
+- **AUTH**: Checks whether the provided `password` matches a hardcoded value.
+- **GRANT**: Asserts `access_granted` when authentication succeeds.
+- **LOCKED**: Represents a lockout state after failed authentication.
+
+The FSM is clocked synchronously and reset asynchronously. Based on user input (`start` and `password`), it transitions between states to either grant or deny access.
+
+---
+
+### 3. CWE-1245 Weakness Explanation (Improper FSM Implementation)
+
+This module intentionally includes multiple **CWE-1245: Improper Finite State Machine** weaknesses:
+
+1. **Incomplete State Coverage**
+    - The state register is 3 bits wide, allowing 8 possible values.
+    - Only 4 states are explicitly handled in the `case` statement.
+    - There is **no `default` case**, so if the FSM enters any unhandled state (e.g., `3'b100` or `3'b111`), `next_state` is left unchanged, inferring unintended latch behavior and undefined control flow.
+2. **Deadlock State**
+    - The `LOCKED` state transitions only to itself.
+    - Once entered, the FSM cannot recover without an external reset, creating a denial-of-service condition.
+3. **Hidden Trap State (Non-Obvious Deadlock)**
+    - State `3'b111` is not defined but is reachable through synthesis glitches, bit flips, or fault injection.
+    - Because it is not handled in the FSM logic and has no default recovery path, the FSM can become permanently stuck in this undocumented state.
+4. **Impossible Transition Condition**
+    - In the `GRANT` state, the transition back to `IDLE` depends on a condition (`password == 8'hFF`) that is logically impossible in the intended system.
+    - This effectively prevents normal exit from the `GRANT` state, further contributing to improper FSM behavior.
+
+Together, these issues demonstrate an **improper FSM design** that could be exploited to force undefined behavior, cause permanent lockout, or bypass intended control flow—aligning directly with CWE-1245.

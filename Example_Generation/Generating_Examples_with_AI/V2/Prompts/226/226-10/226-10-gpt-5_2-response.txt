@@ -1,0 +1,265 @@
+## 1. Complete Verilog Module (With Intentional CWE-226 Weakness)
+
+**Application Domain Chosen:** Key Management Unit (Secure key storage with key slots allocated and released for different cryptographic operations)
+
+This design includes:
+
+* Parameterized key slots (parameterized design)
+* Multiple resource types (register arrays, ownership tables, FSM state registers)
+* Multi-user architecture (multiple security domains)
+* Allocation/deallocation logic
+* FSM managing key lifecycle
+* Handshake signaling (request/grant)
+* Status tracking registers
+
+```verilog
+// ============================================================
+// Key Management Unit (KMU)
+// Intentionally contains CWE-226 vulnerability
+// ============================================================
+
+module key_management_unit #(
+    parameter KEY_WIDTH      = 128,
+    parameter NUM_SLOTS      = 4,
+    parameter DOMAIN_WIDTH   = 2
+)(
+    input  wire                     clk,
+    input  wire                     rst_n,
+
+    // Request interface
+    input  wire                     req_valid,
+    input  wire [DOMAIN_WIDTH-1:0]  req_domain,
+    input  wire                     req_allocate,   // 1 = allocate, 0 = release
+    input  wire [KEY_WIDTH-1:0]     req_key_data,
+
+    // Read interface
+    input  wire                     read_valid,
+    input  wire [DOMAIN_WIDTH-1:0]  read_domain,
+
+    // Outputs
+    output reg                      grant_valid,
+    output reg  [$clog2(NUM_SLOTS)-1:0] grant_slot,
+    output reg                      read_valid_o,
+    output reg  [KEY_WIDTH-1:0]     read_key_data,
+    output reg                      error_flag
+);
+
+    // ============================================================
+    // Resource Types
+    // ============================================================
+
+    // Key storage slots (sensitive data)
+    reg [KEY_WIDTH-1:0] key_slots [0:NUM_SLOTS-1];
+
+    // Ownership tracking
+    reg [DOMAIN_WIDTH-1:0] slot_owner [0:NUM_SLOTS-1];
+
+    // Slot allocation bitmap
+    reg [NUM_SLOTS-1:0] slot_allocated;
+
+    // FSM state
+    reg [1:0] state;
+
+    localparam IDLE     = 2'd0;
+    localparam ALLOCATE = 2'd1;
+    localparam RELEASE  = 2'd2;
+    localparam READ     = 2'd3;
+
+    integer i;
+
+    // ============================================================
+    // FSM
+    // ============================================================
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state <= IDLE;
+            grant_valid <= 1'b0;
+            read_valid_o <= 1'b0;
+            error_flag <= 1'b0;
+            slot_allocated <= {NUM_SLOTS{1'b0}};
+            // NOTE: key_slots are NOT cleared on reset (intentional)
+        end else begin
+            grant_valid <= 1'b0;
+            read_valid_o <= 1'b0;
+            error_flag <= 1'b0;
+
+            case (state)
+                IDLE: begin
+                    if (req_valid) begin
+                        if (req_allocate)
+                            state <= ALLOCATE;
+                        else
+                            state <= RELEASE;
+                    end else if (read_valid) begin
+                        state <= READ;
+                    end
+                end
+
+                ALLOCATE: begin
+                    // Find first free slot
+                    for (i = 0; i < NUM_SLOTS; i = i + 1) begin
+                        if (!slot_allocated[i]) begin
+                            slot_allocated[i] <= 1'b1;
+                            slot_owner[i] <= req_domain;
+                            key_slots[i] <= req_key_data;  // Store sensitive key
+                            grant_slot <= i[$clog2(NUM_SLOTS)-1:0];
+                            grant_valid <= 1'b1;
+                            state <= IDLE;
+                        end
+                    end
+                end
+
+                RELEASE: begin
+                    // Release slot owned by domain
+                    for (i = 0; i < NUM_SLOTS; i = i + 1) begin
+                        if (slot_allocated[i] && slot_owner[i] == req_domain) begin
+                            slot_allocated[i] <= 1'b0;
+                            slot_owner[i] <= {DOMAIN_WIDTH{1'b0}};
+                            // INTENTIONAL CWE-226:
+                            // key_slots[i] is NOT cleared here
+                            grant_slot <= i[$clog2(NUM_SLOTS)-1:0];
+                            grant_valid <= 1'b1;
+                            state <= IDLE;
+                        end
+                    end
+                end
+
+                READ: begin
+                    // Read key owned by domain
+                    for (i = 0; i < NUM_SLOTS; i = i + 1) begin
+                        if (slot_allocated[i] && slot_owner[i] == read_domain) begin
+                            read_key_data <= key_slots[i];
+                            read_valid_o <= 1'b1;
+                            state <= IDLE;
+                        end
+                    end
+                end
+
+                default: state <= IDLE;
+            endcase
+        end
+    end
+
+endmodule
+```
+
+---
+
+## 2. Functionality Explanation
+
+This module implements a **Key Management Unit (KMU)** that securely stores cryptographic keys in multiple slots shared across different security domains.
+
+### Key Features:
+
+* **Parameterized Design**
+
+  * `KEY_WIDTH`: width of each key (default 128 bits)
+  * `NUM_SLOTS`: number of key slots
+  * `DOMAIN_WIDTH`: number of bits representing security domains
+
+* **Multi-User Architecture**
+
+  * Multiple security domains can allocate and release key slots.
+  * Each slot tracks ownership via `slot_owner`.
+
+* **Resource Types**
+
+  * `key_slots[]`: stores sensitive cryptographic keys
+  * `slot_owner[]`: tracks which domain owns each slot
+  * `slot_allocated`: allocation bitmap
+  * FSM state register
+
+* **Resource Allocation/Deallocation**
+
+  * Domains request allocation via `req_allocate=1`
+  * Domains release via `req_allocate=0`
+  * First free slot is assigned
+  * Ownership tracked
+
+* **FSM Lifecycle**
+
+  * `IDLE`
+  * `ALLOCATE`
+  * `RELEASE`
+  * `READ`
+
+* **Handshaking**
+
+  * `req_valid` → `grant_valid`
+  * `read_valid` → `read_valid_o`
+
+---
+
+## 3. CWE-226 Weakness Explanation
+
+### CWE-226: Sensitive Information in Resource Not Removed Before Reuse
+
+**Location of Vulnerability:**
+
+```verilog
+RELEASE: begin
+    ...
+    slot_allocated[i] <= 1'b0;
+    slot_owner[i] <= {DOMAIN_WIDTH{1'b0}};
+    // INTENTIONAL CWE-226:
+    // key_slots[i] is NOT cleared here
+```
+
+### What Happens
+
+When a domain releases a key slot:
+
+* The allocation bit is cleared.
+* Ownership is cleared.
+* **But the key data remains stored in `key_slots[i]`.**
+
+Additionally:
+
+* On reset, `key_slots[]` are NOT cleared.
+
+```verilog
+// NOTE: key_slots are NOT cleared on reset (intentional)
+```
+
+---
+
+### Why This Is a Security Problem
+
+1. **Residual Sensitive Data**
+
+   * Cryptographic keys remain in hardware registers after release.
+
+2. **Resource Reuse Exposure**
+
+   * A new domain allocating the same slot may gain access to old key data.
+   * Even if overwritten later, there is a time window where stale data exists.
+
+3. **Confidentiality Violation**
+
+   * A lower-privilege or malicious domain may recover previously stored keys.
+
+4. **Cross-Domain Leakage**
+
+   * Because the module supports multiple security domains,
+     released resources are reused across trust boundaries.
+
+---
+
+### Vulnerability Pattern
+
+This matches the classic CWE-226 pattern:
+
+> A resource containing sensitive information is released without clearing the sensitive contents before reuse.
+
+In this design:
+
+* Resource: `key_slots[i]`
+* Sensitive data: cryptographic keys
+* Release action: `slot_allocated[i] <= 0`
+* Missing step: clearing `key_slots[i]`
+* Result: residual key data persists across security contexts
+
+---
+
+If you would like, I can also generate a variant in a different application domain (e.g., shared DMA controller or secure mailbox) with a structurally different CWE-226 manifestation.

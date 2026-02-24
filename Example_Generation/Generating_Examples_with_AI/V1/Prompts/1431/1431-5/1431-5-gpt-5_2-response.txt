@@ -1,0 +1,114 @@
+Below is a **self-contained, synthesizable Verilog module** that **intentionally introduces a CWE-1431 weakness** by driving **intermediate cryptographic state directly to an output** before the operation completes.
+
+---
+
+## 1. Complete Verilog Module (Intentionally Vulnerable)
+
+```verilog
+module leaky_crypto_core (
+    input              clk,
+    input              rst,
+    input              start,
+    input      [127:0]  data_i,
+    input      [127:0]  key_i,
+    output     [127:0]  data_o,
+    output             valid
+);
+
+    // Simple multi-round "encryption" parameters
+    localparam TOTAL_ROUNDS = 8;
+
+    reg [3:0]   round_q;
+    reg [127:0] state_q;
+    reg         valid_q;
+
+    // Sequential logic implementing a toy round-based cipher
+    always @(posedge clk) begin
+        if (rst) begin
+            round_q <= 4'd0;
+            state_q <= 128'd0;
+            valid_q <= 1'b0;
+        end else begin
+            if (start) begin
+                // Initialize encryption
+                round_q <= 4'd0;
+                state_q <= data_i ^ key_i;  // Initial mixing
+                valid_q <= 1'b0;
+            end else if (round_q < TOTAL_ROUNDS) begin
+                // Each round updates internal cryptographic state
+                round_q <= round_q + 1'b1;
+                state_q <= {state_q[126:0], state_q[127]} ^ key_i;
+                valid_q <= 1'b0;
+            end else begin
+                // Encryption complete
+                valid_q <= 1'b1;
+            end
+        end
+    end
+
+    // ============================================================
+    // CWE-1431 WEAKNESS:
+    // The intermediate cryptographic state is continuously driven
+    // to the output, even when valid_q is LOW.
+    // ============================================================
+    assign data_o = state_q;
+
+    assign valid  = valid_q;
+
+endmodule
+
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+This module implements a **simple, round-based cryptographic core** with the following behavior:
+
+- When `start` is asserted, the input data is mixed with the key using XOR.
+- The module then performs a fixed number of rounds (`TOTAL_ROUNDS`).
+- Each round rotates the internal state and XORs it with the key again.
+- After all rounds are completed, the `valid` signal is asserted to indicate completion.
+
+Internally, the module maintains a register (`state_q`) representing the **cryptographic state as it evolves across rounds**.
+
+---
+
+## 3. CWE-1431 Weakness Explanation
+
+### Where the weakness is introduced
+
+```verilog
+assign data_o = state_q;
+
+```
+
+### How the weakness manifests
+
+- `state_q` holds **intermediate cryptographic values** during the encryption process.
+- These values are **highly sensitive**, as they can reveal information about:
+    - The secret key
+    - The internal structure of the cipher
+- Despite this, `state_q` is **continuously driven to the module output (`data_o`)**, regardless of whether the encryption has completed.
+
+### Why this is CWE-1431
+
+This directly matches **CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs**:
+
+- Intermediate encryption data is observable **before `valid` is asserted**
+- An attacker monitoring `data_o` can capture partial round results
+- This leakage can enable cryptographic attacks such as:
+    - Key recovery
+    - Differential or side-channel analysis
+
+⚠️ **Important:**
+
+The weakness is **explicitly present in the logic** and is **not mitigated**. The output is *not* gated by `valid`, making this a clear and intentional vulnerability.
+
+---
+
+If you want, I can also:
+
+- Produce a **secure version for contrast**
+- Add **formal assertions** that detect this leakage
+- Map this example to **real-world crypto cores (AES-style pipelines)**

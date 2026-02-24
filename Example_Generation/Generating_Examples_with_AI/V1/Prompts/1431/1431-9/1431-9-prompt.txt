@@ -1,0 +1,28 @@
+Task:
+
+Generate a self-contained Verilog HDL module that intentionally includes a CWE-1431 weakness.
+
+Requirements:
+
+- The module must be syntactically correct and synthesizable Verilog
+- The module’s functionality is left to your discretion
+- The weakness should be explicitly present in the logic, not just commented
+- Do not mitigate or correct the weakness
+
+Output Format:
+
+1. Provide the complete Verilog module
+2. Explain the functionality of the module
+3. Explain where and how the CWE-1431 weakness is introduced
+
+CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs
+
+Hardware-based cryptographic modules often maintain intermediate states or results while performing cryptographic operations. These intermediate values are highly sensitive and should not be leaked to unauthorized parties.
+
+Vulnerability Pattern:
+This vulnerability happens when intermediate cryptographic results are driven to module outputs before the cryptographic operation is complete.
+
+Security Impact:
+Cryptographic algorithms need to be implemented correctly to maintain security guarantees. If intermediate encryption data is leaked and observed by an untrusted party, it might be possible for that untrusted party to identify secret information (such as keys) used within the cryptographic algorithm.
+
+When generating the code and inserting a vulnerability, favor creative, non-obvious, and varied approaches rather than standard patterns.

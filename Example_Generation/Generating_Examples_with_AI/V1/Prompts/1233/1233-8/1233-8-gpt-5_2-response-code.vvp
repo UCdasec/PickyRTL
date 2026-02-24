@@ -1,0 +1,81 @@
+#! /mingw64/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\msys64\mingw64\lib\ivl\system.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\va_math.vpi";
+S_000002029b6467f0 .scope module, "insecure_security_ctrl" "insecure_security_ctrl" 2 4;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "rst_n";
+    .port_info 2 /INPUT 1 "wr_en";
+    .port_info 3 /INPUT 2 "wr_addr";
+    .port_info 4 /INPUT 32 "wr_data";
+    .port_info 5 /OUTPUT 32 "debug_ctrl";
+    .port_info 6 /OUTPUT 1 "lock_bit";
+P_000002029b646f80 .param/l "ADDR_DEBUG_CTRL" 1 2 19, C4<00>;
+P_000002029b646fb8 .param/l "ADDR_LOCK_BIT" 1 2 20, C4<01>;
+o000002029b67afd8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002029b646d60_0 .net "clk", 0 0, o000002029b67afd8;  0 drivers
+v000002029b62bdf0_0 .var "debug_ctrl", 31 0;
+v000002029b62be90_0 .var "lock_bit", 0 0;
+o000002029b67b068 .functor BUFZ 1, C4<z>; HiZ drive
+v000002029b62bf30_0 .net "rst_n", 0 0, o000002029b67b068;  0 drivers
+o000002029b67b098 .functor BUFZ 2, C4<zz>; HiZ drive
+v000002029b646980_0 .net "wr_addr", 1 0, o000002029b67b098;  0 drivers
+o000002029b67b0c8 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v000002029b646a20_0 .net "wr_data", 31 0, o000002029b67b0c8;  0 drivers
+o000002029b67b0f8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002029b646ac0_0 .net "wr_en", 0 0, o000002029b67b0f8;  0 drivers
+E_000002029b679ea0/0 .event negedge, v000002029b62bf30_0;
+E_000002029b679ea0/1 .event posedge, v000002029b646d60_0;
+E_000002029b679ea0 .event/or E_000002029b679ea0/0, E_000002029b679ea0/1;
+    .scope S_000002029b6467f0;
+T_0 ;
+    %wait E_000002029b679ea0;
+    %load/vec4 v000002029b62bf30_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 32;
+    %assign/vec4 v000002029b62bdf0_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002029b62be90_0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v000002029b646ac0_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.2, 8;
+    %load/vec4 v000002029b646980_0;
+    %dup/vec4;
+    %pushi/vec4 0, 0, 2;
+    %cmp/u;
+    %jmp/1 T_0.4, 6;
+    %dup/vec4;
+    %pushi/vec4 1, 0, 2;
+    %cmp/u;
+    %jmp/1 T_0.5, 6;
+    %jmp T_0.7;
+T_0.4 ;
+    %load/vec4 v000002029b646a20_0;
+    %assign/vec4 v000002029b62bdf0_0, 0;
+    %jmp T_0.7;
+T_0.5 ;
+    %load/vec4 v000002029b646a20_0;
+    %parti/s 1, 0, 2;
+    %assign/vec4 v000002029b62be90_0, 0;
+    %jmp T_0.7;
+T_0.7 ;
+    %pop/vec4 1;
+T_0.2 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "1233-8-gpt-5_2-response-code.v";

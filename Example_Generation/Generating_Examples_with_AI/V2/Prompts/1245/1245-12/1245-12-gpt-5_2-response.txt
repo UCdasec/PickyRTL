@@ -1,0 +1,204 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally includes a CWE-1245 (Improper Finite State Machine)** weakness.
+The design models an **authentication / authorization controller** with realistic control flow, counters, and security-critical behavior.
+
+---
+
+## 1. Complete Verilog Module (Intentionally Vulnerable)
+
+```verilog
+module auth_controller_fsm (
+    input  wire        clk,
+    input  wire        rst_n,
+    input  wire        start_auth,
+    input  wire        password_ok,
+    input  wire        admin_request,
+    input  wire        timeout,
+
+    output reg         auth_granted,
+    output reg         admin_granted,
+    output reg         busy,
+    output reg         error_flag
+);
+
+    // ============================================================
+    // State encoding (3-bit FSM, but not all values safely handled)
+    // ============================================================
+    localparam ST_IDLE        = 3'b000;
+    localparam ST_COLLECT     = 3'b001;
+    localparam ST_VERIFY      = 3'b010;
+    localparam ST_USER_ACCESS = 3'b011;
+    localparam ST_ADMIN_CHECK = 3'b100;
+    localparam ST_ADMIN_ACCESS= 3'b101;
+    localparam ST_LOCKED      = 3'b110; // Deadlock state
+
+    reg [2:0] state;
+    reg [3:0] retry_counter;
+
+    // ============================================================
+    // Sequential FSM
+    // ============================================================
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state          <= ST_IDLE;
+            retry_counter  <= 4'd0;
+            auth_granted   <= 1'b0;
+            admin_granted  <= 1'b0;
+            busy           <= 1'b0;
+            error_flag     <= 1'b0;
+        end else begin
+            case (state)
+
+                ST_IDLE: begin
+                    auth_granted  <= 1'b0;
+                    admin_granted <= 1'b0;
+                    error_flag    <= 1'b0;
+                    busy          <= 1'b0;
+                    retry_counter <= 4'd0;
+
+                    if (start_auth) begin
+                        state <= ST_COLLECT;
+                        busy  <= 1'b1;
+                    end
+                end
+
+                ST_COLLECT: begin
+                    if (timeout) begin
+                        state <= ST_LOCKED;
+                    end else begin
+                        state <= ST_VERIFY;
+                    end
+                end
+
+                ST_VERIFY: begin
+                    if (password_ok) begin
+                        state <= ST_USER_ACCESS;
+                    end else begin
+                        retry_counter <= retry_counter + 1'b1;
+                        if (retry_counter >= 4'd3)
+                            state <= ST_LOCKED;
+                        else
+                            state <= ST_COLLECT;
+                    end
+                end
+
+                ST_USER_ACCESS: begin
+                    auth_granted <= 1'b1;
+                    if (admin_request)
+                        state <= ST_ADMIN_CHECK;
+                    else
+                        state <= ST_IDLE;
+                end
+
+                ST_ADMIN_CHECK: begin
+                    if (password_ok)
+                        state <= ST_ADMIN_ACCESS;
+                    else
+                        state <= ST_LOCKED;
+                end
+
+                ST_ADMIN_ACCESS: begin
+                    admin_granted <= 1'b1;
+                    state         <= ST_IDLE;
+                end
+
+                ST_LOCKED: begin
+                    // Deadlock: no transition out of ST_LOCKED
+                    error_flag <= 1'b1;
+                    busy       <= 1'b0;
+                end
+
+                // NOTE: No default case provided on purpose
+
+            endcase
+        end
+    end
+
+endmodule
+```
+
+---
+
+## 2. Functional Description
+
+This module implements a **security-critical authentication and authorization controller**:
+
+### Core Behavior
+
+* Users initiate authentication via `start_auth`
+* Password verification is checked using `password_ok`
+* Failed attempts are counted using an internal retry counter
+* Optional admin access requires an additional verification step
+* Outputs indicate authentication success, admin privileges, system busy state, or error conditions
+
+### FSM Characteristics
+
+* **7 distinct states** representing a realistic authentication workflow
+* **Security-critical control logic**
+* **Integrated counter** for retry limitation
+* **Conditional transitions** based on multiple inputs (`timeout`, `password_ok`, `admin_request`)
+* Controls access-granting signals directly
+
+---
+
+## 3. CWE-1245 Weakness Explanation (Improper FSM)
+
+This module **intentionally violates FSM safety principles** in multiple ways.
+
+### 🔴 1. Deadlock State (Primary Vulnerability)
+
+* `ST_LOCKED` has **no outgoing transitions**
+* Once entered, the FSM **can never recover**, even with reset-safe inputs
+* Results in **persistent denial of service**
+
+```verilog
+ST_LOCKED: begin
+    error_flag <= 1'b1;
+    busy       <= 1'b0;
+end
+```
+
+➡ An attacker can intentionally cause repeated failures or trigger `timeout` to permanently lock the system.
+
+---
+
+### 🔴 2. Incomplete State Coverage
+
+* FSM state register is **3 bits wide** (8 possible values)
+* Only **7 states are defined**
+* **No `default` case** in the `case (state)` statement
+
+```verilog
+// Missing default handler
+case (state)
+    ...
+endcase
+```
+
+➡ If the state register is corrupted (glitch, fault injection, scan manipulation), the FSM can enter an **undefined or unpredictable state**, bypassing security logic.
+
+---
+
+### 🔴 3. Security Impact
+
+This improper FSM design can be exploited to:
+
+* Cause permanent authentication lockout
+* Deny legitimate access indefinitely
+* Potentially bypass privilege logic via undefined state behavior
+* Create non-recoverable system failures in a security controller
+
+---
+
+### Summary of CWE-1245 Patterns Used
+
+| Vulnerability Type         | Present |
+| -------------------------- | ------- |
+| Deadlock state             | ✅       |
+| Incomplete state coverage  | ✅       |
+| Security-critical FSM      | ✅       |
+| Counter-driven transitions | ✅       |
+| Multi-condition logic      | ✅       |
+
+---
+
+If you want, I can generate **variants with unreachable states, hierarchical FSMs, or privilege escalation bugs** next.

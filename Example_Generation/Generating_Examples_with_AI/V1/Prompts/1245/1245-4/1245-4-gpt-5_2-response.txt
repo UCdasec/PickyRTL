@@ -1,0 +1,121 @@
+
+
+```verilog
+module insecure_fsm (
+input  wire        clk,
+input  wire        rst_n,
+input  wire [1:0]  cmd,
+output reg         grant
+);
+
+// 3-bit state register, but only some values are defined
+reg [2:0] state;
+
+// State encoding
+localparam IDLE  = 3'b000;
+localparam AUTH  = 3'b001;
+localparam GRANT = 3'b010;
+localparam DEAD  = 3'b011; // Deadlock state
+
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        state <= IDLE;
+    end else begin
+        case (state)
+            IDLE: begin
+                if (cmd == 2'b01)
+                    state <= AUTH;
+            end
+
+            AUTH: begin
+                if (cmd == 2'b10)
+                    state <= GRANT;
+                else if (cmd == 2'b11)
+                    state <= DEAD;
+            end
+
+            GRANT: begin
+                if (cmd == 2'b00)
+                    state <= IDLE;
+            end
+
+            DEAD: begin
+                // Deadlock: no transition out of this state
+                state <= DEAD;
+            end
+            // NOTE: No default case is intentionally provided
+        endcase
+    end
+end
+
+always @(*) begin
+    case (state)
+        GRANT: grant = 1'b1;
+        default: grant = 1'b0;
+    endcase
+end
+endmodule
+```
+
+IDLE: Waiting for an authentication request
+
+AUTH: Authentication in progress
+
+GRANT: Access granted (output grant = 1)
+
+DEAD: Terminal error state
+
+Behavior Summary
+A command (cmd) drives state transitions.
+
+When authentication succeeds, the FSM moves to GRANT.
+
+Certain inputs force the FSM into a terminal DEAD state.
+
+The grant output is asserted only while in the GRANT state.
+
+The module is fully synthesizable and compiles without errors.
+
+1. CWE-1245 Weakness Explanation (Improper FSM)
+This module intentionally contains multiple CWE-1245 vulnerability patterns:
+
+🔴 1. Deadlock State
+verilog
+Copy code
+DEAD: begin
+state <= DEAD;
+end
+Once the FSM enters the DEAD state, no input can transition it out.
+
+This creates a permanent deadlock, enabling a Denial of Service condition.
+
+🔴 2. Incomplete State Coverage
+The state register is 3 bits wide, allowing 8 possible values (000–111).
+
+Only 4 states are defined (000–011).
+
+There is no default case in the case (state) statement.
+
+verilog
+Copy code
+// Missing default branch (intentional)
+case (state)
+If the state register is corrupted (e.g., glitch, fault injection, or power instability) and takes on an undefined value (100–111), the FSM behavior becomes unpredictable and may stall indefinitely.
+
+🔴 Security Impact
+An attacker could exploit this FSM to:
+
+Force the system into a deadlock
+
+Cause Denial of Service
+
+Leave the system in an undefined or uncontrolled state
+
+Prevent access revocation or recovery
+
+✅ Intentional and Unmitigated
+The vulnerability is explicitly present in logic
+
+No mitigation (default states, recovery paths, or state validation) is included
+
+The module remains syntactically correct and synthesizable

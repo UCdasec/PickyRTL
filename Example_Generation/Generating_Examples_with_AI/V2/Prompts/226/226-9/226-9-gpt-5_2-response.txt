@@ -1,0 +1,257 @@
+## 1. Complete Verilog Module
+
+```verilog
+// Shared Cryptographic Accelerator with Intentional CWE-226 Weakness
+// Domain: Shared cryptographic accelerator
+// Weakness: Sensitive key material and intermediate results are not cleared
+//           when a context is released and later reallocated.
+
+module shared_crypto_accel #(
+    parameter DATA_WIDTH = 128,
+    parameter NUM_CONTEXTS = 4
+)(
+    input  wire                     clk,
+    input  wire                     rst_n,
+
+    // Allocation interface
+    input  wire                     alloc_req,
+    input  wire [1:0]               alloc_user_id,
+    output reg                      alloc_grant,
+    output reg  [1:0]               alloc_context_id,
+
+    // Crypto operation interface
+    input  wire                     start,
+    input  wire [1:0]               context_id,
+    input  wire [DATA_WIDTH-1:0]    key_in,
+    input  wire [DATA_WIDTH-1:0]    data_in,
+    input  wire                     release,
+
+    output reg                      done,
+    output reg  [DATA_WIDTH-1:0]    data_out,
+    output reg                      busy
+);
+
+    // ============================================================
+    // Resource Types:
+    // - key_storage      : stores sensitive keys per context
+    // - data_storage     : stores input data per context
+    // - result_storage   : stores intermediate results
+    // - owner_id         : tracks owning user
+    // - context_state    : FSM per context (IDLE, ALLOCATED, IN_USE)
+    // ============================================================
+
+    localparam STATE_IDLE      = 2'b00;
+    localparam STATE_ALLOCATED = 2'b01;
+    localparam STATE_IN_USE    = 2'b10;
+
+    reg [DATA_WIDTH-1:0] key_storage     [0:NUM_CONTEXTS-1];
+    reg [DATA_WIDTH-1:0] data_storage    [0:NUM_CONTEXTS-1];
+    reg [DATA_WIDTH-1:0] result_storage  [0:NUM_CONTEXTS-1];
+
+    reg [1:0] owner_id       [0:NUM_CONTEXTS-1];
+    reg [1:0] context_state  [0:NUM_CONTEXTS-1];
+
+    integer i;
+
+    // Allocation logic with simple priority arbitration
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            alloc_grant      <= 1'b0;
+            alloc_context_id <= 2'b00;
+            for (i = 0; i < NUM_CONTEXTS; i = i + 1) begin
+                context_state[i] <= STATE_IDLE;
+                owner_id[i]      <= 2'b00;
+            end
+        end else begin
+            alloc_grant <= 1'b0;
+
+            if (alloc_req) begin
+                for (i = 0; i < NUM_CONTEXTS; i = i + 1) begin
+                    if (context_state[i] == STATE_IDLE && !alloc_grant) begin
+                        context_state[i] <= STATE_ALLOCATED;
+                        owner_id[i]      <= alloc_user_id;
+                        alloc_context_id <= i[1:0];
+                        alloc_grant      <= 1'b1;
+                    end
+                end
+            end
+        end
+    end
+
+    // Crypto operation state handling
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            done <= 1'b0;
+            busy <= 1'b0;
+            data_out <= {DATA_WIDTH{1'b0}};
+        end else begin
+            done <= 1'b0;
+
+            // Start crypto operation
+            if (start && context_state[context_id] == STATE_ALLOCATED) begin
+                context_state[context_id] <= STATE_IN_USE;
+                busy <= 1'b1;
+
+                // Store sensitive key and data
+                key_storage[context_id]  <= key_in;
+                data_storage[context_id] <= data_in;
+
+                // Simple example "crypto" operation (XOR-based)
+                result_storage[context_id] <= key_in ^ data_in;
+            end
+
+            // Complete operation in next cycle
+            if (context_state[context_id] == STATE_IN_USE) begin
+                data_out <= result_storage[context_id];
+                done <= 1'b1;
+                busy <= 1'b0;
+                context_state[context_id] <= STATE_ALLOCATED;
+            end
+
+            // Release context (CWE-226 weakness: no clearing of key/data/result)
+            if (release && context_state[context_id] == STATE_ALLOCATED) begin
+                context_state[context_id] <= STATE_IDLE;
+
+                // Ownership removed
+                owner_id[context_id] <= 2'b00;
+
+                // INTENTIONAL CWE-226:
+                // key_storage, data_storage, and result_storage
+                // are NOT cleared here before context becomes IDLE.
+            end
+        end
+    end
+
+endmodule
+```
+
+---
+
+## 2. Module Functionality
+
+This module implements a **shared cryptographic accelerator** supporting multiple users through context allocation.
+
+### Key Features
+
+* **Parameterized design**
+
+  * `DATA_WIDTH` defines key/data width (default 128 bits).
+  * `NUM_CONTEXTS` defines number of parallel crypto contexts (default 4).
+
+* **Multiple resource types**
+
+  * `key_storage[]` – stores per-context secret keys.
+  * `data_storage[]` – stores plaintext/ciphertext data.
+  * `result_storage[]` – stores intermediate results.
+  * `owner_id[]` – tracks which user owns a context.
+  * `context_state[]` – FSM for lifecycle management.
+
+* **Multi-user architecture**
+
+  * Multiple users request contexts via `alloc_req`.
+  * Each context tracks its owning `alloc_user_id`.
+
+* **Resource allocation/deallocation logic**
+
+  * Contexts transition:
+
+    * `IDLE → ALLOCATED → IN_USE → ALLOCATED → IDLE`
+
+* **FSM for resource lifecycle**
+
+  * `STATE_IDLE`
+  * `STATE_ALLOCATED`
+  * `STATE_IN_USE`
+
+* **Priority arbitration**
+
+  * First available `STATE_IDLE` context is granted.
+
+* **Crypto operation**
+
+  * On `start`, the module:
+
+    * Stores `key_in` and `data_in`
+    * Performs a simple XOR-based "encryption"
+    * Stores result in `result_storage`
+  * On next cycle, `done` is asserted and result returned via `data_out`.
+
+* **Release**
+
+  * `release` returns a context from `ALLOCATED` to `IDLE`.
+
+---
+
+## 3. CWE-226 Weakness Explanation
+
+### CWE-226: Sensitive Information in Resource Not Removed Before Reuse
+
+#### Where the weakness occurs
+
+In this block:
+
+```verilog
+if (release && context_state[context_id] == STATE_ALLOCATED) begin
+    context_state[context_id] <= STATE_IDLE;
+    owner_id[context_id] <= 2'b00;
+
+    // INTENTIONAL CWE-226:
+    // key_storage, data_storage, and result_storage
+    // are NOT cleared here before context becomes IDLE.
+end
+```
+
+### What happens
+
+When a context is released:
+
+* `context_state` is set to `STATE_IDLE`
+* `owner_id` is cleared
+
+However:
+
+* `key_storage[context_id]` **still holds the previous user’s secret key**
+* `data_storage[context_id]` **still holds sensitive input data**
+* `result_storage[context_id]` **still holds cryptographic output**
+
+These registers are not overwritten or cleared before the context is made available for reallocation.
+
+---
+
+### How the vulnerability manifests
+
+1. User A:
+
+   * Allocates context 1
+   * Loads secret key `K_A`
+   * Performs encryption
+   * Releases context 1
+
+2. Context 1 becomes `STATE_IDLE`, but:
+
+   * `key_storage[1] = K_A` (still present in hardware)
+   * `result_storage[1]` still contains prior result
+
+3. User B:
+
+   * Allocates context 1
+   * Before writing a new key, or via unintended access paths,
+     residual values may be observable internally or through future operations.
+
+---
+
+### Security Impact
+
+* **Confidentiality violation**
+
+  * Secret keys from one user persist in hardware after release.
+* **Cross-tenant data leakage**
+
+  * A malicious user could intentionally reallocate contexts to extract residual data.
+* **Key recovery risk**
+
+  * If debug, scan chains, or fault injection are possible, previous key material may be recovered.
+
+---
+
+This module intentionally demonstrates a realistic, multi-context hardware design where sensitive cryptographic material is not cleared prior to resource reuse, directly modeling **CWE-226 in hardware systems**.

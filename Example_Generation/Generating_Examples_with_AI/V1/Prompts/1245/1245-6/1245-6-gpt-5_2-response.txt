@@ -1,0 +1,125 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally includes a CWE-1245 weakness (Improper FSM implementation)**.
+
+The weakness is **explicitly present in the logic** and **not mitigated**.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+module access_controller_fsm (
+    input  wire        clk,
+    input  wire        rst_n,
+    input  wire        req,        // request to access
+    input  wire        auth_ok,    // authentication result
+    input  wire        fault,      // injected fault condition
+    output reg         grant
+);
+
+    // FSM state encoding (3-bit state register)
+    reg [2:0] state;
+
+    localparam IDLE      = 3'b000;
+    localparam AUTH      = 3'b001;
+    localparam GRANTED   = 3'b010;
+    localparam LOCKED    = 3'b011;
+    localparam ERROR     = 3'b100;  // deadlock state
+    localparam UNUSED    = 3'b101;  // unreachable state
+
+    // State transition and output logic
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state <= IDLE;
+            grant <= 1'b0;
+        end else begin
+            case (state)
+                IDLE: begin
+                    grant <= 1'b0;
+                    if (req)
+                        state <= AUTH;
+                end
+
+                AUTH: begin
+                    if (fault)
+                        state <= ERROR;     // transition into deadlock state
+                    else if (auth_ok)
+                        state <= GRANTED;
+                    else
+                        state <= LOCKED;
+                end
+
+                GRANTED: begin
+                    grant <= 1'b1;
+                    if (!req)
+                        state <= IDLE;
+                end
+
+                LOCKED: begin
+                    grant <= 1'b0;
+                    if (!req)
+                        state <= IDLE;
+                end
+
+                ERROR: begin
+                    // Deadlock: no transition out of ERROR
+                    grant <= 1'b0;
+                end
+                // NOTE: No default case and UNUSED state is never handled
+            endcase
+        end
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Functionality Explanation
+
+This module implements a **simple access control finite state machine**:
+
+- **IDLE**: Waits for an access request (`req`)
+- **AUTH**: Evaluates authentication result (`auth_ok`)
+- **GRANTED**: Access is granted while the request remains active
+- **LOCKED**: Access denied until the request is removed
+- **ERROR**: Terminal failure state
+
+The `grant` output is asserted only in the **GRANTED** state.
+
+---
+
+## 3. CWE-1245 Weakness Explanation (Improper FSM Implementation)
+
+This FSM **intentionally violates safe FSM design principles**, introducing **CWE-1245** through multiple explicit flaws:
+
+### 🔴 1. Deadlock State
+
+- The **ERROR** state has **no outgoing transitions**
+- Once entered (via `fault` in AUTH), the FSM **can never recover**
+- This enables **Denial of Service** by permanently disabling access
+
+### 🔴 2. Unreachable State
+
+- The `UNUSED` state (`3'b101`) is **defined but never assigned**
+- This indicates **poor FSM completeness and validation**
+
+### 🔴 3. Incomplete State Coverage
+
+- The `case (state)` statement has **no `default` branch**
+- If the FSM enters an undefined state (e.g., due to bit corruption),
+    
+    behavior becomes unpredictable and uncontrolled
+    
+
+---
+
+### Security Impact
+
+An attacker or fault condition could:
+
+- Permanently lock the system in the ERROR state
+- Force undefined behavior through illegal state values
+- Cause denial of service or bypass expected control flow
+
+This is a **deliberate example of CWE-1245** and **must not be used in secure designs**.

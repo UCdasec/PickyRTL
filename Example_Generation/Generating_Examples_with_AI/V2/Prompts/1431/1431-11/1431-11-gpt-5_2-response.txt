@@ -1,0 +1,259 @@
+### 1. Complete Verilog Module (with CWE-1431 weakness intentionally included)
+
+```verilog
+module simple_spn_cipher_with_leakage #
+(
+    parameter DATA_WIDTH  = 128,
+    parameter KEY_WIDTH   = 128,
+    parameter NUM_ROUNDS  = 8
+)
+(
+    input                       clk,
+    input                       rst,
+    input                       start,
+    input      [DATA_WIDTH-1:0] plaintext_i,
+    input      [KEY_WIDTH-1:0]  key_i,
+    output reg [DATA_WIDTH-1:0] ciphertext_o,
+    output                      valid_o,
+    output                      busy_o,
+    // CWE-1431: Intermediate state exposed
+    output     [DATA_WIDTH-1:0] round_state_o
+);
+
+    //========================================================
+    // FSM State Encoding
+    //========================================================
+    localparam IDLE = 2'b00;
+    localparam LOAD = 2'b01;
+    localparam RUN  = 2'b10;
+    localparam DONE = 2'b11;
+
+    reg [1:0] state_q, state_d;
+
+    //========================================================
+    // Internal Registers
+    //========================================================
+    reg [DATA_WIDTH-1:0] state_q_reg, state_d_reg;
+    reg [KEY_WIDTH-1:0]  key_q_reg;
+    reg [$clog2(NUM_ROUNDS+1)-1:0] round_cnt_q, round_cnt_d;
+
+    //========================================================
+    // Simple Substitution Function (Nibble-wise inversion)
+    //========================================================
+    function [DATA_WIDTH-1:0] sub_bytes;
+        input [DATA_WIDTH-1:0] data_in;
+        integer i;
+        reg [DATA_WIDTH-1:0] tmp;
+        begin
+            for (i = 0; i < DATA_WIDTH; i = i + 4) begin
+                tmp[i +: 4] = ~data_in[i +: 4]; // simple invert S-box
+            end
+            sub_bytes = tmp;
+        end
+    endfunction
+
+    //========================================================
+    // Permutation (Rotate left by round index)
+    //========================================================
+    function [DATA_WIDTH-1:0] permute;
+        input [DATA_WIDTH-1:0] data_in;
+        input [$clog2(NUM_ROUNDS+1)-1:0] round;
+        begin
+            permute = (data_in << round) | (data_in >> (DATA_WIDTH - round));
+        end
+    endfunction
+
+    //========================================================
+    // Combinational Next-State Logic
+    //========================================================
+    always @(*) begin
+        state_d      = state_q;
+        state_d_reg  = state_q_reg;
+        round_cnt_d  = round_cnt_q;
+
+        case (state_q)
+            IDLE: begin
+                if (start)
+                    state_d = LOAD;
+            end
+
+            LOAD: begin
+                state_d_reg = plaintext_i ^ key_i; // initial whitening
+                round_cnt_d = 0;
+                state_d     = RUN;
+            end
+
+            RUN: begin
+                // Round transformation: Substitution + Permutation + Key mixing
+                state_d_reg = permute(sub_bytes(state_q_reg), round_cnt_q)
+                              ^ key_q_reg;
+
+                if (round_cnt_q == NUM_ROUNDS-1)
+                    state_d = DONE;
+
+                round_cnt_d = round_cnt_q + 1;
+            end
+
+            DONE: begin
+                state_d = IDLE;
+            end
+
+            default: state_d = IDLE;
+        endcase
+    end
+
+    //========================================================
+    // Sequential Logic
+    //========================================================
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            state_q      <= IDLE;
+            state_q_reg  <= {DATA_WIDTH{1'b0}};
+            key_q_reg    <= {KEY_WIDTH{1'b0}};
+            round_cnt_q  <= 0;
+            ciphertext_o <= {DATA_WIDTH{1'b0}};
+        end else begin
+            state_q      <= state_d;
+            state_q_reg  <= state_d_reg;
+            round_cnt_q  <= round_cnt_d;
+
+            if (state_q == LOAD)
+                key_q_reg <= key_i;
+
+            if (state_q == DONE)
+                ciphertext_o <= state_q_reg;
+        end
+    end
+
+    //========================================================
+    // Status Signals
+    //========================================================
+    assign busy_o  = (state_q == RUN);
+    assign valid_o = (state_q == DONE);
+
+    //========================================================
+    // CWE-1431 Vulnerability:
+    // Intermediate cryptographic state is directly exposed
+    //========================================================
+    assign round_state_o = state_q_reg;
+
+endmodule
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+This module implements a **parameterized substitution-permutation network (SPN) block cipher engine** with the following characteristics:
+
+### ✔ Cryptographic Operation
+
+A simple SPN-style block cipher including:
+
+* Initial key whitening (`plaintext_i ^ key_i`)
+* Multiple rounds (`NUM_ROUNDS` parameter)
+* Each round performs:
+
+  * **Substitution layer**: nibble-wise bit inversion (toy S-box)
+  * **Permutation layer**: rotate-left by round number
+  * **Key mixing**: XOR with stored key
+
+---
+
+### ✔ Design Complexity Elements Included
+
+This design intentionally incorporates multiple realistic hardware elements:
+
+1. **Parameterized Design**
+
+   * `DATA_WIDTH`
+   * `KEY_WIDTH`
+   * `NUM_ROUNDS`
+
+2. **State Machine Control**
+
+   * FSM with states: `IDLE`, `LOAD`, `RUN`, `DONE`
+
+3. **Round-Based Iterative Processing**
+
+   * Controlled by `round_cnt_q`
+   * Executes one round per clock cycle
+
+4. **Internal Temporary Storage**
+
+   * `state_q_reg` holds intermediate cipher state
+   * `key_q_reg` stores key
+   * `round_cnt_q` tracks progress
+
+5. **Status and Control Signaling**
+
+   * `start` input
+   * `busy_o`
+   * `valid_o`
+
+---
+
+## 3. CWE-1431 Weakness Explanation
+
+### CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs
+
+### Where the Vulnerability Is Introduced
+
+```verilog
+assign round_state_o = state_q_reg;
+```
+
+---
+
+### Why This Is a Vulnerability
+
+`state_q_reg` contains:
+
+* Initial whitened plaintext
+* Every intermediate round transformation result
+* Final ciphertext before completion
+
+During the `RUN` phase, `state_q_reg` holds **highly sensitive intermediate cryptographic state**.
+
+However, this internal register is:
+
+* Directly connected to a module output (`round_state_o`)
+* Continuously driven during all FSM states
+* Not gated by `valid_o`
+* Not masked or protected
+
+---
+
+### Security Impact
+
+An attacker observing `round_state_o` can:
+
+* Monitor round-by-round internal cipher evolution
+* Perform differential cryptanalysis
+* Potentially recover key material
+* Bypass intended cryptographic isolation
+
+This breaks the fundamental cryptographic requirement that intermediate state must remain internal and confidential.
+
+---
+
+### Why This Matches Standard CWE-1431 Pattern
+
+This follows the classic leakage pattern:
+
+| Secure Design                        | Vulnerable Design                       |
+| ------------------------------------ | --------------------------------------- |
+| Only final result exposed when valid | Intermediate state always exposed       |
+| Internal registers hidden            | Internal state directly wired to output |
+| Proper gating                        | No gating or masking                    |
+
+The weakness is:
+
+* Explicit in logic
+* Synthesizable
+* Not mitigated
+* Realistic in hardware implementation
+
+---
+
+If you would like, I can generate another variant using a different cryptographic primitive (e.g., SHA-256 core, Montgomery multiplier, stream cipher, etc.) with the same CWE-1431 class of weakness.

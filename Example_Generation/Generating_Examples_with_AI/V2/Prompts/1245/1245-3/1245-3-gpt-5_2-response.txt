@@ -1,0 +1,258 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally contains a CWE-1245 (Improper FSM) weakness**.
+The weakness is **explicitly implemented in logic** and **not mitigated**.
+
+---
+
+## 1) Complete Verilog Module
+
+```verilog
+// Authentication / Authorization Controller with Intentional FSM Weakness
+// Domain: Authentication/authorization system
+// NOTE: This module intentionally contains an improper FSM (CWE-1245)
+
+module auth_controller (
+    input  wire        clk,
+    input  wire        rst_n,
+
+    // External interface
+    input  wire        login_req,
+    input  wire        logout_req,
+    input  wire        cred_valid,
+    input  wire        admin_mode_req,
+    input  wire [7:0]  user_id,
+
+    output reg         auth_granted,
+    output reg         admin_granted,
+    output reg         session_active,
+    output reg  [3:0]  error_code
+);
+
+    // ------------------------------------------------------------
+    // Authentication FSM (security-critical)
+    // ------------------------------------------------------------
+    // 3-bit state register allows 8 encodings, but not all are covered
+    reg [2:0] auth_state;
+
+    localparam AUTH_IDLE        = 3'd0;
+    localparam AUTH_COLLECT     = 3'd1;
+    localparam AUTH_VERIFY      = 3'd2;
+    localparam AUTH_SUCCESS     = 3'd3;
+    localparam AUTH_FAIL        = 3'd4;
+    localparam AUTH_LOCKED      = 3'd5; // Deadlock state (intentional)
+    localparam AUTH_DEBUG       = 3'd6; // Unreachable state (intentional)
+
+    // Simple attempt counter
+    reg [2:0] attempt_cnt;
+
+    // ------------------------------------------------------------
+    // Session FSM (interacting FSM)
+    // ------------------------------------------------------------
+    reg [1:0] session_state;
+
+    localparam SES_IDLE     = 2'd0;
+    localparam SES_ACTIVE   = 2'd1;
+    localparam SES_ADMIN    = 2'd2;
+    localparam SES_EXPIRED  = 2'd3;
+
+    // Session timer
+    reg [7:0] session_timer;
+
+    // ------------------------------------------------------------
+    // Authentication FSM Logic
+    // ------------------------------------------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            auth_state    <= AUTH_IDLE;
+            attempt_cnt  <= 3'd0;
+            auth_granted <= 1'b0;
+            admin_granted<= 1'b0;
+            error_code   <= 4'd0;
+        end else begin
+            case (auth_state)
+
+                AUTH_IDLE: begin
+                    auth_granted  <= 1'b0;
+                    admin_granted <= 1'b0;
+                    if (login_req)
+                        auth_state <= AUTH_COLLECT;
+                end
+
+                AUTH_COLLECT: begin
+                    if (cred_valid)
+                        auth_state <= AUTH_VERIFY;
+                end
+
+                AUTH_VERIFY: begin
+                    if (cred_valid && user_id != 8'h00) begin
+                        auth_state   <= AUTH_SUCCESS;
+                        attempt_cnt <= 3'd0;
+                    end else begin
+                        auth_state   <= AUTH_FAIL;
+                        attempt_cnt <= attempt_cnt + 3'd1;
+                    end
+                end
+
+                AUTH_SUCCESS: begin
+                    auth_granted <= 1'b1;
+                    if (admin_mode_req)
+                        admin_granted <= 1'b1;
+                    auth_state <= AUTH_IDLE;
+                end
+
+                AUTH_FAIL: begin
+                    error_code <= 4'hF;
+                    if (attempt_cnt >= 3'd3)
+                        auth_state <= AUTH_LOCKED; // enters deadlock
+                    else
+                        auth_state <= AUTH_IDLE;
+                end
+
+                AUTH_LOCKED: begin
+                    // INTENTIONAL DEADLOCK:
+                    // No transition out of AUTH_LOCKED under any condition
+                    error_code <= 4'hA;
+                end
+
+                // AUTH_DEBUG is intentionally unreachable:
+                // No transition in the FSM ever assigns this state.
+
+            endcase
+        end
+    end
+
+    // ------------------------------------------------------------
+    // Session FSM Logic (dependent on authentication FSM)
+    // ------------------------------------------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            session_state  <= SES_IDLE;
+            session_timer <= 8'd0;
+            session_active<= 1'b0;
+        end else begin
+            case (session_state)
+
+                SES_IDLE: begin
+                    session_active <= 1'b0;
+                    if (auth_granted) begin
+                        session_state  <= SES_ACTIVE;
+                        session_timer <= 8'd100;
+                    end
+                end
+
+                SES_ACTIVE: begin
+                    session_active <= 1'b1;
+                    session_timer <= session_timer - 8'd1;
+                    if (admin_granted)
+                        session_state <= SES_ADMIN;
+                    else if (session_timer == 8'd0)
+                        session_state <= SES_EXPIRED;
+                end
+
+                SES_ADMIN: begin
+                    session_active <= 1'b1;
+                    if (logout_req)
+                        session_state <= SES_IDLE;
+                end
+
+                SES_EXPIRED: begin
+                    session_active <= 1'b0;
+                    if (login_req)
+                        session_state <= SES_IDLE;
+                end
+
+                // INTENTIONAL INCOMPLETE STATE COVERAGE:
+                // No default case provided.
+                // If session_state enters an illegal encoding, it will persist.
+
+            endcase
+        end
+    end
+
+endmodule
+```
+
+---
+
+## 2) Module Functionality Explanation
+
+This module models a **security-critical authentication and authorization controller** with **two interacting FSMs**:
+
+### Authentication FSM
+
+* Handles login attempts, credential verification, and access control
+* Tracks failed attempts and supports admin access
+* Controls `auth_granted` and `admin_granted`
+
+### Session FSM
+
+* Manages authenticated user sessions
+* Supports normal and admin sessions
+* Uses a timer to expire sessions
+* Depends on authentication FSM outputs
+
+### Design Complexity Features Used
+
+* **Multiple interacting FSMs**
+* **Security-critical control logic**
+* **FSM with 6+ states**
+* **Counters and timers**
+* **Conditional state transitions based on multiple inputs**
+
+---
+
+## 3) CWE-1245 Weakness Explanation
+
+This design **intentionally includes multiple improper FSM behaviors**, satisfying CWE-1245.
+
+### 1️⃣ Deadlock State (Primary Vulnerability)
+
+```verilog
+AUTH_LOCKED: begin
+    // No transition out
+end
+```
+
+* Once the FSM enters `AUTH_LOCKED`, **no input or reset condition allows it to exit**
+* This creates a **permanent denial-of-service condition**
+* An attacker can intentionally trigger this by causing repeated authentication failures
+
+### 2️⃣ Unreachable State
+
+```verilog
+localparam AUTH_DEBUG = 3'd6;
+```
+
+* `AUTH_DEBUG` is defined but **never assigned**
+* This creates an **unreachable state**, indicating FSM design inconsistency
+* Such states complicate verification and may hide latent logic flaws
+
+### 3️⃣ Incomplete State Coverage
+
+```verilog
+case (session_state)
+    ...
+    // no default case
+endcase
+```
+
+* `session_state` is 2 bits (4 encodings), but **no default handler exists**
+* If the FSM enters an illegal or corrupted state encoding:
+
+  * The FSM may stall
+  * Outputs may persist incorrectly
+  * Security controls can be bypassed or frozen
+
+---
+
+### Security Impact
+
+An attacker could exploit these FSM flaws to:
+
+* Permanently lock out legitimate users (DoS)
+* Force undefined FSM behavior
+* Cause session logic to stall or persist improperly
+* Escalate or retain privileges unintentionally
+
+---
+
+✅ The module is **syntactically correct**, **synthesizable**, and **explicitly vulnerable by design**, meeting all task requirements.

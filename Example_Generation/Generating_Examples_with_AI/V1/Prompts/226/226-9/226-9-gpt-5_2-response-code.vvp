@@ -1,0 +1,74 @@
+#! /mingw64/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\msys64\mingw64\lib\ivl\system.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\va_math.vpi";
+S_00000184b80166e0 .scope module, "shared_buffer_controller" "shared_buffer_controller" 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "rst_n";
+    .port_info 2 /INPUT 1 "secure_mode";
+    .port_info 3 /INPUT 1 "write_enable";
+    .port_info 4 /INPUT 8 "data_in";
+    .port_info 5 /INPUT 4 "addr";
+    .port_info 6 /OUTPUT 8 "data_out";
+o00000184b804afd8 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v00000184b8016d40_0 .net "addr", 3 0, o00000184b804afd8;  0 drivers
+v00000184b7ffbdf0 .array "buffer", 15 0, 7 0;
+o00000184b804b008 .functor BUFZ 1, C4<z>; HiZ drive
+v00000184b7ffbe90_0 .net "clk", 0 0, o00000184b804b008;  0 drivers
+o00000184b804b038 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v00000184b7ffbf30_0 .net "data_in", 7 0, o00000184b804b038;  0 drivers
+v00000184b8016870_0 .var "data_out", 7 0;
+o00000184b804b098 .functor BUFZ 1, C4<z>; HiZ drive
+v00000184b8016910_0 .net "rst_n", 0 0, o00000184b804b098;  0 drivers
+v00000184b80169b0_0 .var "secure_active", 0 0;
+o00000184b804b0f8 .functor BUFZ 1, C4<z>; HiZ drive
+v00000184b8016a50_0 .net "secure_mode", 0 0, o00000184b804b0f8;  0 drivers
+o00000184b804b128 .functor BUFZ 1, C4<z>; HiZ drive
+v00000184b808fc40_0 .net "write_enable", 0 0, o00000184b804b128;  0 drivers
+E_00000184b804a3d0/0 .event negedge, v00000184b8016910_0;
+E_00000184b804a3d0/1 .event posedge, v00000184b7ffbe90_0;
+E_00000184b804a3d0 .event/or E_00000184b804a3d0/0, E_00000184b804a3d0/1;
+    .scope S_00000184b80166e0;
+T_0 ;
+    %wait E_00000184b804a3d0;
+    %load/vec4 v00000184b8016910_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v00000184b80169b0_0, 0;
+    %pushi/vec4 0, 0, 8;
+    %assign/vec4 v00000184b8016870_0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v00000184b8016a50_0;
+    %assign/vec4 v00000184b80169b0_0, 0;
+    %load/vec4 v00000184b808fc40_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.2, 8;
+    %load/vec4 v00000184b7ffbf30_0;
+    %load/vec4 v00000184b8016d40_0;
+    %pad/u 6;
+    %ix/vec4 3;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v00000184b7ffbdf0, 0, 4;
+T_0.2 ;
+    %load/vec4 v00000184b8016d40_0;
+    %pad/u 6;
+    %ix/vec4 4;
+    %load/vec4a v00000184b7ffbdf0, 4;
+    %assign/vec4 v00000184b8016870_0, 0;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "226-9-gpt-5_2-response-code.v";

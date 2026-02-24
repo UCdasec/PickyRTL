@@ -1,0 +1,119 @@
+Below is an intentionally vulnerable, **syntactically correct and synthesizable Verilog HDL module** that contains a **CWE-1245: Improper Finite State Machine (FSM)** weakness.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+module access_controller_fsm (
+    input        clk,
+    input        rst_n,
+    input  [1:0] cmd,
+    output reg   access_granted
+);
+
+    // State encoding (3-bit state allows 8 possible values)
+    localparam IDLE        = 3'b000;
+    localparam CHECK       = 3'b001;
+    localparam GRANTED     = 3'b010;
+    localparam DENIED      = 3'b011;
+    localparam LOCKED      = 3'b100; // Deadlock state
+
+    reg [2:0] state;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state <= IDLE;
+        end else begin
+            case (state)
+                IDLE: begin
+                    if (cmd == 2'b01)
+                        state <= CHECK;
+                end
+
+                CHECK: begin
+                    if (cmd == 2'b10)
+                        state <= GRANTED;
+                    else if (cmd == 2'b11)
+                        state <= DENIED;
+                end
+
+                GRANTED: begin
+                    if (cmd == 2'b00)
+                        state <= IDLE;
+                end
+
+                DENIED: begin
+                    if (cmd == 2'b11)
+                        state <= LOCKED;
+                end
+
+                // NOTE: LOCKED state intentionally has no outgoing transitions
+
+            endcase
+        end
+    end
+
+    always @(*) begin
+        case (state)
+            GRANTED: access_granted = 1'b1;
+            default: access_granted = 1'b0;
+        endcase
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+This module implements a **simple access control FSM**:
+
+- **IDLE**: Waits for a request command.
+- **CHECK**: Evaluates the command to determine access.
+- **GRANTED**: Access is granted; can return to IDLE.
+- **DENIED**: Access is denied; repeated denial escalates.
+- **LOCKED**: Represents a locked system state.
+
+The `cmd` input simulates user or system commands that drive state transitions.
+
+The `access_granted` output is asserted only when the FSM is in the `GRANTED` state.
+
+---
+
+## 3. CWE-1245 Weakness Explanation (Improper FSM)
+
+This design **intentionally contains multiple CWE-1245 FSM flaws**:
+
+### 🔴 **Deadlock State**
+
+- The `LOCKED` state has **no outgoing transitions**.
+- Once entered, the FSM can **never recover**, even with reset deasserted.
+- This can be exploited to cause a **permanent Denial of Service**.
+
+### 🔴 **Incomplete State Coverage**
+
+- The state register is **3 bits wide**, allowing **8 possible values**.
+- Only **5 states are defined**.
+- There is **no `default` case** in the state transition logic.
+- If the FSM enters an undefined state (e.g., due to fault injection or metastability), behavior becomes unpredictable.
+
+### 🔴 **Unreachable State Values**
+
+- Some valid binary state values (e.g., `3'b101`, `3'b110`, `3'b111`) are **never reachable**, yet not handled.
+- This violates safe FSM design principles and increases exploitability.
+
+---
+
+### ⚠️ Security Impact
+
+An attacker or fault condition could:
+
+- Force the FSM into a deadlock (`LOCKED`)
+- Push the FSM into an undefined state
+- Permanently disable access recovery
+- Exploit undefined behavior to bypass or disrupt security logic
+
+This module **deliberately does not mitigate or correct** these weaknesses, as required.
