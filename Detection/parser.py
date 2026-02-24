@@ -81,7 +81,7 @@ def parse():
     """
     selected_path = file_selector(
         message="---Select a folder or file to parse---",
-        start_path=Path(__file__).parent.resolve() / "../Examples",
+        start_path=Path(__file__).parent.resolve() / "./Examples",
         file_extensions_allowed=['.v', '.sv']
     )
     

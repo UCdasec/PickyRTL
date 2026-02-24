@@ -12,14 +12,14 @@ setup_dependencies() {
     fi
 
     # Check if virtual environment exists
-    if [ -f 'venv/bin/activate' ]; then
+    if [ -f '.venv/bin/activate' ]; then
         echo "Virtual environment exists"
     else
         echo "Creating virtual environment"
-        python3 -m venv venv
+        python3 -m venv .venv
     fi
 
-    source venv/bin/activate
+    source .venv/bin/activate
 
     # Check if requirements are installed
     echo 'Checking if packages are installed...'
