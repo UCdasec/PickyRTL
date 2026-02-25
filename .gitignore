@@ -1,6 +1,14 @@
-Detection/__pycache__
+__pycache__/
 Detection/Results
 Detection/test.py
 Detection/register_matching_statistics.py
 .vscode/
 .venv/
+*.sqlite3
+
+# Ignore the following directories and files related to example generation
+Example_Generation/Insert_Into_Examples/unfiltered_files
+Example_Generation/Insert_Into_Examples/filtered_files
+Example_Generation/Insert_Into_Examples/categorized_files
+Example_Generation/Insert_Into_Examples/testing_insertion_with_ai
+Example_Generation/Insert_Into_Examples/test
