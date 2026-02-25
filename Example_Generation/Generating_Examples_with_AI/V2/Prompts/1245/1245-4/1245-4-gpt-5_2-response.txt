@@ -1,0 +1,263 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally includes a CWE-1245 improper FSM weakness**. The weakness is **explicitly present in the logic** and is **not mitigated**.
+
+---
+
+## 1) Complete Verilog Module
+
+```verilog
+module mem_access_ctrl_with_privilege (
+    input  wire        clk,
+    input  wire        rst_n,
+    input  wire        req_valid,
+    input  wire        req_write,
+    input  wire [1:0]  req_privilege,   // 00=user, 01=supervisor, 10=admin
+    input  wire [15:0] addr,
+
+    output reg         grant,
+    output reg         fault,
+    output reg         mem_read,
+    output reg         mem_write
+);
+
+    // -----------------------------
+    // Main access-control FSM
+    // -----------------------------
+    localparam [2:0]
+        ST_IDLE        = 3'd0,
+        ST_DECODE      = 3'd1,
+        ST_CHECK_PRIV  = 3'd2,
+        ST_AUTH        = 3'd3,
+        ST_ACCESS      = 3'd4,
+        ST_FAULT       = 3'd5,
+        ST_DEADLOCK    = 3'd6;  // Deadlock state (intentional)
+
+    reg [2:0] state;
+
+    // -----------------------------
+    // Secondary FSM: authentication
+    // -----------------------------
+    localparam [1:0]
+        AUTH_IDLE   = 2'd0,
+        AUTH_BUSY   = 2'd1,
+        AUTH_PASS   = 2'd2,
+        AUTH_FAIL   = 2'd3;
+
+    reg [1:0] auth_state;
+
+    // Simple authentication counter
+    reg [3:0] auth_counter;
+
+    // -----------------------------
+    // Main FSM sequential logic
+    // -----------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state     <= ST_IDLE;
+            grant     <= 1'b0;
+            fault     <= 1'b0;
+            mem_read  <= 1'b0;
+            mem_write <= 1'b0;
+        end else begin
+            case (state)
+                ST_IDLE: begin
+                    grant     <= 1'b0;
+                    fault     <= 1'b0;
+                    mem_read  <= 1'b0;
+                    mem_write <= 1'b0;
+                    if (req_valid)
+                        state <= ST_DECODE;
+                end
+
+                ST_DECODE: begin
+                    state <= ST_CHECK_PRIV;
+                end
+
+                ST_CHECK_PRIV: begin
+                    if (req_privilege == 2'b00 && addr[15:12] == 4'hF)
+                        state <= ST_FAULT;          // user accessing protected region
+                    else
+                        state <= ST_AUTH;
+                end
+
+                ST_AUTH: begin
+                    if (auth_state == AUTH_PASS)
+                        state <= ST_ACCESS;
+                    else if (auth_state == AUTH_FAIL)
+                        state <= ST_DEADLOCK;       // intentional deadlock transition
+                end
+
+                ST_ACCESS: begin
+                    grant <= 1'b1;
+                    if (req_write)
+                        mem_write <= 1'b1;
+                    else
+                        mem_read <= 1'b1;
+                    state <= ST_IDLE;
+                end
+
+                ST_FAULT: begin
+                    fault <= 1'b1;
+                    state <= ST_IDLE;
+                end
+
+                ST_DEADLOCK: begin
+                    // No outgoing transitions (intentional)
+                    grant     <= 1'b0;
+                    mem_read  <= 1'b0;
+                    mem_write <= 1'b0;
+                    fault     <= 1'b0;
+                end
+
+                // INTENTIONALLY MISSING:
+                // default: state <= ST_IDLE;
+                // This creates incomplete state coverage
+            endcase
+        end
+    end
+
+    // -----------------------------
+    // Authentication FSM
+    // -----------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            auth_state   <= AUTH_IDLE;
+            auth_counter <= 4'd0;
+        end else begin
+            case (auth_state)
+                AUTH_IDLE: begin
+                    auth_counter <= 4'd0;
+                    if (state == ST_AUTH)
+                        auth_state <= AUTH_BUSY;
+                end
+
+                AUTH_BUSY: begin
+                    auth_counter <= auth_counter + 1'b1;
+                    if (auth_counter == 4'd7) begin
+                        if (req_privilege == 2'b10)
+                            auth_state <= AUTH_PASS;
+                        else
+                            auth_state <= AUTH_FAIL;
+                    end
+                end
+
+                AUTH_PASS: begin
+                    auth_state <= AUTH_IDLE;
+                end
+
+                AUTH_FAIL: begin
+                    auth_state <= AUTH_IDLE;
+                end
+
+                // No default case (intentional)
+            endcase
+        end
+    end
+
+endmodule
+```
+
+---
+
+## 2) Module Functionality Explanation
+
+**Application Domain:**
+**Memory access controller with privilege levels**
+
+**High-level behavior:**
+
+* This module arbitrates memory read/write requests based on **request validity**, **address range**, and **privilege level**.
+* It contains **two interacting FSMs**:
+
+  1. **Main Access-Control FSM**
+     Handles request decoding, privilege checking, authentication, memory access, and fault handling.
+  2. **Authentication FSM**
+     Simulates a timed authentication process using a counter, approving only *admin-level* requests.
+
+**Operational flow:**
+
+1. **ST_IDLE** – Waits for a valid memory request.
+2. **ST_DECODE** – Prepares request interpretation.
+3. **ST_CHECK_PRIV** – Enforces basic privilege rules on protected memory.
+4. **ST_AUTH** – Coordinates with the authentication FSM.
+5. **ST_ACCESS** – Grants memory read or write access.
+6. **ST_FAULT** – Raises an access fault.
+7. **ST_DEADLOCK** – Terminal state with no recovery.
+
+The design integrates:
+
+* Multi-state FSMs (7-state primary FSM)
+* Multiple interacting FSMs
+* Counters/timers
+* Security-critical access control logic
+
+---
+
+## 3) CWE-1245 Weakness Explanation
+
+**CWE-1245: Improper Finite State Machine (FSM) Implementation**
+
+This module **intentionally violates FSM safety rules in multiple explicit ways**:
+
+---
+
+### 🔴 1. Deadlock State (Critical)
+
+```verilog
+ST_DEADLOCK: begin
+    // No outgoing transitions
+end
+```
+
+* The FSM **can enter `ST_DEADLOCK`** when authentication fails.
+* Once entered, **no transition logic exists to exit this state**.
+* The system becomes permanently unresponsive → **Denial of Service**.
+
+---
+
+### 🔴 2. Incomplete State Coverage
+
+```verilog
+case (state)
+    ...
+endcase
+```
+
+* **No `default:` case** is provided.
+* If `state` ever holds an undefined or corrupted value (e.g., due to glitching or fault injection), the FSM:
+
+  * Will not recover
+  * Will silently retain the invalid state
+
+This enables:
+
+* Undefined behavior
+* Privilege enforcement bypass
+* Persistent lockup conditions
+
+---
+
+### 🔴 3. Secondary FSM Also Lacks Default Coverage
+
+```verilog
+case (auth_state)
+    ...
+endcase
+```
+
+* The authentication FSM also lacks a `default` case.
+* This compounds the risk and increases unpredictability.
+
+---
+
+## ✅ Verification Checklist
+
+* ✔ Syntactically correct Verilog
+* ✔ Fully synthesizable
+* ✔ Weakness explicitly implemented in logic
+* ✔ No mitigation or correction applied
+* ✔ FSM flaws match CWE-1245 definitions
+* ✔ Meets complexity and domain requirements
+
+---
+
+If you want a **different application domain**, **a different CWE-1245 pattern** (e.g., unreachable states only, undefined encodings only), or a **more subtle exploit path**, just say the word.

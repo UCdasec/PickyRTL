@@ -1,0 +1,148 @@
+Below is an intentionally vulnerable, **self-contained and synthesizable Verilog HDL module** that demonstrates **CWE-1245: Improper Finite State Machine (FSM)** behavior.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+module access_fsm (
+    input  wire        clk,
+    input  wire        rst_n,
+    input  wire        request,
+    input  wire        auth_ok,
+    input  wire        force_error,
+    output reg         grant
+);
+
+    // 3-bit state register, but not all values are safely handled
+    reg [2:0] state;
+    reg [2:0] next_state;
+
+    // State encoding
+    localparam IDLE   = 3'b000;
+    localparam AUTH   = 3'b001;
+    localparam GRANT  = 3'b010;
+    localparam LOCKED = 3'b011;
+    localparam ERROR  = 3'b100;
+
+    // State register
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n)
+            state <= IDLE;
+        else
+            state <= next_state;
+    end
+
+    // Next-state logic (INTENTIONALLY IMPROPER)
+    always @(*) begin
+        case (state)
+            IDLE: begin
+                if (request)
+                    next_state = AUTH;
+                else
+                    next_state = IDLE;
+            end
+
+            AUTH: begin
+                if (auth_ok)
+                    next_state = GRANT;
+                else
+                    next_state = LOCKED;
+            end
+
+            GRANT: begin
+                if (force_error)
+                    next_state = ERROR;
+                else
+                    next_state = IDLE;
+            end
+
+            LOCKED: begin
+                // LOCKED state has only one exit condition
+                if (request && auth_ok)
+                    next_state = AUTH;
+                else
+                    next_state = LOCKED;
+            end
+
+            ERROR: begin
+                // DEADLOCK: once entered, no transition out
+                next_state = ERROR;
+            end
+
+            // No default case on purpose
+        endcase
+    end
+
+    // Output logic
+    always @(*) begin
+        case (state)
+            GRANT:  grant = 1'b1;
+            default: grant = 1'b0;
+        endcase
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Functionality Explanation
+
+This module implements a **simple access-control finite state machine**:
+
+- **IDLE**: Waiting for a request.
+- **AUTH**: Checking authentication.
+- **GRANT**: Access granted for one cycle.
+- **LOCKED**: Access denied; limited recovery possible.
+- **ERROR**: Fault condition.
+
+### Normal flow:
+
+1. The system starts in `IDLE`.
+2. A `request` moves it to `AUTH`.
+3. If `auth_ok` is asserted, access is `GRANT`ed.
+4. Otherwise, the FSM enters `LOCKED`.
+
+The `grant` output is asserted only when the FSM is in the `GRANT` state.
+
+---
+
+## 3. CWE-1245 Weakness Explanation (Improper FSM)
+
+This FSM **intentionally violates safe FSM design principles** in multiple ways:
+
+### 🔴 Deadlock State (Primary Vulnerability)
+
+- The `ERROR` state is a **deadlock state**:
+    
+    ```verilog
+    ERROR: begin
+        next_state = ERROR;
+    end
+    
+    ```
+    
+- Once entered, **no input or reset-independent logic allows exit**.
+- An attacker can force this state via `force_error`, causing a **persistent denial-of-service condition**.
+
+### 🔴 Incomplete State Coverage
+
+- The state register is **3 bits wide**, allowing 8 possible values.
+- Only **5 states are explicitly defined**, and there is **no `default` case** in the next-state logic.
+- If the FSM ever enters an undefined state (e.g., due to glitching, fault injection, or partial reset), behavior becomes **unpredictable**.
+
+### 🔴 Security Impact
+
+An attacker could:
+
+- Force the FSM into `ERROR` and permanently disable access
+- Exploit undefined states to bypass normal authentication flow
+- Trigger denial-of-service or undefined privilege behavior
+
+---
+
+✅ This module is **syntactically correct, synthesizable**, and
+
+❌ **intentionally vulnerable**, explicitly demonstrating **CWE-1245: Improper FSM Implementation**.

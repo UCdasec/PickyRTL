@@ -1,0 +1,113 @@
+Below is a **deliberately vulnerable** example that matches your requirements.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+// Deliberately vulnerable cryptographic module demonstrating CWE-1431
+// NOTE: This module intentionally leaks intermediate cryptographic state.
+
+module vulnerable_crypto_core (
+    input  wire        clk,
+    input  wire        reset_n,
+    input  wire        start,
+    input  wire [127:0] plaintext,
+    input  wire [127:0] key,
+    output reg  [127:0] ciphertext,
+    output reg          done,
+
+    // VULNERABLE OUTPUT: exposes intermediate cryptographic state
+    output reg  [127:0] round_state
+);
+
+    reg [2:0]   round;
+    reg [127:0] state;
+
+    // Simple iterative "encryption" rounds
+    always @(posedge clk) begin
+        if (!reset_n) begin
+            round       <= 3'd0;
+            state       <= 128'd0;
+            round_state <= 128'd0;
+            ciphertext  <= 128'd0;
+            done        <= 1'b0;
+        end else begin
+            if (start) begin
+                // Initialize encryption
+                round <= 3'd1;
+                state <= plaintext ^ key;
+                done  <= 1'b0;
+            end else if (round != 3'd0 && round < 3'd5) begin
+                // Perform simple round operation
+                state <= {state[126:0], state[127]} ^ (key >> round);
+                round <= round + 3'd1;
+            end else if (round == 3'd5) begin
+                // Finalize encryption
+                ciphertext <= state;
+                done       <= 1'b1;
+                round      <= 3'd0;
+            end
+
+            // INTENTIONAL WEAKNESS:
+            // Drive intermediate cryptographic state directly to an output
+            round_state <= state;
+        end
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+This module implements a **simple iterative encryption-like process**:
+
+- When `start` is asserted:
+    - The internal state is initialized using `plaintext ^ key`
+- Over several clock cycles:
+    - The state undergoes basic transformations (bit rotation and key mixing)
+- After completing all rounds:
+    - The final value is stored in `ciphertext`
+    - The `done` signal is asserted
+
+The design mimics a multi-round cryptographic core where encryption progresses incrementally over clock cycles.
+
+---
+
+## 3. CWE-1431 Weakness Explanation
+
+### Where the Weakness Occurs
+
+The vulnerability is introduced here:
+
+```verilog
+round_state <= state;
+
+```
+
+### How the Weakness Works
+
+- `state` holds **intermediate cryptographic values** during each encryption round
+- These values are **directly driven to the output port `round_state`**
+- This happens **before the cryptographic operation is complete**
+- An external observer can monitor `round_state` and capture:
+    - Partial encryption data
+    - Internal transformations
+    - Information correlated with the secret key
+
+### Why This Is CWE-1431
+
+This design violates cryptographic isolation principles by:
+
+- Exposing sensitive intermediate states
+- Allowing observation of round-by-round internal values
+- Enabling potential key recovery or cryptanalysis
+
+This exactly matches **CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs**, and the weakness is **explicitly present in active logic**, not merely documented or commented.
+
+---
+
+If you want a variant with a **different crypto style**, **bus-based leakage**, or **side-channel-friendly structure**, just say the word.

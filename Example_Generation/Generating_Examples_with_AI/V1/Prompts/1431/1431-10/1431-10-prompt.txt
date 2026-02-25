@@ -1,0 +1,142 @@
+Task:
+
+Generate a self-contained Verilog HDL module that intentionally includes a CWE-1431 weakness.
+
+Requirements:
+
+- The module must be syntactically correct and synthesizable Verilog
+- The module’s functionality is left to your discretion
+- The weakness should be explicitly present in the logic, not just commented
+- Do not mitigate or correct the weakness
+
+Output Format:
+
+1. Provide the complete Verilog module
+2. Explain the functionality of the module
+3. Explain where and how the CWE-1431 weakness is introduced
+
+CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs
+
+Hardware-based cryptographic modules often maintain intermediate states or results while performing cryptographic operations. These intermediate values are highly sensitive and should not be leaked to unauthorized parties.
+
+Vulnerability Pattern:
+This vulnerability happens when intermediate cryptographic results are driven to module outputs before the cryptographic operation is complete.
+
+Security Impact:
+Cryptographic algorithms need to be implemented correctly to maintain security guarantees. If intermediate encryption data is leaked and observed by an untrusted party, it might be possible for that untrusted party to identify secret information (such as keys) used within the cryptographic algorithm.
+
+- This code example shows code before inserting a CWE-1431 weakness:
+    
+    ```verilog
+    module crypto_core_with_leakage
+    (
+        input clk,
+        input rst,
+        input [127:0] data_i,
+        output [127:0] data_o,
+        output valid
+    );
+    
+    localparam int total_rounds = 10;
+    logic [3:0] round_id_q;
+    logic [127:0] data_state_q, data_state_d;
+    logic [127:0] key_state_q, key_state_d;
+    
+    crypto_algo_round u_algo_round (
+        .clk (clk),
+        .rst (rst),
+        .round_i (round_id_q ),
+        .key_i (key_state_q ),
+        .data_i (data_state_q),
+        .key_o (key_state_d ),
+        .data_o (data_state_d)
+    );
+    
+    always @(posedge clk) begin
+        if (rst) 
+        begin
+            data_state_q <= 0;
+            key_state_q <= 0;
+            round_id_q <= 0;
+        end
+        else 
+        begin
+            case (round_id_q)
+            total_rounds: 
+            begin
+                data_state_q <= 0;
+                key_state_q <= 0;
+                round_id_q <= 0;
+            end
+            default: 
+            begin
+                data_state_q <= data_state_d;
+                key_state_q <= key_state_d;
+                round_id_q <= round_id_q + 1;
+            end
+            endcase
+        end
+    end //always @(posedge clk)
+    
+    assign valid = (round_id_q == total_rounds) ? 1'b1 : 1'b0;
+    assign data_o = (valid) ? data_state_q : 0;
+    endmodule
+    ```
+    
+- This code example shows code after inserting a CWE-1431 weakness:
+    
+    ```verilog
+    module crypto_core_with_leakage
+    (
+        input clk,
+        input rst,
+        input [127:0] data_i,
+        output [127:0] data_o,
+        output valid
+    );
+    
+    localparam int total_rounds = 10;
+    logic [3:0] round_id_q;
+    logic [127:0] data_state_q, data_state_d;
+    logic [127:0] key_state_q, key_state_d;
+    
+    crypto_algo_round u_algo_round (
+        .clk (clk),
+        .rst (rst),
+        .round_i (round_id_q ),
+        .key_i (key_state_q ),
+        .data_i (data_state_q),
+        .key_o (key_state_d ),
+        .data_o (data_state_d)
+    );
+    
+    always @(posedge clk) begin
+        if (rst) 
+        begin
+            data_state_q <= 0;
+            key_state_q <= 0;
+            round_id_q <= 0;
+        end
+        else 
+        begin
+            case (round_id_q)
+            total_rounds: 
+            begin
+                data_state_q <= 0;
+                key_state_q <= 0;
+                round_id_q <= 0;
+            end
+            default: 
+            begin
+                data_state_q <= data_state_d;
+                key_state_q <= key_state_d;
+                round_id_q <= round_id_q + 1;
+            end
+            endcase
+        end
+    end //always @(posedge clk)
+    
+    assign valid = (round_id_q == total_rounds) ? 1'b1 : 1'b0;
+    assign data_o = data_state_q;
+    endmodule
+    ```

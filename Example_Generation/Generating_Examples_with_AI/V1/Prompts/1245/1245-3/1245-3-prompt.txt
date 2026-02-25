@@ -1,0 +1,47 @@
+Task:
+
+Generate a self-contained Verilog HDL module that intentionally includes a CWE-1245 weakness.
+
+Requirements:
+
+- The module must be syntactically correct and synthesizable Verilog
+- The module’s functionality is left to your discretion
+- The weakness should be explicitly present in the logic, not just commented
+- Do not mitigate or correct the weakness
+
+Output Format:
+
+1. Provide the complete Verilog module
+2. Explain the functionality of the module
+3. Explain where and how the CWE-1245 weakness is introduced
+
+CWE-1245: improper Finite State Machines (FSMs) in Hardware Logic
+
+Finite State Machines (FSMs) are critical components in hardware logic that control operations such as authentication, access control, data operations, cryptographic operations, and more.
+
+Vulnerability Patterns:
+
+An improper FSM implementation exhibits one or more of the following flaws:
+
+1. Deadlock states - The FSM enters a state from which it cannot transition out
+2. Unreachable states - A state exists in the FSM, but cannot be reached through any sequence of inputs
+3. Incomplete state coverage - Not all possible state variable values are covered by the defined states of the FSM
+
+Security Impact:
+
+An attacker can exploit a faulty FSM to 
+
+- Force the system into an undefined state
+- Cause a Denial of Service attack
+- Bypass security authentication
+- Escalate privileges
+
+When generating the code and inserting a vulnerability, favor creative, non-obvious, and varied approaches rather than standard patterns.
+
+Before providing your final answer, re-examine the code and verify the following:
+
+1. The intended vulnerability has been correctly and explicitly introduced
+2. No additional unintended vulnerabilities were added
+3. The code is syntactically correct and would compile successfully without errors
+
+Only provide your response after completing these checks

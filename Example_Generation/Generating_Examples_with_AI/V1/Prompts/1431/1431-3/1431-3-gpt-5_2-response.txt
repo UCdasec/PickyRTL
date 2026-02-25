@@ -1,0 +1,126 @@
+Below is a **deliberately vulnerable** example, crafted to clearly demonstrate **CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs**.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+// Deliberately vulnerable cryptographic module demonstrating CWE-1431
+// WARNING: This module intentionally leaks intermediate cryptographic state.
+
+module toy_cipher_with_leak (
+    input  wire        clk,
+    input  wire        rst_n,
+    input  wire        start,
+    input  wire [31:0] plaintext,
+    input  wire [31:0] key,
+    output reg  [31:0] ciphertext,
+    output reg         done,
+
+    // VULNERABLE OUTPUT:
+    // Exposes internal round state directly to an output pin
+    output reg  [31:0] round_state_out
+);
+
+    reg [31:0] state;
+    reg [2:0]  round;
+
+    // Simple combinational "round function"
+    function [31:0] round_func;
+        input [31:0] in;
+        input [31:0] k;
+        begin
+            // Simple mixing: rotate + XOR (toy, not real crypto)
+            round_func = {in[23:0], in[31:24]} ^ k;
+        end
+    endfunction
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state           <= 32'd0;
+            round           <= 3'd0;
+            ciphertext      <= 32'd0;
+            done            <= 1'b0;
+            round_state_out <= 32'd0;
+        end else begin
+            if (start) begin
+                // Initialize encryption
+                state      <= plaintext;
+                round      <= 3'd0;
+                done       <= 1'b0;
+            end else if (!done) begin
+                // Perform encryption rounds
+                state <= round_func(state, key ^ round);
+                round <= round + 1'b1;
+
+                // INTENTIONAL VULNERABILITY:
+                // Intermediate cryptographic state is driven to output
+                round_state_out <= state;
+
+                if (round == 3'd3) begin
+                    ciphertext <= state;
+                    done       <= 1'b1;
+                end
+            end
+        end
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+This module implements a **toy block cipher** with the following behavior:
+
+- Accepts a 32-bit `plaintext` and a 32-bit `key`
+- Performs a fixed number of simple encryption rounds (4 rounds)
+- Each round:
+    - Rotates the internal state
+    - XORs it with a round-dependent key
+- After the final round:
+    - Outputs the resulting `ciphertext`
+    - Asserts the `done` signal
+
+The design is synchronous, uses a clock and reset, and is fully synthesizable.
+
+---
+
+## 3. CWE-1431 Vulnerability Explanation
+
+### Where the Weakness Is Introduced
+
+The vulnerability is introduced in this line inside the encryption loop:
+
+```verilog
+round_state_out <= state;
+
+```
+
+### How the Weakness Works
+
+- `state` holds the **intermediate cryptographic value** after each encryption round.
+- Instead of keeping this value internal, the design **drives it directly to an output port (`round_state_out`)**.
+- This occurs **before the encryption operation is complete**, while `done` is still deasserted.
+
+### Why This Is CWE-1431
+
+CWE-1431 specifically describes situations where:
+
+> Intermediate cryptographic states or results are exposed through hardware outputs.
+> 
+
+In this module:
+
+- An external observer monitoring `round_state_out` can:
+    - Capture internal round values
+    - Correlate them with known plaintext or timing
+    - Potentially infer the secret key or algorithm behavior
+
+This leakage violates cryptographic isolation guarantees and would be a serious flaw in real hardware security designs.
+
+---
+
+✅ The vulnerability is **explicit**, **active in logic**, and **not mitigated**, satisfying all task requirements.

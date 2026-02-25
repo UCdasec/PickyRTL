@@ -1,0 +1,244 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally includes a CWE-1233 weakness** (missing lock-bit enforcement on security-sensitive registers).
+The design is realistic, moderately complex, and deliberately vulnerable as requested.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+//------------------------------------------------------------------------------
+// Debug and Test Interface Controller (INTENTIONALLY VULNERABLE)
+// Demonstrates CWE-1233: Security-Sensitive Hardware Controls with Missing
+// Lock Bit Protection
+//------------------------------------------------------------------------------
+
+module debug_ctrl #(
+    parameter ADDR_WIDTH = 8,
+    parameter DATA_WIDTH = 32
+)(
+    // Clock / Reset
+    input  wire                  clk,
+    input  wire                  rst_n,
+
+    // Simple APB-like register interface
+    input  wire                  psel,
+    input  wire                  penable,
+    input  wire                  pwrite,
+    input  wire [ADDR_WIDTH-1:0] paddr,
+    input  wire [DATA_WIDTH-1:0] pwdata,
+    output reg  [DATA_WIDTH-1:0] prdata,
+    output reg                   pready,
+
+    // Control outputs
+    output wire                  debug_enable_o,
+    output wire                  halt_req_o,
+    output wire                  irq_o
+);
+
+    //--------------------------------------------------------------------------
+    // Register Definitions
+    //--------------------------------------------------------------------------
+
+    // Configuration / control registers
+    reg [DATA_WIDTH-1:0] dbg_ctrl_reg;   // [0]=debug_enable, [1]=halt_req
+    reg [DATA_WIDTH-1:0] dbg_perm_reg;   // permission bits (secure/non-secure)
+    reg [DATA_WIDTH-1:0] dbg_key_reg;    // debug unlock key (security-sensitive)
+
+    // Status / mode registers
+    reg [DATA_WIDTH-1:0] dbg_status_reg; // status flags
+    reg [DATA_WIDTH-1:0] dbg_mode_reg;   // operational mode bits
+
+    // Lock register (INTENDED to protect sensitive registers)
+    reg                  dbg_lock_reg;   // 1 = locked, 0 = unlocked
+
+    // Datapath element
+    reg [7:0]             activity_cnt;
+
+    //--------------------------------------------------------------------------
+    // Address Map (word aligned)
+    //--------------------------------------------------------------------------
+    localparam ADDR_CTRL   = 8'h00;
+    localparam ADDR_PERM   = 8'h04;
+    localparam ADDR_KEY    = 8'h08;
+    localparam ADDR_STATUS = 8'h0C;
+    localparam ADDR_MODE   = 8'h10;
+    localparam ADDR_LOCK   = 8'h14;
+
+    //--------------------------------------------------------------------------
+    // Write Logic (INTENTIONALLY MISSING LOCK CHECK)
+    //--------------------------------------------------------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            dbg_ctrl_reg   <= {DATA_WIDTH{1'b0}};
+            dbg_perm_reg   <= {DATA_WIDTH{1'b0}};
+            dbg_key_reg    <= {DATA_WIDTH{1'b0}};
+            dbg_status_reg <= {DATA_WIDTH{1'b0}};
+            dbg_mode_reg   <= {DATA_WIDTH{1'b0}};
+            dbg_lock_reg   <= 1'b0;
+            activity_cnt   <= 8'h00;
+            pready         <= 1'b0;
+        end else begin
+            pready <= 1'b0;
+
+            // Simple activity counter
+            activity_cnt <= activity_cnt + 1'b1;
+            dbg_status_reg[7:0] <= activity_cnt;
+
+            if (psel && penable) begin
+                pready <= 1'b1;
+
+                if (pwrite) begin
+                    case (paddr)
+                        ADDR_CTRL: begin
+                            // SECURITY-SENSITIVE: debug enable & halt request
+                            dbg_ctrl_reg <= pwdata;
+                        end
+                        ADDR_PERM: begin
+                            // SECURITY-SENSITIVE: permission control
+                            dbg_perm_reg <= pwdata;
+                        end
+                        ADDR_KEY: begin
+                            // SECURITY-SENSITIVE: debug authentication key
+                            dbg_key_reg <= pwdata;
+                        end
+                        ADDR_MODE: begin
+                            dbg_mode_reg <= pwdata;
+                        end
+                        ADDR_LOCK: begin
+                            // Lock bit can be set, but is never enforced
+                            dbg_lock_reg <= pwdata[0];
+                        end
+                        default: ;
+                    endcase
+                end
+            end
+        end
+    end
+
+    //--------------------------------------------------------------------------
+    // Read Logic
+    //--------------------------------------------------------------------------
+    always @(*) begin
+        prdata = {DATA_WIDTH{1'b0}};
+        if (psel && !pwrite) begin
+            case (paddr)
+                ADDR_CTRL:   prdata = dbg_ctrl_reg;
+                ADDR_PERM:   prdata = dbg_perm_reg;
+                ADDR_KEY:    prdata = dbg_key_reg;
+                ADDR_STATUS: prdata = dbg_status_reg;
+                ADDR_MODE:   prdata = dbg_mode_reg;
+                ADDR_LOCK:   prdata = {{(DATA_WIDTH-1){1'b0}}, dbg_lock_reg};
+                default:     prdata = {DATA_WIDTH{1'b0}};
+            endcase
+        end
+    end
+
+    //--------------------------------------------------------------------------
+    // Outputs
+    //--------------------------------------------------------------------------
+    assign debug_enable_o = dbg_ctrl_reg[0];
+    assign halt_req_o     = dbg_ctrl_reg[1];
+
+    // Generate interrupt if debug enabled in a certain mode
+    assign irq_o = dbg_ctrl_reg[0] & dbg_mode_reg[0];
+
+endmodule
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+**Application Domain:**
+**Debug and Test Interface Controller**
+
+This module models a realistic debug control block typically found in SoCs. It exposes an APB-like register interface used to configure and control debug features.
+
+### Key Functional Elements
+
+* **Parameterized design**
+
+  * Configurable address and data widths (`ADDR_WIDTH`, `DATA_WIDTH`)
+
+* **Multi-register architecture**
+
+  * `dbg_ctrl_reg` – enables debug and halt requests
+  * `dbg_perm_reg` – controls debug access permissions
+  * `dbg_key_reg` – stores a debug authentication key
+  * `dbg_status_reg` – reports internal activity status
+  * `dbg_mode_reg` – selects operational modes
+  * `dbg_lock_reg` – intended to lock security-sensitive registers
+
+* **Multi-signal interface**
+
+  * APB-style signals: `psel`, `penable`, `pwrite`, `paddr`, `pwdata`, `prdata`
+
+* **State-dependent and datapath behavior**
+
+  * Activity counter feeds status register
+  * Interrupt generation depends on debug enable and mode bits
+
+* **Reset and initialization**
+
+  * All registers reset to known safe values
+
+---
+
+## 3. CWE-1233 Weakness Explanation
+
+### What CWE-1233 Is
+
+**Security-Sensitive Hardware Controls with Missing Lock Bit Protection**
+
+A lock bit is present but **not enforced**, allowing protected registers to be modified even after the system is supposedly locked.
+
+---
+
+### Where the Weakness Is Introduced
+
+The vulnerability exists in the **write logic** for these security-critical registers:
+
+* `dbg_ctrl_reg` (debug enable / halt control)
+* `dbg_perm_reg` (debug permissions)
+* `dbg_key_reg` (debug authentication key)
+
+Example (from the write logic):
+
+```verilog
+ADDR_KEY: begin
+    // SECURITY-SENSITIVE: debug authentication key
+    dbg_key_reg <= pwdata;
+end
+```
+
+---
+
+### Why This Is a CWE-1233 Violation
+
+* A lock register (`dbg_lock_reg`) **exists**
+* The lock bit **can be set**
+* **No write path checks `dbg_lock_reg`**
+* Even when locked, an attacker can still:
+
+  * Re-enable debug
+  * Change permissions
+  * Overwrite the debug authentication key
+
+This directly matches the CWE-1233 vulnerability pattern:
+
+> *“Hardware logic allows writes to security-critical registers without first checking the lock bit.”*
+
+---
+
+### Intentional Design Flaw
+
+⚠️ **This weakness is deliberate**
+No mitigation or correction is applied, exactly as required.
+
+---
+
+If you want, I can:
+
+* Generate another variant in a **different application domain**
+* Increase complexity (AXI-Lite, multi-cycle FSM, MPU-style regions)
+* Create a **paired “fixed” version** for comparison and training purposes

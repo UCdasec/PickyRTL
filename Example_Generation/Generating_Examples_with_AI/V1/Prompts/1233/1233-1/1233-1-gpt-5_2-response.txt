@@ -1,0 +1,128 @@
+Below is a **deliberately vulnerable** and **self-contained** Verilog HDL example that explicitly demonstrates **CWE-1233: Security-Sensitive Hardware Controls with Missing Lock Bit Protection**.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+module insecure_security_reg (
+    input  wire        clk,
+    input  wire        reset_n,
+
+    input  wire        write_en,
+    input  wire [1:0]  addr,
+    input  wire [31:0] write_data,
+
+    output reg  [31:0] security_key,
+    output reg         lock_bit
+);
+
+    // Address map
+    localparam ADDR_KEY  = 2'b00;
+    localparam ADDR_LOCK = 2'b01;
+
+    always @(posedge clk or negedge reset_n) begin
+        if (!reset_n) begin
+            security_key <= 32'h00000000;
+            lock_bit     <= 1'b0;
+        end else if (write_en) begin
+            case (addr)
+                ADDR_KEY: begin
+                    // SECURITY-SENSITIVE REGISTER
+                    // VulnerABILITY: write allowed regardless of lock_bit
+                    security_key <= write_data;
+                end
+
+                ADDR_LOCK: begin
+                    // Lock bit can be set by software
+                    lock_bit <= write_data[0];
+                end
+
+                default: begin
+                    // No action
+                end
+            endcase
+        end
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+This module implements a **simple memory-mapped register block** with:
+
+- A **security-sensitive register** (`security_key`) that could represent:
+    - a cryptographic key
+    - a debug enable mask
+    - a privileged configuration value
+- A **lock bit** (`lock_bit`) intended to protect the security register from further modification after configuration.
+
+### Interface behavior:
+
+- `write_en` enables register writes.
+- `addr` selects which register is written:
+    - `00` → `security_key`
+    - `01` → `lock_bit`
+- `write_data` provides the value to write.
+- `reset_n` clears all registers on reset.
+
+The design is fully synthesizable and uses standard synchronous logic.
+
+---
+
+## 3. CWE-1233 Weakness Explanation
+
+### Where the Weakness Occurs
+
+The vulnerability exists in this logic:
+
+```verilog
+ADDR_KEY: begin
+    security_key <= write_data;
+end
+
+```
+
+### How the Weakness Is Introduced
+
+- The module **defines a lock bit** (`lock_bit`) that is clearly intended to protect the `security_key`.
+- **However, the lock bit is never checked** when writing to `security_key`.
+- As a result:
+    - Even when `lock_bit == 1` (locked),
+    - Writes to the security-critical register are still allowed.
+
+### Why This Is CWE-1233
+
+CWE-1233 occurs when:
+
+> Security-sensitive hardware registers allow modification without enforcing lock-bit protection.
+> 
+
+Correct behavior would require logic such as:
+
+```verilog
+if (!lock_bit)
+    security_key <= write_data;
+
+```
+
+That check is **intentionally missing** in this design, allowing **unauthorized or unintended modification** of a protected register after lock.
+
+---
+
+### Summary
+
+- ✅ Vulnerability is **explicitly present in logic**
+- ✅ Lock bit exists but is **not enforced**
+- ✅ Module is **syntactically correct and synthesizable**
+- ❌ No mitigation or correction applied (by design)
+
+If you want, I can also provide:
+
+- A **secure version** for contrast
+- A **formal property** that would catch this flaw
+- A **testbench** that demonstrates the exploit behavior

@@ -1,0 +1,274 @@
+## 1. Complete Verilog Module (with Intentional CWE-226 Weakness)
+
+```verilog
+// ================================================================
+// Multi-Context DMA Controller (Intentionally Vulnerable - CWE-226)
+// Application Domain: Multi-context DMA controller
+// Weakness: Sensitive information in DMA descriptors not cleared
+//           before resource reuse.
+// ================================================================
+
+module multi_context_dma #(
+    parameter NUM_CHANNELS = 4,
+    parameter ADDR_WIDTH   = 32,
+    parameter LEN_WIDTH    = 16
+)(
+    input  wire                     clk,
+    input  wire                     rst_n,
+
+    // Channel request interface
+    input  wire [NUM_CHANNELS-1:0]  ch_req,
+    input  wire [ADDR_WIDTH-1:0]    ch_src_addr,
+    input  wire [ADDR_WIDTH-1:0]    ch_dst_addr,
+    input  wire [LEN_WIDTH-1:0]     ch_len,
+    input  wire [1:0]               ch_security_domain, // Security context
+
+    // Channel release interface
+    input  wire [NUM_CHANNELS-1:0]  ch_release,
+
+    // Status outputs
+    output reg  [NUM_CHANNELS-1:0]  ch_grant,
+    output reg  [NUM_CHANNELS-1:0]  ch_active,
+    output reg  [1:0]               error_code
+);
+
+    // ------------------------------------------------------------
+    // Resource Types:
+    // 1. Descriptor memory (arrays)
+    // 2. Ownership tracking registers
+    // 3. State registers (FSM)
+    // ------------------------------------------------------------
+
+    // DMA descriptor storage (sensitive information)
+    reg [ADDR_WIDTH-1:0] src_addr_mem [0:NUM_CHANNELS-1];
+    reg [ADDR_WIDTH-1:0] dst_addr_mem [0:NUM_CHANNELS-1];
+    reg [LEN_WIDTH-1:0]  len_mem      [0:NUM_CHANNELS-1];
+    reg [1:0]            owner_domain [0:NUM_CHANNELS-1];
+
+    // FSM states
+    localparam IDLE     = 2'd0;
+    localparam ALLOCATE = 2'd1;
+    localparam ACTIVE   = 2'd2;
+
+    reg [1:0] state [0:NUM_CHANNELS-1];
+
+    integer i;
+
+    // ------------------------------------------------------------
+    // Main Control Logic
+    // ------------------------------------------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            for (i = 0; i < NUM_CHANNELS; i = i + 1) begin
+                ch_grant[i]      <= 1'b0;
+                ch_active[i]     <= 1'b0;
+                state[i]         <= IDLE;
+
+                // NOTE: Descriptor memories are NOT cleared here
+                // They retain previous sensitive values after reset
+            end
+            error_code <= 2'b00;
+        end else begin
+            error_code <= 2'b00;
+
+            for (i = 0; i < NUM_CHANNELS; i = i + 1) begin
+                case (state[i])
+
+                    IDLE: begin
+                        ch_grant[i]  <= 1'b0;
+                        ch_active[i] <= 1'b0;
+
+                        if (ch_req[i]) begin
+                            // Allocate descriptor
+                            src_addr_mem[i] <= ch_src_addr;
+                            dst_addr_mem[i] <= ch_dst_addr;
+                            len_mem[i]      <= ch_len;
+                            owner_domain[i] <= ch_security_domain;
+
+                            ch_grant[i]     <= 1'b1;
+                            state[i]        <= ACTIVE;
+                        end
+                    end
+
+                    ACTIVE: begin
+                        ch_grant[i]  <= 1'b0;
+                        ch_active[i] <= 1'b1;
+
+                        if (ch_release[i]) begin
+                            // Release channel
+                            ch_active[i] <= 1'b0;
+                            state[i]     <= IDLE;
+
+                            // ==================================================
+                            // CWE-226 WEAKNESS:
+                            // Descriptor memory is NOT cleared upon release.
+                            // Sensitive source/destination addresses and length
+                            // remain in src_addr_mem, dst_addr_mem, len_mem,
+                            // and owner_domain registers.
+                            // ==================================================
+                        end
+                    end
+
+                    default: begin
+                        state[i] <= IDLE;
+                    end
+                endcase
+            end
+        end
+    end
+
+endmodule
+```
+
+---
+
+## 2. Module Functionality
+
+This module implements a **multi-context DMA controller** supporting multiple independent DMA channels.
+
+### Key Features Included
+
+✔ **Parameterized Design**
+
+* `NUM_CHANNELS`
+* `ADDR_WIDTH`
+* `LEN_WIDTH`
+
+✔ **Multiple Resource Types**
+
+* Descriptor memory arrays:
+
+  * `src_addr_mem`
+  * `dst_addr_mem`
+  * `len_mem`
+* Ownership tracking:
+
+  * `owner_domain`
+* State registers:
+
+  * `state[i]`
+
+✔ **Multi-Context Architecture**
+
+* Each channel has a `ch_security_domain`
+* Different security domains share the DMA engine
+
+✔ **Resource Allocation and Deallocation**
+
+* `ch_req[i]` allocates a descriptor
+* `ch_release[i]` releases it
+
+✔ **State Machine (FSM)**
+Each channel independently transitions:
+
+* `IDLE` → waiting for request
+* `ACTIVE` → DMA descriptor in use
+
+✔ **Handshaking**
+
+* `ch_req` → request
+* `ch_grant` → grant
+* `ch_release` → release
+* `ch_active` → status
+
+---
+
+## 3. CWE-226 Weakness Explanation
+
+### CWE-226: Sensitive Information in Resource Not Removed Before Reuse
+
+#### Where the Weakness Exists
+
+The vulnerability occurs in two places:
+
+### 1️⃣ On Channel Release
+
+Inside the `ACTIVE` state:
+
+```verilog
+if (ch_release[i]) begin
+    ch_active[i] <= 1'b0;
+    state[i]     <= IDLE;
+
+    // Descriptor memory NOT cleared
+end
+```
+
+When a DMA channel is released:
+
+* `src_addr_mem[i]`
+* `dst_addr_mem[i]`
+* `len_mem[i]`
+* `owner_domain[i]`
+
+**are NOT cleared.**
+
+These registers retain sensitive information such as:
+
+* Source addresses
+* Destination addresses
+* Transfer length
+* Security domain ownership
+
+---
+
+### 2️⃣ On Reset
+
+During reset:
+
+```verilog
+if (!rst_n) begin
+    ...
+    // Descriptor memories are NOT cleared here
+end
+```
+
+Descriptor memory arrays are not cleared on reset.
+
+Thus, sensitive information survives:
+
+* Channel release
+* System reset
+
+---
+
+## Why This Is a Real CWE-226 Scenario
+
+In a real multi-tenant DMA system:
+
+1. Channel 0 used by Security Domain A
+2. Channel 0 is released
+3. Channel 0 later allocated to Security Domain B
+
+Because the descriptor memory is not cleared:
+
+* Domain B may inherit stale descriptor data
+* Residual source/destination addresses remain in hardware
+* Confidential memory regions can be inferred or leaked
+
+This is a textbook example of:
+
+> Sensitive Information in Resource Not Removed Before Reuse
+
+---
+
+## Security Impact
+
+* Confidential address leakage
+* Cross-domain data exposure
+* Potential memory probing
+* Violation of isolation guarantees in multi-tenant systems
+
+---
+
+## Verification Checklist
+
+✔ The intended CWE-226 vulnerability is explicitly present
+✔ The weakness is in real logic (not comments only)
+✔ No unintended additional vulnerabilities were introduced
+✔ The code is synthesizable Verilog
+✔ FSM, parameterization, multi-context design, resource allocation, and tracking registers are included
+
+---
+
+If you would like, I can generate a secure (mitigated) version for comparison.

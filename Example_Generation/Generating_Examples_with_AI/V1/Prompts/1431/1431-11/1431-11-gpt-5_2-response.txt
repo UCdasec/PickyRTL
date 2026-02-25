@@ -1,0 +1,115 @@
+Below is a **self-contained, synthesizable Verilog module** that **intentionally includes a CWE-1431 weakness**. The design follows a very common and straightforward cryptographic-core pattern and deliberately leaks intermediate state to an output.
+
+---
+
+## 1. Complete Verilog Module (Intentionally Vulnerable)
+
+```verilog
+module simple_crypto_core_with_leakage (
+    input  wire        clk,
+    input  wire        rst,
+    input  wire        start,
+    input  wire [127:0] plaintext_i,
+    input  wire [127:0] key_i,
+    output wire [127:0] ciphertext_o,
+    output wire        valid_o
+);
+
+    // Total number of encryption rounds
+    localparam integer TOTAL_ROUNDS = 8;
+
+    reg [3:0]   round_ctr_q;
+    reg [127:0] state_q;
+    reg [127:0] key_q;
+
+    // Simple round function (toy crypto logic)
+    wire [127:0] state_next;
+    assign state_next = (state_q ^ key_q) + round_ctr_q;
+
+    // Sequential logic
+    always @(posedge clk) begin
+        if (rst) begin
+            round_ctr_q <= 0;
+            state_q     <= 0;
+            key_q       <= 0;
+        end else if (start) begin
+            round_ctr_q <= 0;
+            state_q     <= plaintext_i;
+            key_q       <= key_i;
+        end else if (round_ctr_q < TOTAL_ROUNDS) begin
+            state_q     <= state_next;
+            key_q       <= {key_q[126:0], key_q[127]}; // simple key rotation
+            round_ctr_q <= round_ctr_q + 1;
+        end
+    end
+
+    // Indicates completion of all rounds
+    assign valid_o = (round_ctr_q == TOTAL_ROUNDS);
+
+    // CWE-1431 WEAKNESS:
+    // Intermediate cryptographic state is directly driven to the output
+    assign ciphertext_o = state_q;
+
+endmodule
+
+```
+
+---
+
+## 2. Functional Explanation
+
+This module implements a **toy iterative cryptographic core** with the following behavior:
+
+- When `start` is asserted, the module:
+    - Loads the input plaintext into an internal state register
+    - Loads the key into a key register
+    - Resets the round counter
+- On each clock cycle:
+    - A simple “round function” is applied to the internal state
+        
+        (`state_q ^ key_q + round_ctr_q`)
+        
+    - The key is rotated
+    - The round counter increments
+- After `TOTAL_ROUNDS` iterations:
+    - `valid_o` is asserted to indicate completion
+    - The final encrypted result remains in `state_q`
+
+The module is fully synthesizable and uses only basic sequential and combinational logic.
+
+---
+
+## 3. CWE-1431 Weakness Explanation
+
+### **Where the Weakness Is Introduced**
+
+```verilog
+assign ciphertext_o = state_q;
+
+```
+
+### **Why This Is a CWE-1431 Vulnerability**
+
+- `state_q` holds **intermediate cryptographic state** during each encryption round.
+- This state is **directly connected to an output port** (`ciphertext_o`).
+- As a result, **partial encryption results are visible externally** on every clock cycle, not just after the final round.
+
+### **Security Impact**
+
+An attacker observing `ciphertext_o` over time can:
+
+- Capture intermediate encryption values
+- Perform differential or side-channel analysis
+- Potentially recover secret information such as the encryption key
+
+This directly violates cryptographic isolation principles and matches **CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs**.
+
+---
+
+If you want, I can also:
+
+- Create a **paired “fixed” version** for comparison
+- Modify this to resemble **AES-style round control**
+- Annotate the code for **static analysis or training datasets**
+
+Just say the word.

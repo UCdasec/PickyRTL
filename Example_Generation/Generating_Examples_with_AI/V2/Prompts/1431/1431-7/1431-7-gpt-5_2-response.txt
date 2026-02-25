@@ -1,0 +1,287 @@
+## 1. Complete Verilog Module
+
+```verilog
+module simple_spn_cipher #(
+    parameter DATA_WIDTH  = 32,
+    parameter KEY_WIDTH   = 32,
+    parameter NUM_ROUNDS  = 4
+)(
+    input  wire                     clk,
+    input  wire                     rst_n,
+    input  wire                     start,
+    input  wire [DATA_WIDTH-1:0]    plaintext,
+    input  wire [KEY_WIDTH-1:0]     key,
+    output reg  [DATA_WIDTH-1:0]    ciphertext,
+    output reg                      done,
+    output reg                      busy,
+    // CWE-1431 weakness: intermediate round state exposed
+    output reg  [DATA_WIDTH-1:0]    round_state_out
+);
+
+    // FSM states
+    localparam IDLE  = 2'd0;
+    localparam LOAD  = 2'd1;
+    localparam ROUND = 2'd2;
+    localparam DONE  = 2'd3;
+
+    reg [1:0] state, next_state;
+
+    // Internal registers
+    reg [DATA_WIDTH-1:0] state_reg;
+    reg [DATA_WIDTH-1:0] next_state_reg;
+    reg [KEY_WIDTH-1:0]  round_key;
+    reg [3:0]            round_counter;
+
+    // -----------------------------
+    // Simple S-box (4-bit nibble substitution)
+    // -----------------------------
+    function [3:0] sbox;
+        input [3:0] in;
+        begin
+            case (in)
+                4'h0: sbox = 4'hE;
+                4'h1: sbox = 4'h4;
+                4'h2: sbox = 4'hD;
+                4'h3: sbox = 4'h1;
+                4'h4: sbox = 4'h2;
+                4'h5: sbox = 4'hF;
+                4'h6: sbox = 4'hB;
+                4'h7: sbox = 4'h8;
+                4'h8: sbox = 4'h3;
+                4'h9: sbox = 4'hA;
+                4'hA: sbox = 4'h6;
+                4'hB: sbox = 4'hC;
+                4'hC: sbox = 4'h5;
+                4'hD: sbox = 4'h9;
+                4'hE: sbox = 4'h0;
+                4'hF: sbox = 4'h7;
+                default: sbox = 4'h0;
+            endcase
+        end
+    endfunction
+
+    // -----------------------------
+    // Substitution layer
+    // -----------------------------
+    function [DATA_WIDTH-1:0] sub_layer;
+        input [DATA_WIDTH-1:0] in;
+        integer i;
+        begin
+            for (i = 0; i < DATA_WIDTH/4; i = i + 1) begin
+                sub_layer[i*4 +: 4] = sbox(in[i*4 +: 4]);
+            end
+        end
+    endfunction
+
+    // -----------------------------
+    // Permutation layer (simple bit rotation)
+    // -----------------------------
+    function [DATA_WIDTH-1:0] perm_layer;
+        input [DATA_WIDTH-1:0] in;
+        begin
+            perm_layer = {in[DATA_WIDTH-2:0], in[DATA_WIDTH-1]};
+        end
+    endfunction
+
+    // -----------------------------
+    // Round key generation (simple rotation of master key)
+    // -----------------------------
+    function [KEY_WIDTH-1:0] gen_round_key;
+        input [KEY_WIDTH-1:0] master_key;
+        input [3:0]           round;
+        begin
+            gen_round_key = (master_key << round) | (master_key >> (KEY_WIDTH - round));
+        end
+    endfunction
+
+    // -----------------------------
+    // FSM sequential logic
+    // -----------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state         <= IDLE;
+            state_reg     <= {DATA_WIDTH{1'b0}};
+            round_counter <= 4'd0;
+            ciphertext    <= {DATA_WIDTH{1'b0}};
+            done          <= 1'b0;
+            busy          <= 1'b0;
+            round_state_out <= {DATA_WIDTH{1'b0}};
+        end else begin
+            state <= next_state;
+
+            case (state)
+                IDLE: begin
+                    done <= 1'b0;
+                    busy <= 1'b0;
+                end
+
+                LOAD: begin
+                    state_reg     <= plaintext ^ key; // initial whitening
+                    round_counter <= 4'd0;
+                    busy          <= 1'b1;
+                end
+
+                ROUND: begin
+                    state_reg     <= next_state_reg;
+                    round_counter <= round_counter + 1;
+                end
+
+                DONE: begin
+                    ciphertext <= state_reg;
+                    done       <= 1'b1;
+                    busy       <= 1'b0;
+                end
+            endcase
+
+            // CWE-1431 weakness:
+            // Intermediate cryptographic state is continuously driven to output
+            round_state_out <= state_reg;
+        end
+    end
+
+    // -----------------------------
+    // FSM combinational logic
+    // -----------------------------
+    always @(*) begin
+        next_state = state;
+        next_state_reg = state_reg;
+        round_key = gen_round_key(key, round_counter);
+
+        case (state)
+            IDLE: begin
+                if (start)
+                    next_state = LOAD;
+            end
+
+            LOAD: begin
+                next_state = ROUND;
+            end
+
+            ROUND: begin
+                // Round processing:
+                // 1. Substitution
+                // 2. Permutation
+                // 3. Add round key
+                next_state_reg = perm_layer(sub_layer(state_reg)) ^ round_key;
+
+                if (round_counter == NUM_ROUNDS - 1)
+                    next_state = DONE;
+            end
+
+            DONE: begin
+                if (!start)
+                    next_state = IDLE;
+            end
+        endcase
+    end
+
+endmodule
+```
+
+---
+
+## 2. Module Functionality
+
+This module implements a **parameterized substitution-permutation network (SPN) block cipher engine** with the following characteristics:
+
+### Design Elements Included
+
+* **Parameterized design**
+
+  * `DATA_WIDTH`, `KEY_WIDTH`, and `NUM_ROUNDS` are configurable.
+* **State machine control (FSM)**
+
+  * States: `IDLE`, `LOAD`, `ROUND`, `DONE`.
+* **Round-based iterative processing**
+
+  * Encryption proceeds over `NUM_ROUNDS` cycles.
+* **Internal temporary storage**
+
+  * `state_reg` holds intermediate round values.
+* **Bit-level manipulation**
+
+  * 4-bit S-box substitution.
+  * Bit rotation permutation.
+  * XOR-based key mixing.
+* **Status and control signaling**
+
+  * `start`, `busy`, and `done`.
+
+### Operational Flow
+
+1. **IDLE**
+
+   * Waits for `start`.
+2. **LOAD**
+
+   * Performs initial whitening:
+
+     ```
+     state_reg = plaintext ^ key
+     ```
+3. **ROUND**
+
+   * For each round:
+
+     * Apply S-box substitution to each nibble.
+     * Apply 1-bit left rotation permutation.
+     * XOR with generated round key.
+4. **DONE**
+
+   * Final state is assigned to `ciphertext`.
+   * `done` asserted.
+
+---
+
+## 3. CWE-1431 Weakness Explanation
+
+### CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs
+
+### Where the Weakness Is Introduced
+
+The vulnerability is explicitly implemented here:
+
+```verilog
+// CWE-1431 weakness:
+// Intermediate cryptographic state is continuously driven to output
+round_state_out <= state_reg;
+```
+
+This assignment occurs in the sequential logic and continuously exposes:
+
+* The internal round state
+* The state after initial whitening
+* Every intermediate round result
+* The final state (ciphertext)
+
+### Why This Is a Vulnerability
+
+During encryption:
+
+* `state_reg` contains highly sensitive intermediate values.
+* These values depend directly on:
+
+  * The secret key
+  * The plaintext
+  * Round transformations
+
+By exposing `state_reg` through `round_state_out`:
+
+* An external observer can monitor every round’s internal state.
+* Differential or linear cryptanalysis becomes significantly easier.
+* Secret key material may be inferred through side-channel or algebraic analysis.
+
+### Security Impact
+
+An attacker observing `round_state_out` can:
+
+* Recover round keys.
+* Reverse engineer S-box behavior with known plaintexts.
+* Reduce brute-force complexity.
+* Break confidentiality guarantees of the cipher.
+
+This directly matches **CWE-1431** because:
+
+> Intermediate cryptographic state is driven to module outputs before cryptographic operation completion.
+
+The module intentionally does **not** mitigate this leakage.

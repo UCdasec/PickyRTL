@@ -1,0 +1,173 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally includes a CWE-1245 Improper Finite State Machine (FSM) weakness**.
+
+The weakness is explicitly present in the logic and is **not mitigated or corrected**.
+
+
+## 1. Complete Verilog Module
+
+```verilog
+module insecure_access_fsm (
+    input  wire        clk,
+    input  wire        reset_n,
+    input  wire        start_auth,
+    input  wire        auth_ok,
+    input  wire        lock,
+    output reg         access_granted
+);
+
+    // 3-bit state register (allows 8 possible states)
+    reg [2:0] state;
+    reg [2:0] next_state;
+
+    // State encoding
+    localparam IDLE      = 3'd0;
+    localparam AUTH      = 3'd1;
+    localparam GRANTED   = 3'd2;
+    localparam LOCKED    = 3'd3;
+    localparam DEADLOCK  = 3'd4;
+    localparam UNUSED    = 3'd5; // Unreachable state
+
+    // State register
+    always @(posedge clk or negedge reset_n) begin
+        if (!reset_n)
+            state <= IDLE;
+        else
+            state <= next_state;
+    end
+
+    // Next-state logic (INTENTIONALLY IMPROPER FSM)
+    always @(*) begin
+        // Default behavior: remain in current state
+        next_state = state;
+
+        case (state)
+            IDLE: begin
+                if (start_auth)
+                    next_state = AUTH;
+            end
+
+            AUTH: begin
+                if (auth_ok)
+                    next_state = GRANTED;
+                else
+                    next_state = DEADLOCK; // Failed auth leads to deadlock
+            end
+
+            GRANTED: begin
+                if (lock)
+                    next_state = LOCKED;
+            end
+
+            LOCKED: begin
+                // No transition defined back to IDLE or AUTH
+                // System is effectively stuck unless reset
+                next_state = LOCKED;
+            end
+
+            DEADLOCK: begin
+                // Deadlock state: no exit transitions
+                next_state = DEADLOCK;
+            end
+
+            // UNUSED state is intentionally not transitioned to
+            // No default case provided (incomplete state coverage)
+        endcase
+    end
+
+    // Output logic
+    always @(*) begin
+        case (state)
+            GRANTED:
+                access_granted = 1'b1;
+            default:
+                access_granted = 1'b0;
+        endcase
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+This module implements a **simple access control FSM**:
+
+- **IDLE**: Waiting for authentication to start
+- **AUTH**: Authentication in progress
+- **GRANTED**: Access granted
+- **LOCKED**: Access locked
+- **DEADLOCK**: Terminal error state
+
+### Intended Operation
+
+1. The system starts in `IDLE`
+2. `start_auth` moves the FSM to `AUTH`
+3. If `auth_ok` is asserted, access is granted
+4. If authentication fails, the FSM transitions to a permanent deadlock
+5. Once locked or deadlocked, the system cannot recover without reset
+
+The output `access_granted` is asserted only when the FSM is in the `GRANTED` state.
+
+---
+
+## 3. CWE-1245 Weakness Explanation
+
+**Improper Finite State Machine (FSM) in Hardware Logic**
+
+This module intentionally violates FSM safety principles in **multiple explicit ways**:
+
+---
+
+### 🔴 1. Deadlock State (Critical CWE-1245 Pattern)
+
+```verilog
+DEADLOCK: begin
+    next_state = DEADLOCK;
+end
+
+```
+
+- Once entered, **no transition exists** to escape this state
+- An attacker can force a **permanent Denial of Service**
+- Recovery is only possible via reset
+
+---
+
+### 🔴 2. Unreachable State
+
+```verilog
+localparam UNUSED = 3'd5;
+
+```
+
+- `UNUSED` is defined but **never transitioned to**
+- Indicates poor FSM design and unused logic paths
+- This is an explicit unreachable state vulnerability
+
+---
+
+### 🔴 3. Incomplete State Coverage
+
+- The state register is **3 bits wide**, allowing **8 possible states**
+- Only states `0–5` are partially handled
+- **States `6` and `7` are not handled at all**
+- No `default:` clause exists in the FSM `case` statement
+
+This allows:
+
+- Entry into undefined or unintended states
+- State persistence without validation
+- Potential attacker-controlled behavior through fault injection or glitching
+
+---
+
+## ✔ Verification Checklist
+
+- ✅ CWE-1245 vulnerability explicitly present
+- ✅ Deadlock and unreachable states intentionally implemented
+- ✅ FSM has incomplete state coverage
+- ✅ No mitigation or correction applied
+- ✅ Syntactically correct, synthesizable Verilog
+- ✅ Single, self-contained module

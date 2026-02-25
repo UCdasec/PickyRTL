@@ -1,0 +1,256 @@
+## 1. Complete Verilog Module (With Intentional CWE-226 Weakness)
+
+```verilog
+// ================================================================
+// Shared Cryptographic Accelerator with Key Slot Management
+// Intentionally vulnerable to CWE-226:
+// Sensitive Information in Resource Not Removed Before Reuse
+// ================================================================
+
+module shared_crypto_accel #(
+    parameter NUM_SLOTS  = 4,      // Number of key slots (multi-user support)
+    parameter DATA_WIDTH = 128,    // Key and data width
+    parameter USER_WIDTH = 2       // User ID width
+)(
+    input  wire                     clk,
+    input  wire                     rst_n,
+
+    // Request interface
+    input  wire                     req_valid,
+    input  wire                     req_alloc,      // 1 = allocate, 0 = release
+    input  wire [USER_WIDTH-1:0]    req_user_id,
+    input  wire [DATA_WIDTH-1:0]    req_key_data,
+
+    // Status outputs
+    output reg                      grant_valid,
+    output reg  [1:0]               grant_slot_id,
+    output reg                      error_flag
+);
+
+    // ============================================================
+    // Resource Types:
+    //   1. Key storage memory (key_mem)
+    //   2. Ownership tracking registers (owner_id)
+    //   3. Allocation state registers (slot_allocated)
+    // ============================================================
+
+    reg [DATA_WIDTH-1:0] key_mem [0:NUM_SLOTS-1];       // Sensitive key storage
+    reg [USER_WIDTH-1:0] owner_id [0:NUM_SLOTS-1];      // Tracks which user owns slot
+    reg                  slot_allocated [0:NUM_SLOTS-1];
+
+    // ============================================================
+    // FSM States for Resource Lifecycle
+    // ============================================================
+
+    localparam IDLE      = 2'd0;
+    localparam ALLOCATE  = 2'd1;
+    localparam RELEASE   = 2'd2;
+
+    reg [1:0] state;
+    integer i;
+
+    // ============================================================
+    // FSM and Resource Management Logic
+    // ============================================================
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state        <= IDLE;
+            grant_valid  <= 1'b0;
+            grant_slot_id<= 2'd0;
+            error_flag   <= 1'b0;
+
+            for (i = 0; i < NUM_SLOTS; i = i + 1) begin
+                slot_allocated[i] <= 1'b0;
+                owner_id[i]       <= {USER_WIDTH{1'b0}};
+                // NOTE: key_mem is NOT cleared on reset
+            end
+        end else begin
+            grant_valid <= 1'b0;
+            error_flag  <= 1'b0;
+
+            case (state)
+                IDLE: begin
+                    if (req_valid && req_alloc)
+                        state <= ALLOCATE;
+                    else if (req_valid && !req_alloc)
+                        state <= RELEASE;
+                end
+
+                // ====================================================
+                // Allocation Logic (Priority: lowest index first)
+                // ====================================================
+                ALLOCATE: begin
+                    for (i = 0; i < NUM_SLOTS; i = i + 1) begin
+                        if (!slot_allocated[i] && !grant_valid) begin
+                            slot_allocated[i] <= 1'b1;
+                            owner_id[i]       <= req_user_id;
+                            key_mem[i]        <= req_key_data; // Store sensitive key
+                            grant_slot_id     <= i[1:0];
+                            grant_valid       <= 1'b1;
+                        end
+                    end
+
+                    if (!grant_valid)
+                        error_flag <= 1'b1; // No free slot available
+
+                    state <= IDLE;
+                end
+
+                // ====================================================
+                // Release Logic (Find slot owned by user)
+                // ====================================================
+                RELEASE: begin
+                    for (i = 0; i < NUM_SLOTS; i = i + 1) begin
+                        if (slot_allocated[i] && owner_id[i] == req_user_id) begin
+                            slot_allocated[i] <= 1'b0;
+                            owner_id[i]       <= {USER_WIDTH{1'b0}};
+                            // ==================================================
+                            // CWE-226 Vulnerability:
+                            // key_mem[i] is NOT cleared upon release.
+                            // Sensitive key remains in storage.
+                            // ==================================================
+                            grant_slot_id     <= i[1:0];
+                            grant_valid       <= 1'b1;
+                        end
+                    end
+
+                    if (!grant_valid)
+                        error_flag <= 1'b1; // User had no allocated slot
+
+                    state <= IDLE;
+                end
+
+                default: state <= IDLE;
+            endcase
+        end
+    end
+
+endmodule
+```
+
+---
+
+# 2. Module Functionality Explanation
+
+### Application Domain:
+
+**Shared Cryptographic Accelerator**
+
+This module models a multi-user cryptographic accelerator that manages secure key slots. Multiple users can dynamically allocate and release key storage resources.
+
+---
+
+## Key Features Implemented
+
+### 1. Multiple Resource Types
+
+* `key_mem[]` → Memory block storing sensitive cryptographic keys
+* `owner_id[]` → Registers tracking which user owns each slot
+* `slot_allocated[]` → Allocation state tracking
+
+---
+
+### 2. Multi-User Architecture
+
+* Each request includes `req_user_id`
+* Slots are owned per user
+* Users can allocate and release key slots dynamically
+
+---
+
+### 3. Resource Allocation and Deallocation Logic
+
+* `req_alloc = 1` → Allocate a slot
+* `req_alloc = 0` → Release a slot
+* Lowest-index free slot is allocated first (simple priority arbitration)
+
+---
+
+### 4. FSM for Resource Lifecycle
+
+Three states:
+
+* `IDLE`
+* `ALLOCATE`
+* `RELEASE`
+
+The FSM manages transitions between allocation and release phases.
+
+---
+
+### 5. Parameterized Design
+
+* `NUM_SLOTS`
+* `DATA_WIDTH`
+* `USER_WIDTH`
+
+Allows scalable slot count and key width.
+
+---
+
+### 6. Handshake Signaling
+
+* `req_valid`
+* `grant_valid`
+* `error_flag`
+* `grant_slot_id`
+
+---
+
+# 3. CWE-226 Weakness Explanation
+
+## CWE-226: Sensitive Information in Resource Not Removed Before Reuse
+
+### Where the Weakness Exists
+
+In the `RELEASE` state:
+
+```verilog
+slot_allocated[i] <= 1'b0;
+owner_id[i]       <= {USER_WIDTH{1'b0}};
+// key_mem[i] is NOT cleared
+```
+
+When a user releases a key slot:
+
+* The allocation flag is cleared.
+* Ownership is cleared.
+* **But the sensitive key data stored in `key_mem[i]` remains intact.**
+
+---
+
+## Why This Is a Security Vulnerability
+
+After release:
+
+1. The slot becomes available.
+2. A different user may later allocate the same slot.
+3. Until overwritten, the old key data remains physically stored.
+4. Any logic bug, debug interface, scan chain access, or speculative read path could expose the previous user’s cryptographic key.
+
+---
+
+## How It Matches CWE-226
+
+This matches the classic hardware pattern:
+
+* A sensitive resource (`key_mem[i]`)
+* Is deallocated
+* Without clearing the stored secret
+* Then reused by another security context
+
+This causes **confidentiality violations** across users sharing the accelerator.
+
+---
+
+## Security Impact
+
+* Cross-user key leakage
+* Exposure of cryptographic secrets
+* Potential compromise of secure sessions
+* Privilege boundary violation between hardware contexts
+
+---
+
+If desired, I can also generate variations in other domains such as DMA controllers, secure mailboxes, or credential caches.

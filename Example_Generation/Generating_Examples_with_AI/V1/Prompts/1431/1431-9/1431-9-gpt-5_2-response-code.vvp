@@ -1,0 +1,121 @@
+#! /mingw64/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\msys64\mingw64\lib\ivl\system.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\msys64\mingw64\lib\ivl\va_math.vpi";
+S_000001f2f426be00 .scope module, "weak_iterative_cipher" "weak_iterative_cipher" 2 4;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "rst_n";
+    .port_info 2 /INPUT 1 "start";
+    .port_info 3 /INPUT 128 "plaintext";
+    .port_info 4 /INPUT 128 "key";
+    .port_info 5 /OUTPUT 128 "ciphertext";
+    .port_info 6 /OUTPUT 128 "leak_state";
+    .port_info 7 /OUTPUT 1 "done";
+v000001f2f42b7f00_0 .var "ciphertext", 127 0;
+o000001f2f42bf098 .functor BUFZ 1, C4<z>; HiZ drive
+v000001f2f42b7fa0_0 .net "clk", 0 0, o000001f2f42bf098;  0 drivers
+v000001f2f42b8040_0 .var "done", 0 0;
+o000001f2f42bf0f8 .functor BUFZ 128, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v000001f2f4286870_0 .net "key", 127 0, o000001f2f42bf0f8;  0 drivers
+v000001f2f4286910_0 .var "leak_state", 127 0;
+o000001f2f42bf158 .functor BUFZ 128, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v000001f2f42869b0_0 .net "plaintext", 127 0, o000001f2f42bf158;  0 drivers
+v000001f2f4286a50_0 .var "round", 3 0;
+o000001f2f42bf1b8 .functor BUFZ 1, C4<z>; HiZ drive
+v000001f2f4286af0_0 .net "rst_n", 0 0, o000001f2f42bf1b8;  0 drivers
+o000001f2f42bf1e8 .functor BUFZ 1, C4<z>; HiZ drive
+v000001f2f4304020_0 .net "start", 0 0, o000001f2f42bf1e8;  0 drivers
+v000001f2f43040c0_0 .var "state", 127 0;
+E_000001f2f42bbb40/0 .event negedge, v000001f2f4286af0_0;
+E_000001f2f42bbb40/1 .event posedge, v000001f2f42b7fa0_0;
+E_000001f2f42bbb40 .event/or E_000001f2f42bbb40/0, E_000001f2f42bbb40/1;
+S_000001f2f42866e0 .scope function.vec4.s128, "round_function" "round_function" 2 20, 2 20 0, S_000001f2f426be00;
+ .timescale 0 0;
+v000001f2f4286d60_0 .var "in_key", 127 0;
+v000001f2f426a9e0_0 .var "in_state", 127 0;
+v000001f2f42b7dc0_0 .var "r", 3 0;
+; Variable round_function is vec4 return value of scope S_000001f2f42866e0
+TD_weak_iterative_cipher.round_function ;
+    %load/vec4 v000001f2f426a9e0_0;
+    %load/vec4 v000001f2f4286d60_0;
+    %ix/getv 4, v000001f2f42b7dc0_0;
+    %shiftr 4;
+    %xor;
+    %load/vec4 v000001f2f42b7dc0_0;
+    %pad/u 128;
+    %add;
+    %ret/vec4 0, 0, 128;  Assign to round_function (store_vec4_to_lval)
+    %end;
+    .scope S_000001f2f426be00;
+T_1 ;
+    %wait E_000001f2f42bbb40;
+    %load/vec4 v000001f2f4286af0_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.0, 8;
+    %pushi/vec4 0, 0, 128;
+    %assign/vec4 v000001f2f43040c0_0, 0;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v000001f2f4286a50_0, 0;
+    %pushi/vec4 0, 0, 128;
+    %assign/vec4 v000001f2f42b7f00_0, 0;
+    %pushi/vec4 0, 0, 128;
+    %assign/vec4 v000001f2f4286910_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000001f2f42b8040_0, 0;
+    %jmp T_1.1;
+T_1.0 ;
+    %load/vec4 v000001f2f4304020_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.2, 8;
+    %load/vec4 v000001f2f42869b0_0;
+    %load/vec4 v000001f2f4286870_0;
+    %xor;
+    %assign/vec4 v000001f2f43040c0_0, 0;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v000001f2f4286a50_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000001f2f42b8040_0, 0;
+    %jmp T_1.3;
+T_1.2 ;
+    %load/vec4 v000001f2f42b8040_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.4, 8;
+    %load/vec4 v000001f2f43040c0_0;
+    %load/vec4 v000001f2f4286870_0;
+    %load/vec4 v000001f2f4286a50_0;
+    %store/vec4 v000001f2f42b7dc0_0, 0, 4;
+    %store/vec4 v000001f2f4286d60_0, 0, 128;
+    %store/vec4 v000001f2f426a9e0_0, 0, 128;
+    %callf/vec4 TD_weak_iterative_cipher.round_function, S_000001f2f42866e0;
+    %assign/vec4 v000001f2f43040c0_0, 0;
+    %load/vec4 v000001f2f4286a50_0;
+    %addi 1, 0, 4;
+    %assign/vec4 v000001f2f4286a50_0, 0;
+    %load/vec4 v000001f2f43040c0_0;
+    %assign/vec4 v000001f2f4286910_0, 0;
+    %load/vec4 v000001f2f4286a50_0;
+    %cmpi/e 9, 0, 4;
+    %jmp/0xz  T_1.6, 4;
+    %load/vec4 v000001f2f43040c0_0;
+    %assign/vec4 v000001f2f42b7f00_0, 0;
+    %pushi/vec4 1, 0, 1;
+    %assign/vec4 v000001f2f42b8040_0, 0;
+T_1.6 ;
+T_1.4 ;
+T_1.3 ;
+T_1.1 ;
+    %jmp T_1;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "1431-9-gpt-5_2-response-code.v";

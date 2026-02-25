@@ -1,0 +1,138 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally includes a CWE-1245 (Improper Finite State Machine) weakness**. The weakness is present in the logic itself and is **not mitigated**.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+module access_fsm (
+    input  wire        clk,
+    input  wire        rst_n,
+    input  wire        req,
+    input  wire        auth_ok,
+    output reg         grant
+);
+
+    // State encoding (3-bit state register)
+    localparam IDLE   = 3'd0;
+    localparam AUTH   = 3'd1;
+    localparam GRANT  = 3'd2;
+    localparam LOCK   = 3'd3;  // Deadlock state
+    localparam SECRET = 3'd5;  // Unreachable state
+
+    reg [2:0] state;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state <= IDLE;
+            grant <= 1'b0;
+        end else begin
+            case (state)
+                IDLE: begin
+                    grant <= 1'b0;
+                    if (req)
+                        state <= AUTH;
+                end
+
+                AUTH: begin
+                    if (auth_ok)
+                        state <= GRANT;
+                    else
+                        state <= LOCK;
+                end
+
+                GRANT: begin
+                    grant <= 1'b1;
+                    if (!req)
+                        state <= IDLE;
+                end
+
+                LOCK: begin
+                    // Deadlock: no transition out of LOCK
+                    grant <= 1'b0;
+                    state <= LOCK;
+                end
+
+                // NOTE: No handling for SECRET or other state values
+            endcase
+        end
+    end
+
+endmodule
+
+```
+
+---
+
+## 2. Module Functionality Explanation
+
+This module implements a **simple access-control finite state machine**:
+
+- **IDLE**: Waits for a request (`req`)
+- **AUTH**: Verifies authorization (`auth_ok`)
+- **GRANT**: Grants access while the request remains asserted
+- **LOCK**: Locks the system after a failed authentication
+
+### Signal behavior:
+
+- `req` initiates an access request
+- `auth_ok` determines whether authentication succeeds
+- `grant` is asserted only in the `GRANT` state
+
+The FSM transitions synchronously on the rising edge of `clk` and resets to `IDLE` when `rst_n` is deasserted.
+
+---
+
+## 3. CWE-1245 Weakness Explanation
+
+This module **intentionally contains multiple improper FSM flaws**, directly matching **CWE-1245** vulnerability patterns.
+
+### 🔴 1. Deadlock State
+
+- The `LOCK` state **loops only to itself**, regardless of any inputs:
+    
+    ```verilog
+    LOCK: begin
+        grant <= 1'b0;
+        state <= LOCK;
+    end
+    
+    ```
+    
+- Once entered, the FSM **can never exit** this state, causing a permanent denial of service.
+
+---
+
+### 🔴 2. Unreachable State
+
+- The `SECRET` state is defined:
+    
+    ```verilog
+    localparam SECRET = 3'd5;
+    
+    ```
+    
+- However, **no transition ever assigns `state <= SECRET`**, making it unreachable.
+- This indicates **incomplete FSM design** and hidden logic paths.
+
+---
+
+### 🔴 3. Incomplete State Coverage
+
+- The `state` register is **3 bits wide**, allowing **8 possible values (0–7)**.
+- The `case (state)` statement:
+    - Handles only **4 states**
+    - Has **no `default` case**
+- If the FSM enters an undefined value (e.g., due to fault injection, metastability, or reset glitch), the behavior is **undefined and uncontrolled**.
+
+---
+
+## ⚠️ Security Impact
+
+An attacker or fault condition could:
+
+- Force the FSM into the **LOCK deadlock**, causing permanent denial of service
+- Push the FSM into an **undefined state**, bypassing access control
+- Exploit unreachable or unhandled states for **privilege escalation or logic abuse**
+
+This design **explicitly demonstrates CWE-1245: Improper Finite State Machine Implementation**.

@@ -1,0 +1,141 @@
+// -----------------------------------------------------------------------------
+// Debug and Test Interface Controller (INTENTIONALLY VULNERABLE)
+// Application Domain: Debug and test interface controller
+//
+// CWE-1233 weakness intentionally present:
+// Security-sensitive debug control registers can be modified even when the
+// lock bit is asserted. No lock check is performed on write.
+// -----------------------------------------------------------------------------
+
+module debug_ctrl #(
+    parameter ADDR_WIDTH = 8,
+    parameter DATA_WIDTH = 32
+)(
+    input  wire                    clk,
+    input  wire                    rst_n,
+
+    // Simple APB-like interface
+    input  wire                    psel,
+    input  wire                    penable,
+    input  wire                    pwrite,
+    input  wire [ADDR_WIDTH-1:0]   paddr,
+    input  wire [DATA_WIDTH-1:0]   pwdata,
+    output reg  [DATA_WIDTH-1:0]   prdata,
+    output reg                     pready,
+
+    // External signals
+    input  wire                    dbg_req_in,
+    output reg                     dbg_enable_out,
+    output reg                     jtag_access_out,
+    output reg                     irq_out
+);
+
+    // -------------------------------------------------------------------------
+    // Register map
+    // -------------------------------------------------------------------------
+    // 0x00 : CTRL_REG
+    //        [0]   dbg_enable
+    //        [1]   jtag_enable
+    //        [3:2] mode_select
+    //
+    // 0x04 : STATUS_REG
+    //        [0] dbg_active
+    //        [1] error_flag
+    //
+    // 0x08 : LOCK_REG
+    //        [0] lock_bit   (intended to lock debug configuration)
+    //
+    // 0x0C : KEY_REG
+    //        [31:0] debug unlock key (security-sensitive)
+    //
+    // 0x10 : COUNTER_REG
+    //        [31:0] debug session counter
+    // -------------------------------------------------------------------------
+
+    // Multi-register architecture
+    reg [DATA_WIDTH-1:0] ctrl_reg;
+    reg [DATA_WIDTH-1:0] status_reg;
+    reg [DATA_WIDTH-1:0] lock_reg;
+    reg [DATA_WIDTH-1:0] key_reg;
+    reg [DATA_WIDTH-1:0] counter_reg;
+
+    // Internal signals
+    wire write_en;
+    wire read_en;
+
+    assign write_en = psel && penable && pwrite;
+    assign read_en  = psel && penable && !pwrite;
+
+    // -------------------------------------------------------------------------
+    // Write logic (INTENTIONALLY MISSING LOCK CHECK)
+    // -------------------------------------------------------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            ctrl_reg    <= {DATA_WIDTH{1'b0}};
+            status_reg  <= {DATA_WIDTH{1'b0}};
+            lock_reg    <= {DATA_WIDTH{1'b0}};
+            key_reg     <= {DATA_WIDTH{1'b0}};
+            counter_reg <= {DATA_WIDTH{1'b0}};
+        end else begin
+            if (write_en) begin
+                case (paddr)
+                    8'h00: ctrl_reg <= pwdata;   // SECURITY-SENSITIVE
+                    8'h08: lock_reg <= pwdata;   // lock bit itself
+                    8'h0C: key_reg  <= pwdata;   // SECURITY-SENSITIVE
+                    default: ;
+                endcase
+            end
+
+            // Counter increments while debug is active
+            if (ctrl_reg[0]) begin
+                counter_reg <= counter_reg + 1'b1;
+            end
+        end
+    end
+
+    // -------------------------------------------------------------------------
+    // Read logic
+    // -------------------------------------------------------------------------
+    always @(*) begin
+        prdata = {DATA_WIDTH{1'b0}};
+        if (read_en) begin
+            case (paddr)
+                8'h00: prdata = ctrl_reg;
+                8'h04: prdata = status_reg;
+                8'h08: prdata = lock_reg;
+                8'h0C: prdata = key_reg;
+                8'h10: prdata = counter_reg;
+                default: prdata = {DATA_WIDTH{1'b0}};
+            endcase
+        end
+    end
+
+    // -------------------------------------------------------------------------
+    // State-dependent behavior and status logic
+    // -------------------------------------------------------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            status_reg <= {DATA_WIDTH{1'b0}};
+            dbg_enable_out <= 1'b0;
+            jtag_access_out <= 1'b0;
+            irq_out <= 1'b0;
+        end else begin
+            dbg_enable_out   <= ctrl_reg[0];
+            jtag_access_out <= ctrl_reg[1];
+
+            status_reg[0] <= ctrl_reg[0] && dbg_req_in; // dbg_active
+            status_reg[1] <= ctrl_reg[0] && ctrl_reg[1] && dbg_req_in; // error_flag
+
+            // Interrupt on debug activation
+            irq_out <= (ctrl_reg[0] && dbg_req_in);
+        end
+    end
+
+    // -------------------------------------------------------------------------
+    // APB ready (always ready for simplicity)
+    // -------------------------------------------------------------------------
+    always @(*) begin
+        pready = 1'b1;
+    end
+
+endmodule

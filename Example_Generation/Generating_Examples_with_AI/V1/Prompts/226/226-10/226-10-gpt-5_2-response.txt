@@ -1,0 +1,135 @@
+Below is a **self-contained, synthesizable Verilog HDL module** that **intentionally includes a CWE-226 weakness**. The weakness is present in the logic itself and is **not mitigated**.
+
+---
+
+## 1. Complete Verilog Module
+
+```verilog
+//------------------------------------------------------------------------------
+// Module: session_key_buffer
+// Description:
+//   Simple session-based key buffer. A secret key is loaded during an
+//   authenticated session and later reused by a new session.
+//   The key register is intentionally NOT cleared on reset or session end,
+//   demonstrating CWE-226: Sensitive Information in Resource Not Removed
+//   Before Reuse.
+//------------------------------------------------------------------------------
+
+module session_key_buffer (
+    input  wire        clk,
+    input  wire        rst_n,          // active-low reset
+    input  wire        session_start,  // begins a new session
+    input  wire        session_end,    // ends the current session
+    input  wire        key_write_en,   // write enable for secret key
+    input  wire [31:0] key_in,         // incoming secret key
+    output wire [31:0] key_out,        // key visible to active session
+    output reg         session_active
+);
+
+    // Register intended to store sensitive information (secret key)
+    reg [31:0] secret_key_reg;
+
+    // Session state tracking
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            session_active <= 1'b0;
+            // CWE-226 WEAKNESS:
+            // secret_key_reg is NOT cleared on reset
+        end else begin
+            if (session_start)
+                session_active <= 1'b1;
+            else if (session_end)
+                session_active <= 1'b0;
+
+            if (key_write_en && session_active)
+                secret_key_reg <= key_in;
+            // When session ends, secret_key_reg is intentionally retained
+        end
+    end
+
+    // Expose the stored key whenever a session is active
+    assign key_out = session_active ? secret_key_reg : 32'b0;
+
+endmodule
+
+```
+
+---
+
+## 2. Functionality Explanation
+
+This module models a **session-based secret key buffer**:
+
+- A session is started using `session_start` and ended using `session_end`
+- While a session is active:
+    - A 32-bit secret key can be written into internal storage (`secret_key_reg`)
+    - The stored key is exposed on `key_out`
+- When no session is active:
+    - The output is forced to zero
+- The module supports reset via `rst_n`, which resets session state only
+
+This kind of structure could represent a simplified authentication token store, cryptographic key latch, or secure session buffer in hardware.
+
+---
+
+## 3. CWE-226 Weakness Explanation
+
+### Where the Weakness Is Introduced
+
+The weakness exists in the handling of the register:
+
+```verilog
+reg [31:0] secret_key_reg;
+
+```
+
+Specifically:
+
+- `secret_key_reg` **stores sensitive data**
+- It is **not cleared** when:
+    - The system is reset (`rst_n` asserted)
+    - A session ends (`session_end` asserted)
+
+```verilog
+if (!rst_n) begin
+    session_active <= 1'b0;
+    // secret_key_reg is NOT cleared here
+end
+
+```
+
+---
+
+### How This Maps to CWE-226
+
+**CWE-226: Sensitive Information in Resource Not Removed Before Reuse**
+
+- The `secret_key_reg` is a reusable hardware resource
+- After a session ends, the register still contains sensitive key material
+- A subsequent session may:
+    - Read or overwrite this register
+    - Potentially infer or recover residual data
+- This violates confidentiality expectations, especially across:
+    - Security domains
+    - User sessions
+    - Privilege boundaries
+
+---
+
+### Security Impact
+
+An attacker or unintended session could:
+
+- Observe leftover key material
+- Exploit partial overwrites
+- Recover secrets via side-channel or logic probing
+
+This is a **classic residual data vulnerability**, intentionally left unmitigated to demonstrate **CWE-226 in hardware design**.
+
+---
+
+If you want, I can also:
+
+- Create a **testbench** that demonstrates the leakage
+- Show a **patched version** for comparison
+- Map this example to **secure design guidelines** or **Common Weakness Enumeration tooling**

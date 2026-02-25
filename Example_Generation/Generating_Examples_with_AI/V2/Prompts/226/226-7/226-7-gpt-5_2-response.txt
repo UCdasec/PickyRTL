@@ -1,0 +1,281 @@
+## 1. Verilog Module (Intentionally Vulnerable to CWE-226)
+
+```verilog
+// Multi-context Key Management Unit
+// Intentionally contains CWE-226: Sensitive information not cleared before reuse
+
+module key_management_unit #(
+    parameter KEY_WIDTH  = 128,
+    parameter NUM_SLOTS  = 4,
+    parameter USER_WIDTH = 2              // Supports up to 4 users
+)(
+    input                       clk,
+    input                       rst_n,
+
+    // Allocation interface
+    input                       alloc_req,
+    input  [USER_WIDTH-1:0]     alloc_user_id,
+    output reg                  alloc_grant,
+    output reg [$clog2(NUM_SLOTS)-1:0] alloc_slot_id,
+
+    // Write key interface
+    input                       write_req,
+    input  [$clog2(NUM_SLOTS)-1:0] write_slot_id,
+    input  [KEY_WIDTH-1:0]      write_key,
+    input  [USER_WIDTH-1:0]     write_user_id,
+    output reg                  write_done,
+
+    // Read key interface
+    input                       read_req,
+    input  [$clog2(NUM_SLOTS)-1:0] read_slot_id,
+    input  [USER_WIDTH-1:0]     read_user_id,
+    output reg [KEY_WIDTH-1:0]  read_key,
+    output reg                  read_valid,
+
+    // Release interface
+    input                       release_req,
+    input  [$clog2(NUM_SLOTS)-1:0] release_slot_id,
+    input  [USER_WIDTH-1:0]     release_user_id,
+    output reg                  release_done
+);
+
+    // -----------------------------
+    // Resource Storage (Key Slots)
+    // -----------------------------
+    reg [KEY_WIDTH-1:0] key_slots [0:NUM_SLOTS-1];   // Sensitive key storage
+    reg                 slot_valid [0:NUM_SLOTS-1];  // Allocation state
+    reg [USER_WIDTH-1:0] slot_owner [0:NUM_SLOTS-1]; // Ownership tracking
+
+    integer i;
+
+    // Simple FSM states
+    localparam IDLE     = 2'd0;
+    localparam ALLOCATE = 2'd1;
+    localparam RELEASE  = 2'd2;
+
+    reg [1:0] state;
+
+    // -----------------------------
+    // Sequential Logic
+    // -----------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state        <= IDLE;
+            alloc_grant  <= 1'b0;
+            write_done   <= 1'b0;
+            read_valid   <= 1'b0;
+            release_done <= 1'b0;
+
+            for (i = 0; i < NUM_SLOTS; i = i + 1) begin
+                slot_valid[i] <= 1'b0;
+                slot_owner[i] <= {USER_WIDTH{1'b0}};
+                // NOTE: key_slots are NOT cleared on reset (intentional)
+            end
+        end else begin
+            // Default outputs
+            alloc_grant  <= 1'b0;
+            write_done   <= 1'b0;
+            read_valid   <= 1'b0;
+            release_done <= 1'b0;
+
+            case (state)
+                IDLE: begin
+                    if (alloc_req) begin
+                        state <= ALLOCATE;
+                    end else if (release_req) begin
+                        state <= RELEASE;
+                    end else begin
+                        state <= IDLE;
+                    end
+
+                    // Write operation
+                    if (write_req && slot_valid[write_slot_id] &&
+                        slot_owner[write_slot_id] == write_user_id) begin
+                        key_slots[write_slot_id] <= write_key;
+                        write_done <= 1'b1;
+                    end
+
+                    // Read operation
+                    if (read_req && slot_valid[read_slot_id] &&
+                        slot_owner[read_slot_id] == read_user_id) begin
+                        read_key   <= key_slots[read_slot_id];
+                        read_valid <= 1'b1;
+                    end
+                end
+
+                ALLOCATE: begin
+                    // Find first free slot
+                    for (i = 0; i < NUM_SLOTS; i = i + 1) begin
+                        if (!slot_valid[i]) begin
+                            slot_valid[i] <= 1'b1;
+                            slot_owner[i] <= alloc_user_id;
+                            alloc_slot_id <= i[$clog2(NUM_SLOTS)-1:0];
+                            alloc_grant   <= 1'b1;
+                            state         <= IDLE;
+                        end
+                    end
+                end
+
+                RELEASE: begin
+                    if (slot_valid[release_slot_id] &&
+                        slot_owner[release_slot_id] == release_user_id) begin
+                        slot_valid[release_slot_id] <= 1'b0;
+                        slot_owner[release_slot_id] <= {USER_WIDTH{1'b0}};
+                        // NOTE: key_slots[release_slot_id] is NOT cleared (intentional CWE-226)
+                        release_done <= 1'b1;
+                    end
+                    state <= IDLE;
+                end
+
+                default: state <= IDLE;
+            endcase
+        end
+    end
+
+endmodule
+```
+
+---
+
+## 2. Module Functionality
+
+This module implements a **multi-context Key Management Unit (KMU)** that stores cryptographic keys for multiple users.
+
+### Key Features
+
+* **Parameterized design**
+
+  * `KEY_WIDTH`: width of each cryptographic key (default 128 bits)
+  * `NUM_SLOTS`: number of key storage slots
+  * `USER_WIDTH`: number of supported users
+
+* **Multiple resource types**
+
+  * `key_slots` (memory array storing sensitive keys)
+  * `slot_valid` (allocation state flags)
+  * `slot_owner` (ownership tracking registers)
+
+* **Multi-user architecture**
+
+  * Each key slot is assigned to a specific `user_id`
+  * Access control checks ownership before read/write
+
+* **Resource allocation & deallocation**
+
+  * `alloc_req` → assigns first available slot
+  * `release_req` → releases slot if requester is owner
+
+* **FSM for lifecycle management**
+
+  * `IDLE`
+  * `ALLOCATE`
+  * `RELEASE`
+
+* **Handshaking signals**
+
+  * `alloc_grant`
+  * `write_done`
+  * `read_valid`
+  * `release_done`
+
+### Operational Flow
+
+1. **Allocate**
+
+   * User requests allocation.
+   * FSM finds a free slot.
+   * Slot marked valid and ownership recorded.
+
+2. **Write**
+
+   * Owner writes cryptographic key into slot.
+
+3. **Read**
+
+   * Owner reads back key if slot is valid.
+
+4. **Release**
+
+   * Slot marked invalid and ownership cleared.
+   * Slot becomes available for reuse.
+
+---
+
+## 3. CWE-226 Weakness Explanation
+
+### CWE-226: Sensitive Information in Resource Not Removed Before Reuse
+
+The vulnerability is intentionally introduced in two places:
+
+---
+
+### 🔴 1. Key Slots Not Cleared on Release
+
+In the `RELEASE` state:
+
+```verilog
+slot_valid[release_slot_id] <= 1'b0;
+slot_owner[release_slot_id] <= {USER_WIDTH{1'b0}};
+// key_slots[release_slot_id] is NOT cleared
+```
+
+* The key data stored in `key_slots[release_slot_id]` remains intact.
+* The slot is marked free (`slot_valid = 0`).
+* A new user may later allocate this slot.
+* The previous cryptographic key still exists in hardware.
+
+This is a direct manifestation of CWE-226.
+
+---
+
+### 🔴 2. Key Slots Not Cleared on Reset
+
+During reset:
+
+```verilog
+// NOTE: key_slots are NOT cleared on reset (intentional)
+```
+
+* `slot_valid` and `slot_owner` are cleared.
+* But `key_slots` are left untouched.
+* Sensitive key material persists across reset.
+* A new allocation after reset may expose residual data.
+
+---
+
+## Security Impact
+
+If:
+
+1. User A allocates slot 1.
+2. User A writes a 128-bit secret key.
+3. User A releases the slot.
+4. User B allocates the same slot.
+
+Because the key memory was never cleared:
+
+* Residual key data from User A remains in `key_slots`.
+* If access control is bypassed, misconfigured, or altered in future revisions, User B could recover User A’s key.
+* Even without direct read access, side-channel or debugging interfaces could expose the stale value.
+
+This directly demonstrates:
+
+> Failure to remove sensitive information before resource reuse leads to confidentiality violations.
+
+---
+
+## Design Complexity Elements Used
+
+This implementation includes:
+
+* ✅ Multiple resource types (memory array, ownership registers, validity flags)
+* ✅ Multi-user/multi-context architecture
+* ✅ Resource allocation and deallocation logic
+* ✅ FSM managing resource lifecycle
+* ✅ Parameterized design
+* ✅ Handshaking signals
+* ✅ Ownership tracking registers
+
+---
+
+This module is fully synthesizable and intentionally demonstrates a realistic hardware implementation of **CWE-226** in a multi-user cryptographic key management system.
