@@ -4,7 +4,8 @@ from enum import Enum
 class CWE_1245_RESULTS_DF_COLS(Enum):
     FILE_NAME = "File Name"
     MODULE_NAME = "Module Name"
-    CASE_NUMBER = "Case Number"
+    CASE_STMT_STATE_VARIABLE = "Case Statement State Variable"
+    CASE_STMT_START_LINE = "Case Statement Start Line"
     STATE_COVERAGE = "State Coverage"
     UNREACHABLE_STATES = "Unreachable States"
     DEADLOCKS = "Deadlocks"
