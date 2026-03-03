@@ -15,6 +15,7 @@ from file_selector import *
 from InquirerPy import inquirer
 from node import *
 from rapidfuzz import fuzz
+from fsm import *
 
 
 def load_json_file(file_path: str) -> dict:
@@ -105,6 +106,92 @@ def score_name(name: str, keywords: dict) -> int:
             total_score += weight
     return total_score
 
+def create_FSMs(case_statements: dict[int, HdlStmCaseNode], ast_data: AST_Traverser):
+    """Creates FSM objects based on the case statements
+
+    Args:
+        case_statements (dict[int, HdlStmCaseNode]): Dictionary of case statements
+    """
+
+    def find_start_state(node: HdlStmAssignNode):
+            """Finds start state of assignment 
+
+            Args:
+                node (HdlStmAssignNode): Assignment to find start state of
+
+            Returns:
+                Any: Returns the start state node
+            """
+            #Recursively search for the case and return the case primary value
+            if isinstance(node, Case):
+                return node.primary_value
+            elif isinstance(node, HdlModuleDefNode):
+                return None
+            return find_start_state(ast_data.nodes[node.parent_id])
+
+    fsms = dict()
+
+    for case_statement in case_statements.values():
+        if case_statement.state_variable_string_rep in fsms.keys():
+            case_statement.fsm = fsms[case_statement.state_variable_string_rep]
+            unreachable_states = case_statement.fsm.unreachable_states()
+            for case in case_statement.cases.values():
+                if case.primary_value in unreachable_states:
+                    case.satisfiable = False
+                else:
+                    case.satisfiable = True
+            continue
+        
+        fsm = FSM(state_variable=case_statement.state_variable_string_rep)
+        fsms[case_statement.state_variable_string_rep] = fsm
+
+        #Add states and trnasitions between states
+        for case in case_statement.cases.values():
+            fsm.states.add(case.primary_value)
+            
+        all_assignments_to_state_variable = set()
+        assigned_to_state_variable = []
+        #Gather all assignments directly to the state variable
+        state_variable_assignments = ast_data.variable_assignments[case_statement.state_variable.name]
+        for assignment in state_variable_assignments:
+            if ast_data.determine_node_reachability(assignment):
+                assigned_to_state_variable.append(assignment.source)
+                case_node: Case = next((v for v in case_statement.cases.values() if assignment.source in v.case_values), None)
+                if case_node:
+                    case_node.satisfiable = True
+
+                if assignment.source in case_statement.possible_case_values:
+                        all_assignments_to_state_variable.add(assignment)
+
+        #Gather all indirect assignments to the state variable through assignments to variables assigned to the state variable
+        for assignment_to_state_variable in assigned_to_state_variable:
+            if assignment_to_state_variable not in ast_data.variable_assignments.keys():
+                continue
+            assignments = ast_data.variable_assignments[assignment_to_state_variable]
+            for assignment in assignments:
+                if ast_data.determine_node_reachability(assignment):
+                    #If the assignment is reachable then the case is satisfiable
+                    case_node: Case = next((v for v in case_statement.cases.values() if assignment.source in v.case_values), None)
+                    if case_node:
+                        case_node.satisfiable = True
+
+                    if assignment.source in case_statement.possible_case_values:
+                        all_assignments_to_state_variable.add(assignment)
+
+
+        #Convert the direct and indirect state variable assignments to transitions from one state to another state
+        for assignment in all_assignments_to_state_variable:
+            if assignment.source not in fsm.states:
+                continue
+
+            next_state = assignment.source
+            start_state = find_start_state(node=assignment)
+
+            #Create the transition for the assignment
+            fsm.transitions.add(Transition(start_state=start_state, next_state=next_state, assignment=assignment, condition=None))
+
+        case_statement.fsm = fsm
+
 def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, results: pd.DataFrame) -> pd.DataFrame:
     """Checks the case statement for CWE_1245 vulnerabilities
 
@@ -127,9 +214,9 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
             str: Secure if all states are covered, vulnerable if not
         """
         #Calculate the number of possible state values
-        if case_statement.switch_variable_bit_width is None:
-            switch_variable: HdlIdDefNode = case_statement.switch_variable
-            num_possible_states = switch_variable.calculate_possible_values()
+        if case_statement.state_variable_bit_width is None:
+            state_variable: HdlIdDefNode = case_statement.state_variable
+            num_possible_states = state_variable.calculate_possible_values()
         else:
             num_possible_states = case_statement.calculate_possible_values()
         num_defined_states = len(case_statement.cases)
@@ -167,58 +254,18 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
         Returns:
             str: Secure if no unreachable states, vulnerable if there are unreachable states, or inconclusive
         """
-        assigned_to_state_variable = []
-
         #Handle case when the state variable is an input. 
-        if case_statement.switch_variable.direction == 'IN':
-            return f'Inconclusive: State variable ({case_statement.switch_variable.name}) is an input; transitions may be externally controlled and not visible in this scope'
+        if case_statement.state_variable.direction == 'IN':
+            return f'Inconclusive: FSM with state variable \'{case_statement.state_variable_string_rep}\' is an input to the module; transitions may be externally controlled and not visible in this scope'
         
-        #Gather all assignments directly to the state variable
-        state_variable_assignments = ast_data.variable_assignments[case_statement.switch_variable.name]
-        for assignment in state_variable_assignments:
-            if assignment.source not in assigned_to_state_variable:
-                assignment_reachable = ast_data.determine_node_reachability(assignment)
-
-                #If the assignment is reachable then the case is satisfiable
-                if assignment_reachable:
-                    assigned_to_state_variable.append(assignment.source)
-                    case_node: Case = next((v for v in case_statement.cases.values() if assignment.source in v.case_values), None)
-                    if case_node:
-                        case_node.satisfiable = True
-
-        #Gather all indirect assignments to the state variable through assignments to variables assigned to the state variable
-        for assignment_to_state_variable in assigned_to_state_variable:
-            #Deal with when the state variable is assigned a number
-            if assignment_to_state_variable not in ast_data.variable_assignments.keys():
-                continue 
-
-            assignments = ast_data.variable_assignments[assignment_to_state_variable]
-            for assignment in assignments:
-                if assignment.source not in assigned_to_state_variable:
-                    assignment_reachable = ast_data.determine_node_reachability(assignment)
-
-                    if assignment_reachable:
-                        assigned_to_state_variable.append(assignment.source)
-                        #If the assignment is reachable then the case is satisfiable
-                        case_node: Case = next((v for v in case_statement.cases.values() if assignment.source in v.case_values), None)
-                        if case_node:
-                            case_node.satisfiable = True
+        if case_statement.state_variable.module_mapping:
+            return f'Inconclusive: FSM with state variable \'{case_statement.state_variable_string_rep}\' is mapped to {case_statement.state_variable.module_mapping}; transitions may be externally controlled and not visible in this scope'
         
-        #Check if any states are never assigned to the state variable either directly or indirectly
-        unreachable_states = []
-        for case in case_statement.cases.values():
-            if not(any(item in assigned_to_state_variable for item in case.case_values)):
-                unreachable_states.append(case.primary_value)
-
-        #If there are any unreachable states, then the design is vulnerable
+        unreachable_states = case_statement.fsm.unreachable_states()
         if len(unreachable_states) > 0:
-            if case_statement.switch_variable.module_mapping:
-                return f'Inconclusive: {unreachable_states} state(s) may not be reachable, but state variable is mapped to {case_statement.switch_variable.module_mapping}; transitions may be externally controlled and not visible in this scope'
-            for state in unreachable_states:
-                case_node = next((c for c in case_statement.cases.values() if state in c.case_values), None)
-            return f'Vulnerable: {unreachable_states} state(s) not reachable'
+            return f'Vulnerable: FSM with state variable \'{case_statement.state_variable_string_rep}\' has {len(unreachable_states)} unreachable state(s): {unreachable_states}'
         else:
-            return 'Secure: All states reachable'
+            return f'Secure: All states in FSM with state variable \'{case_statement.state_variable_string_rep}\' are reachable'
 
     def check_for_deadlocks(case_statement: HdlStmCaseNode) -> str:
         """Check case statements for deadlocks
@@ -229,82 +276,32 @@ def detect_CWE_1245(ast_data: AST_Traverser, case_statement: HdlStmCaseNode, res
         Returns:
             str: Secure if no deadlocks, vulnerable if there are deadlocks, or inconclusive
         """
-        #Define a class for transitions between states
-        class Transition:
-            def __init__(self, start_state, next_state, assignment, condition):
-                self.start_state = start_state
-                self.next_state = next_state
-                self.assignment = assignment
-                self.condition: HdlStmIfNode = condition
-                if (self.condition is None) or (self.condition.reachable and self.condition.satisfiable):
-                    self.reachable = True
-                else:
-                    self.reachable = False
 
-        def find_start_state(node: HdlStmAssignNode):
-            """Finds start state of assignment 
-
-            Args:
-                node (HdlStmAssignNode): Assignment to find start state of
-
-            Returns:
-                Any: Returns the start state node
-            """
-            #Recursively search for the case and return the case primary value
-            if isinstance(node, Case):
-                return node.primary_value
-            elif isinstance(node, HdlModuleDefNode):
-                return None
-            return find_start_state(ast_data.nodes[node.parent_id])
-
-        #If the switch variable is an input we cannot see assignments so mark it as inconclusive
-        if case_statement.switch_variable.direction == 'IN':
-            return f'Inconclusive: State variable ({case_statement.switch_variable.name}) is an input; transitions may be externally controlled and not visible in this scope'
-
-        state_variable_assignments = ast_data.gather_variable_assignments(case_statement.switch_variable)
-
-        #Convert the direct and indirect state variable assignments to transitions from one state to another state
-        transitions = []
-        for assignment in state_variable_assignments:
-            if assignment.source not in case_statement.possible_case_values:
-                continue
-
-            next_state = assignment.source
-            start_state = find_start_state(node=assignment)
-
-            #Create the transition for the assignment
-            transitions.append(Transition(start_state=start_state, next_state=next_state, assignment=assignment, condition=None))
-
+        #If the state variable is an input we cannot see assignments so mark it as inconclusive
+        if case_statement.state_variable.direction == 'IN':
+            return f'Inconclusive: FSM with state variable \'{case_statement.state_variable_string_rep}\' is an input to the module; transitions may be externally controlled and not visible in this scope'
         
-        #Check that each state has an out transition, if so remove the state
-        states = case_statement.case_primary_values.copy()
-        for tr in transitions:
-            if tr.start_state == tr.next_state or tr.start_state not in states:
-                continue
+        #If the variable is module mapped it is inconclusive since we can't see the assignments.
+        if case_statement.state_variable.module_mapping:
+            return f'Inconclusive: FSM with state variable \'{case_statement.state_variable_string_rep}\' is mapped to {case_statement.state_variable.module_mapping}; transitions may be externally controlled and not visible in this scope'
 
-            if tr.reachable:
-                states.remove(tr.start_state)
-                transitions = [t for t in transitions if t.start_state != tr.start_state]
-        
-        # If any states are left, there is a possible vulnerability, else there are no deadlocks      
-        if len(states) > 0:
+        deadlock_states = case_statement.fsm.deadlock_states()
+        if len(deadlock_states) > 0:
             #Remove unreachable states so they do not count as deadlocks
-            for state in states:
+            deadlock_states_copy = copy.deepcopy(deadlock_states)
+            for state in deadlock_states_copy:
                 for case in case_statement.cases.values():
                     if state in case.case_values:
                         if not case.satisfiable:
-                            states.remove(state)
+                            deadlock_states.remove(state)
                             break
 
-            if len(states) == 0:
-                return f"Secure: No deadlocks detected"
+            if len(deadlock_states) == 0:
+                return f"Secure: No deadlocks detected in FSM with state variable \'{case_statement.state_variable_string_rep}\'"
             
-            #If the variable is module mapped it is inconclusive since we can't see the assignments.
-            if case_statement.switch_variable.module_mapping:
-                return f'Inconclusive: Possible deadlock(s) in {states} state(s), but state variable is mapped to {case_statement.switch_variable.module_mapping}; transitions may be externally controlled and not visible in this scope'
-            return f"Vulnerable: Possible deadlock(s) in {states} state(s)"
+            return f"Vulnerable: FSM with state variable \'{case_statement.state_variable_string_rep}\' has a possible deadlock in {deadlock_states} state(s)"
         else:
-            return f"Secure: No deadlocks detected"
+            return f"Secure: No deadlocks detected in FSM with state variable \'{case_statement.state_variable_string_rep}\'"
 
     results[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value] = (check_state_coverage(case_statement))
     results[CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value] = (check_unreachable_states(case_statement))
@@ -636,13 +633,16 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
                     traverser.unsatisfiable_conditionals.pop(cond.node_id)
             del unsatisfiable_conditionals
 
+            create_FSMs(traverser.case_statements, traverser)
+
             #CWE 1245 Detection
             if len(traverser.case_statements) == 0:
                 #If there are no case statements return the one row 
                 CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([{
                     CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
                     CWE_1245_RESULTS_DF_COLS.MODULE_NAME.value: traverser.module_name,
-                    CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: 'No case statements found',
+                    CWE_1245_RESULTS_DF_COLS.CASE_STMT_STATE_VARIABLE.value: 'No case statements detected',
+                    CWE_1245_RESULTS_DF_COLS.CASE_STMT_START_LINE.value: None,
                     CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
                     CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
                     CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
@@ -654,7 +654,8 @@ def run_detection_on_file(file_path: str) -> pd.DataFrame:
                     results_row = {
                         CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
                         CWE_1245_RESULTS_DF_COLS.MODULE_NAME.value: traverser.module_name,
-                        CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: case_num,
+                        CWE_1245_RESULTS_DF_COLS.CASE_STMT_STATE_VARIABLE.value: case.state_variable_string_rep,
+                        CWE_1245_RESULTS_DF_COLS.CASE_STMT_START_LINE.value: case.start_line,
                         CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
                         CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
                         CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
@@ -772,6 +773,8 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
                         traverser.unsatisfiable_conditionals.pop(cond.node_id)
                 del unsatisfiable_conditionals
 
+                create_FSMs(traverser.case_statements, traverser)
+
                 #Add identified security sensitive register names and lock bit register names for matching later
                 for reg in traverser.security_sensitive_registers:
                     security_registers["security-sensitive-registers"].add(reg.name)
@@ -856,7 +859,8 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             CWE_1245_results_df = pd.concat([CWE_1245_results_df, pd.DataFrame([{
                 CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
                 CWE_1245_RESULTS_DF_COLS.MODULE_NAME.value: module_name,
-                CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: 'No case statements found',
+                CWE_1245_RESULTS_DF_COLS.CASE_STMT_STATE_VARIABLE.value: 'No case statements detected',
+                CWE_1245_RESULTS_DF_COLS.CASE_STMT_START_LINE.value: None,
                 CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
                 CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
                 CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
@@ -868,7 +872,8 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
                 results_row = {
                     CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: file_name,
                     CWE_1245_RESULTS_DF_COLS.MODULE_NAME.value: module_name,
-                    CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: case_num,
+                    CWE_1245_RESULTS_DF_COLS.CASE_STMT_STATE_VARIABLE.value: case.state_variable_string_rep,
+                    CWE_1245_RESULTS_DF_COLS.CASE_STMT_START_LINE.value: case.start_line,
                     CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: None,
                     CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: None,
                     CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: None,
@@ -924,10 +929,10 @@ def main():
                     return
                 
                 #Create total rows for each dataframe
-                total_case_stmts = pd.to_numeric(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value], errors='coerce').notna().sum()
+                total_case_stmts = pd.to_numeric(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.CASE_STMT_START_LINE.value], errors='coerce').notna().sum()
                 CWE_1245_total_row = pd.DataFrame([{
                     CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: 'Total',
-                    CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: f"{total_case_stmts} case statements",
+                    CWE_1245_RESULTS_DF_COLS.CASE_STMT_START_LINE.value: f"{total_case_stmts} case statements",
                     CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: {
                         'Secure': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Secure').sum(),
                         'Vulnerable': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Vulnerable').sum(),
