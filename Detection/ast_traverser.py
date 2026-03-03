@@ -17,7 +17,7 @@ class AST_Traverser():
         self.inputs = {} # {input_name: HdlIdDefNode}, Stores all inputs in the module
         self.params = {} # {param_name: HdlIdDefNode}, Stores all parameters in the module
         self.variable_assignments = {} # {variable_name: [assignment1, assignment2, ...]}, Stores all assignments to each variable
-        self.case_statements = {} # {case_statement_node_id: HdlStmCaseNode}, Stores all case statements in the module
+        self.case_statements: dict[int, HdlStmCaseNode] = {} # {case_statement_node_id: HdlStmCaseNode}, Stores all case statements in the module
         self.satisfiable_conditionals = {} # {conditional_node_id: HdlStmIfNode | Else_Clause | Elif_Clause}, Stores all satisfiable conditionals in the module
         self.unsatisfiable_conditionals = {} # {conditional_node_id: HdlStmIfNode | Else_Clause | Elif_Clause}, Stores all unsatisfiable conditionals in the module
         self.loc = None # Lines of code in the module
@@ -211,7 +211,7 @@ class AST_Traverser():
             direct_variable_assignments.append(new_direct_assignment)
 
         #Return only reachable assignments
-        return [assignment for assignment in direct_variable_assignments if assignment.reachable]
+        return [assignment for assignment in direct_variable_assignments if self.determine_node_reachability(assignment)]
     
     def parse_condition(self, cond: str | dict) -> str:
         """Transforms condition from JSON AST format to python format as a string
@@ -561,18 +561,26 @@ class AST_Traverser():
             #Handle switch variables that are more than just one variable
             if node['switch_on']['__class__'] == 'HdlOp' and node['switch_on']['fn'] == 'INDEX':
                 case_statement_node = HdlStmCaseNode(
-                    switch_variable=self.variables[node['switch_on']['ops'][0]],
+                    state_variable=self.variables[node['switch_on']['ops'][0]],
+                    state_variable_string_rep=node['switch_on']['ops'][0],
                     parent_id=parent_node_id,
-                    switch_variable_bit_width=self.traverse(node['switch_on']['ops'][1], None), 
+                    state_variable_bit_width=None,
+                    # state_variable_bit_width=self.traverse(node['switch_on']['ops'][1], None), 
                     start_line=node['position'][0], 
                     end_line=node['position'][2]
                 )
             else:
-                print('Unhandled switch variable for case statement')
+                print('Unhandled state variable for case statement')
                 return
         else:
-            #One variable switch statements
-            case_statement_node = HdlStmCaseNode(switch_variable=self.variables[node['switch_on']], parent_id=parent_node_id, start_line=node['position'][0], end_line=node['position'][2])
+            #One variable state statements
+            case_statement_node = HdlStmCaseNode(
+                state_variable=self.variables[node['switch_on']], 
+                state_variable_string_rep=node['switch_on'], 
+                parent_id=parent_node_id, 
+                start_line=node['position'][0], 
+                end_line=node['position'][2]
+            )
             
         #Add case statement node where necessary
         self.nodes[case_statement_node.node_id] = case_statement_node
