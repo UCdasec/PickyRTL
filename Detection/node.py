@@ -99,15 +99,17 @@ class HdlStmAssignNode(Node):
 
 
 class HdlStmCaseNode(Node):
-    def __init__(self, switch_variable, parent_id, start_line, end_line, switch_variable_bit_width=None):
+    def __init__(self, state_variable, state_variable_string_rep, parent_id, start_line, end_line, state_variable_bit_width=None):
         super().__init__('HdlStmCase', start_line, end_line, parent_id)
         del self.children #The children of the case statement are the cases
-        self.switch_variable = switch_variable
-        self.switch_variable_bit_width = switch_variable_bit_width
-        self.cases = {}
+        self.state_variable = state_variable
+        self.state_variable_string_rep = state_variable_string_rep
+        self.state_variable_bit_width = state_variable_bit_width
+        self.cases: dict[int, Case] = {}
         self.default = None
         self.possible_case_values = []
         self.case_primary_values = []
+        self.fsm = None
 
     def add_case(self, case_node):
         """Adds case_node to self.cases
@@ -131,12 +133,12 @@ class HdlStmCaseNode(Node):
         self.case_primary_values.append(default_node.primary_value)
 
     def calculate_possible_values(self):
-        """Calculates number of possible values for switch variable
+        """Calculates number of possible values for state variable
 
         Returns:
-            float: Number of possible values for switch variable
+            float: Number of possible values for state variable
         """
-        return math.pow(2, self.switch_variable_bit_width)
+        return math.pow(2, self.state_variable_bit_width)
 
 class Case(Node):
     def __init__(self, values, parent_id, start_line, end_line, satisfiable=False):
