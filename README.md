@@ -2,58 +2,66 @@
 
 ## Overview
 
-PickyRTL is a tool for detecting CWE weaknesses in RTL code. It provides an interactive terminal interface for selecting files, parsing them, and running detection algorithms on them.
+PickyRTL – Detection is a tool for performing static security analysis on RTL (Register Transfer Level) hardware descriptions, specifically Verilog (.v) and SystemVerilog (.sv) files. The detection workflow allows users to parse HDL files and analyze them for potential hardware security vulnerabilities before fabrication, when fixes are still possible.
+
+The tool currently detects vulnerabilities associated with:
+- CWE-1245: Improper Finite State Machines (FSMs) in Hardware Logic
+- CWE-1233: Security-Sensitive Hardware Controls with Missing Lock Bit Protection
+- CWE-226: Sensitive Information in Resource Not Removed Before Reuse
+- CWE-1431: Driving Intermediate Cryptographic State/Results to Hardware Module Outputs
+
+## Branches
+
+- **main**
+    - Contains stable PickyRTL code for work outlined in "PickyRTL: A Static Analysis Tool for Detecting Hardware CWEs at Register-Transfer Level"
+    - Detection algorithms for 
+        - CWE-1245
+        - CWE-1233
+        - CWE-226
+        - CWE-1431
+- **version-2** 
+    - Current working branch for improvements on PickyRTL
+    - Future work includes
+        - Detection algorithm improvements
+        - Larger dataset generation
 
 ## Requirements
 
-- Ubuntu / WSL (tested on Ubuntu 22.04)
-- Python 3.10+
+- Ubuntu / WSL (tested on Ubuntu 24.04)
 
-## Installation
+## Running the Program 
 
-1. `git clone https://github.com/UCdasec/PickyRTL.git`
-
-## Running the Program
-
-1. Change into the `/Detection` directory
+1. Clone the repository
+2. Navigate to the `/Detection` directory
 
     ```bash
     cd Detection
     ```
 
-2. To run the program execute `./run_program.sh`
+3. To run the program execute `./run_program.sh`
 
-## Usage
+### Usage
+To learn more about the functionality and capabilities of PickyRTL, visit the `/docs` folder
 
-### Parsing an HDL File
+## Folder Structure
 
-1. Start the program
-2. Use the arrow keys to navigate to `Parse` and press "Enter"
-
-    ```bash
-    ---Select Mode---
-      Detect
-    > Parse
-      Exit
-    ```
-
-3. Use the arrow keys to navigate the file explorer and select an HDL file or a folder of HDL files
-4. The parsed files will be saved under `PickyRTL/Detection/Parsed_files`
-
-### Running Detection
-
-1. Start the program
-2. Use the arrow keys to navigate to `Detect` and press "Enter"
-
-    ```bash
-    ---Select Mode---
-    > Detect
-      Parse
-      Exit
-    ```
-
-3. Use the arrow keys to navigate the file explorer and select a parsed file or a folder of parsed files
-
-4. When detection is finished use the arrow keys to select a save location under `PickyRTL/Detection/Results` directory
-
-5. Enter a name for the file and press "Enter"
+```bash
+└── 📁PickyRTL
+    └── 📁Detection
+        └── 📁Examples
+        └── 📁Parsed_Files
+        └── 📁Results 
+        ├── ast_traverser.py
+        ├── enums.py
+        ├── file_selector.py
+        ├── main.py
+        ├── node.py
+        ├── parser.py
+        ├── README.md
+        ├── requirements.txt
+        ├── run_program.sh 
+    └── 📁docs #Contains helpful documentation for PickyRTL
+    ├── .gitignore
+    ├── README.md
+    └── run_program.sh
+```
