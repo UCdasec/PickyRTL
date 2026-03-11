@@ -929,19 +929,19 @@ def main():
                     CWE_1245_RESULTS_DF_COLS.FILE_NAME.value: 'Total',
                     CWE_1245_RESULTS_DF_COLS.CASE_NUMBER.value: f"{total_case_stmts} case statements",
                     CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value: {
-                        'Secure': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Secure').sum(),
-                        'Vulnerable': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Vulnerable').sum(),
-                        'Inconclusive': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Inconclusive').sum()
+                        'Secure': str(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Secure').sum()),
+                        'Vulnerable': str(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Vulnerable').sum()),
+                        'Inconclusive': str(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.STATE_COVERAGE.value].str.startswith('Inconclusive').sum())
                     },
                     CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value: {
-                        'Secure': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value].str.startswith('Secure').sum(),
-                        'Vulnerable': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value].str.startswith('Vulnerable').sum(),
-                        'Inconclusive': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value].str.startswith('Inconclusive').sum()
+                        'Secure': str(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value].str.startswith('Secure').sum()),
+                        'Vulnerable': str(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value].str.startswith('Vulnerable').sum()),
+                        'Inconclusive': str(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.UNREACHABLE_STATES.value].str.startswith('Inconclusive').sum())
                     },
                     CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value: {
-                        'Secure': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value].str.startswith('Secure').sum(),
-                        'Vulnerable': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value].str.startswith('Vulnerable').sum(),
-                        'Inconclusive': CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value].str.startswith('Inconclusive').sum()
+                        'Secure': str(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value].str.startswith('Secure').sum()),
+                        'Vulnerable': str(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value].str.startswith('Vulnerable').sum()),
+                        'Inconclusive': str(CWE_1245_results_df[CWE_1245_RESULTS_DF_COLS.DEADLOCKS.value].str.startswith('Inconclusive').sum())
                     },
                 }])
                 CWE_1245_results_df = pd.concat([CWE_1245_results_df, CWE_1245_total_row], ignore_index=True)
@@ -950,12 +950,12 @@ def main():
                     CWE_1233_RESULTS_DF_COLS.FILE_NAME.value: 'Total',
                     CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER.value: f"{CWE_1233_results_df[CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER.value].count()} security sensitive registers",
                     CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value: {
-                        'Secure': CWE_1233_results_df[CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value].str.startswith('Secure').sum(),
-                        'Vulnerable': CWE_1233_results_df[CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value].str.startswith('Vulnerable').sum(),
+                        'Secure': str(CWE_1233_results_df[CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value].str.startswith('Secure').sum()),
+                        'Vulnerable': str(CWE_1233_results_df[CWE_1233_RESULTS_DF_COLS.LOCK_ENFORCEMENT.value].str.startswith('Vulnerable').sum()),
                     },
                     CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value: {
-                        'Secure': CWE_1233_results_df[CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value].str.startswith('Secure').sum(),
-                        'Vulnerable': CWE_1233_results_df[CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value].str.startswith('Vulnerable').sum(),
+                        'Secure': str(CWE_1233_results_df[CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value].str.startswith('Secure').sum()),
+                        'Vulnerable': str(CWE_1233_results_df[CWE_1233_RESULTS_DF_COLS.SECURITY_SENSITIVE_REGISTER_COVERAGE.value].str.startswith('Vulnerable').sum()),
                     },
                 }])
                 CWE_1233_results_df = pd.concat([CWE_1233_results_df, CWE_1233_total_row], ignore_index=True)
@@ -964,8 +964,8 @@ def main():
                     CWE_226_RESULTS_DF_COLS.FILE_NAME.value: 'Total',
                     CWE_226_RESULTS_DF_COLS.REGISTER.value: f"{CWE_226_results_df[CWE_226_RESULTS_DF_COLS.REGISTER.value].count()} registers needing reset",
                     CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value: {
-                        'Secure': CWE_226_results_df[CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value].str.startswith('Secure').sum(),
-                        'Vulnerable': CWE_226_results_df[CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value].str.startswith('Vulnerable').sum(),
+                        'Secure': str(CWE_226_results_df[CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value].str.startswith('Secure').sum()),
+                        'Vulnerable': str(CWE_226_results_df[CWE_226_RESULTS_DF_COLS.RESET_COVERAGE.value].str.startswith('Vulnerable').sum()),
                     },
                 }])
                 CWE_226_results_df = pd.concat([CWE_226_results_df, CWE_226_total_row], ignore_index=True)
@@ -974,8 +974,8 @@ def main():
                     CWE_1431_RESULTS_DF_COLS.FILE_NAME.value: 'Total',
                     CWE_1431_RESULTS_DF_COLS.RESULT_OUTPUT.value: f"{CWE_1431_results_df[CWE_1431_RESULTS_DF_COLS.RESULT_OUTPUT.value].count()} cryptographic modules",
                     CWE_1431_RESULTS_DF_COLS.INTERMEDIATE_RESULTS_LEAKAGE.value: {
-                        'Secure': CWE_1431_results_df[CWE_1431_RESULTS_DF_COLS.INTERMEDIATE_RESULTS_LEAKAGE.value].str.startswith('Secure').sum(),
-                        'Vulnerable': CWE_1431_results_df[CWE_1431_RESULTS_DF_COLS.INTERMEDIATE_RESULTS_LEAKAGE.value].str.startswith('Vulnerable').sum(),
+                        'Secure': str(CWE_1431_results_df[CWE_1431_RESULTS_DF_COLS.INTERMEDIATE_RESULTS_LEAKAGE.value].str.startswith('Secure').sum()),
+                        'Vulnerable': str(CWE_1431_results_df[CWE_1431_RESULTS_DF_COLS.INTERMEDIATE_RESULTS_LEAKAGE.value].str.startswith('Vulnerable').sum()),
                     },
                 }])
                 CWE_1431_results_df = pd.concat([CWE_1431_results_df, CWE_1431_total_row], ignore_index=True)
