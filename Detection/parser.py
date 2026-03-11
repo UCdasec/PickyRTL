@@ -49,10 +49,11 @@ def parse_file(file_path:str):
         )
         parsed_json = to_json.visit_HdlContext(parsed_file)
 
-        folders = file_path.split(os.sep)[:-1]
+        file_path = Path(file_path)
+        parts = file_path.parts
+        examples_index = parts.index('Examples')
 
-        #Create JSON file path
-        parsed_json_filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Parsed_Files', folders[-2], folders[-1], f"{Path(file_path).stem}_parsed.json")
+        parsed_json_filepath = Path(*parts[:examples_index], 'Parsed_Files', *parts[examples_index+1:-1], f"{file_path.stem}_parsed.json")
         os.makedirs(os.path.dirname(parsed_json_filepath), exist_ok=True)
 
         #Save the JSON file
