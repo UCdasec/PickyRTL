@@ -31,7 +31,6 @@ from CONFIG import (
 INPUT_DIR = TEST_DIR
 
 class ASTVisitor(HdlAstVisitor):
-    #1233: in hdliddef Find possible lock bit registers, when running into a if statement or ternary, check if the conditional contains the lock bit register and protects an assignment
 
     def __init__(self):
         super().__init__()
