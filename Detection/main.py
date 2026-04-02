@@ -792,7 +792,7 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
                         DETECTION_STATISTICS_DF_COLS.DETECTION_TIME.value: parsing_duration
                 }])], ignore_index=True)
 
-    matching_choice, threshold = ask_matching_mode()
+    threshold = 80
 
     #Match identified register lock bits to any variables to find unidentified lock bits
     for (file_name, module_name), ast_data in parsed_AST_data_dict.items():
@@ -802,19 +802,11 @@ def run_detection_on_folder(folder_path: str) -> tuple[pd.DataFrame, pd.DataFram
             if var.possible_lock_bit_register or var.direction != "IN":
                 continue
 
-            if matching_choice == "fuzzy":
-                #FUZZY MATCHING
-                if fuzzy_matching(var.name, list(security_registers['lock-bit-registers']), threshold):
-                    security_registers['lock-bit-registers'].add(var.name)
-                    var.possible_lock_bit_register = True
-                    ast_data.lock_bit_registers.append(var)
-            elif matching_choice == "direct":
-                #DIRECT NAME MATCHING
-                if var.name in security_registers['lock-bit-registers']:
-                    var.possible_lock_bit_register = True
-                    ast_data.lock_bit_registers.append(var)
-                
-            #TO-DO check conditionals involving the lock bit to find security sensitive registers if it is a match
+            #FUZZY MATCHING
+            if fuzzy_matching(var.name, list(security_registers['lock-bit-registers']), threshold):
+                security_registers['lock-bit-registers'].add(var.name)
+                var.possible_lock_bit_register = True
+                ast_data.lock_bit_registers.append(var)
         
         end_time_lock_bit_matching = time.perf_counter()
         lock_bit_matching_duration = end_time_lock_bit_matching - start_time_lock_bit_matching
